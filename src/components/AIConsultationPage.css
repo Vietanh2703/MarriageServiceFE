@@ -1,0 +1,438 @@
+/* AIConsultationPage.css */
+.ai-consultation-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Hero Section */
+.ai-hero-section {
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  color: white;
+  padding: 120px 0 80px;
+  text-align: center;
+}
+
+.ai-hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.ai-hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.ai-hero-content p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Intro Section */
+.ai-intro-section {
+  padding: 80px 0;
+  background-color: #f8f9fa;
+}
+
+.ai-intro-section h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  color: #2c3e50;
+}
+
+.ai-benefits {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.ai-benefit-item {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.ai-benefit-item:hover {
+  transform: translateY(-10px);
+}
+
+.ai-benefit-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.ai-benefit-item h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+.ai-benefit-item p {
+  color: #7f8c8d;
+  line-height: 1.6;
+}
+
+/* Packages Section */
+.ai-packages-section {
+  padding: 80px 0;
+  background-color: white;
+}
+
+.ai-packages-section h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+.ai-packages-subtitle {
+  text-align: center;
+  color: #7f8c8d;
+  margin-bottom: 3rem;
+  font-size: 1.1rem;
+}
+
+.ai-packages {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.ai-package-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.ai-package-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.ai-package-card.featured {
+  border: 2px solid #6a11cb;
+  transform: scale(1.05);
+}
+
+.ai-package-card.featured:hover {
+  transform: scale(1.05) translateY(-10px);
+}
+
+.ai-package-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #6a11cb;
+  color: white;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-bottom-left-radius: 8px;
+}
+
+.ai-package-header {
+  padding: 2rem;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.ai-package-header h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+.ai-package-price {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+}
+
+.price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #6a11cb;
+}
+
+.currency {
+  font-size: 1rem;
+  color: #7f8c8d;
+  margin-left: 0.5rem;
+}
+
+.ai-package-features {
+  list-style-type: none;
+  padding: 2rem;
+  margin: 0;
+}
+
+.ai-package-features li {
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #eee;
+  color: #7f8c8d;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.ai-package-features li:last-child {
+  border-bottom: none;
+}
+
+.ai-package-features li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #6a11cb;
+  font-weight: bold;
+}
+
+.ai-package-footer {
+  padding: 0 2rem 2rem;
+  text-align: center;
+}
+
+.ai-package-button {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background-color: #6a11cb;
+  color: white;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.ai-package-button:hover {
+  background-color: #5a0cb2;
+}
+
+/* How It Works Section */
+.ai-how-it-works {
+  padding: 80px 0;
+  background-color: #f8f9fa;
+}
+
+.ai-how-it-works h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  color: #2c3e50;
+}
+
+.ai-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.ai-step {
+  text-align: center;
+  padding: 2rem;
+}
+
+.ai-step-number {
+  width: 60px;
+  height: 60px;
+  background-color: #6a11cb;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 auto 1.5rem;
+}
+
+.ai-step h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+.ai-step p {
+  color: #7f8c8d;
+  line-height: 1.6;
+}
+
+/* Testimonials Section */
+.ai-testimonials {
+  padding: 80px 0;
+  background-color: white;
+}
+
+.ai-testimonials h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  color: #2c3e50;
+}
+
+.ai-testimonial-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.ai-testimonial-card {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.ai-testimonial-content {
+  margin-bottom: 1.5rem;
+}
+
+.ai-testimonial-content p {
+  color: #2c3e50;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.ai-testimonial-author {
+  display: flex;
+  align-items: center;
+}
+
+.ai-testimonial-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  color: white;
+  font-weight: 700;
+}
+
+.ai-testimonial-info h4 {
+  margin: 0 0 0.3rem;
+  color: #2c3e50;
+  font-size: 1rem;
+}
+
+.ai-testimonial-info p {
+  margin: 0;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+/* CTA Section */
+.ai-cta-section {
+  padding: 80px 0;
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  color: white;
+  text-align: center;
+}
+
+.ai-cta-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.ai-cta-section p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.ai-cta-button {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  background-color: white;
+  color: #6a11cb;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ai-cta-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+  .ai-hero-content h1 {
+    font-size: 2.5rem;
+  }
+  
+  .ai-package-card.featured {
+    transform: scale(1);
+  }
+  
+  .ai-package-card.featured:hover {
+    transform: translateY(-10px);
+  }
+}
+
+@media (max-width: 768px) {
+  .ai-hero-section {
+    padding: 100px 0 60px;
+  }
+  
+  .ai-hero-content h1 {
+    font-size: 2rem;
+  }
+  
+  .ai-intro-section h2,
+  .ai-packages-section h2,
+  .ai-how-it-works h2,
+  .ai-testimonials h2,
+  .ai-cta-section h2 {
+    font-size: 2rem;
+  }
+  
+  .ai-step {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .ai-hero-content h1 {
+    font-size: 1.8rem;
+  }
+  
+  .ai-hero-content p {
+    font-size: 1rem;
+  }
+  
+  .ai-package-header {
+    padding: 1.5rem;
+  }
+  
+  .ai-package-features {
+    padding: 1.5rem;
+  }
+  
+  .ai-package-footer {
+    padding: 0 1.5rem 1.5rem;
+  }
+  
+  .price {
+    font-size: 2rem;
+  }
+}

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f5f7fa" />
+  
+  <!-- Decorative elements -->
+  <circle cx="400" cy="300" r="250" fill="#f8d7da" opacity="0.5" />
+  <circle cx="400" cy="300" r="200" fill="#fff" opacity="0.8" />
+  
+  <!-- Bride silhouette -->
+  <path d="M350,450 C350,350 300,300 300,250 C300,200 330,180 350,180 C370,180 400,200 400,250 C400,300 350,350 350,450 Z" fill="#ff6b6b" />
+  
+  <!-- Groom silhouette -->
+  <path d="M450,450 C450,350 500,300 500,250 C500,200 470,180 450,180 C430,180 400,200 400,250 C400,300 450,350 450,450 Z" fill="#2c3e50" />
+  
+  <!-- Bride's veil -->
+  <path d="M350,180 C350,160 370,150 400,150 C430,150 450,160 450,180 C420,170 380,170 350,180 Z" fill="white" />
+  
+  <!-- Decorative flowers -->
+  <circle cx="250" cy="150" r="30" fill="#ff9a9e" />
+  <circle cx="550" cy="150" r="30" fill="#ff9a9e" />
+  <circle cx="200" cy="200" r="25" fill="#fad0c4" />
+  <circle cx="600" cy="200" r="25" fill="#fad0c4" />
+  
+  <!-- Text -->
+  <text x="400" y="520" font-family="Arial" font-size="24" text-anchor="middle" fill="#2c3e50">Cuoidi.vn - Tạo nên ngày cưới trong mơ</text>
+</svg>
