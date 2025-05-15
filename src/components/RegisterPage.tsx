@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
@@ -13,6 +13,10 @@ const RegisterPage: React.FC = () => {
     phone: '',
     agreeTerms: false
   });
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -36,21 +40,8 @@ const RegisterPage: React.FC = () => {
         <div className="register-form-container">
           <h1>Đăng Ký Tài Khoản</h1>
           <p className="register-subtitle">Tạo tài khoản để trải nghiệm dịch vụ của Cuoidi.vn</p>
-          
+
           <form className="register-form" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="fullName">Họ và tên</label>
-              <input
-                type="text"
-                id="fullName"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleChange}
-                required
-                placeholder="Nhập họ và tên của bạn"
-              />
-            </div>
-            
             <div className="form-group">
               <label htmlFor="email">Email</label>
               <input
@@ -120,6 +111,25 @@ const RegisterPage: React.FC = () => {
             <button type="submit" className="register-button" disabled={!formData.agreeTerms}>
               Đăng Ký
             </button>
+            
+            {/* Divider with "hoặc" text */}
+            <div className="social-divider">
+              <div className="divider-line"></div>
+              <span className="divider-text">hoặc</span>
+              <div className="divider-line"></div>
+            </div>
+            
+            {/* Social login buttons */}
+            <div className="social-login-buttons">
+              <button type="button" className="social-button google-button">
+                <img src="/google-icon.png" alt="Google" />
+                Đăng ký với Google
+              </button>
+              <button type="button" className="social-button facebook-button">
+                <img src="/facebook-icon.png" alt="Facebook" />
+                Đăng ký với Facebook
+              </button>
+            </div>
           </form>
           
           <div className="register-footer">

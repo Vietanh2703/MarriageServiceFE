@@ -9,7 +9,7 @@
   display: flex;
   flex: 1;
   max-width: 1200px;
-  margin: 80px auto 40px;
+  margin: 100px auto 40px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   overflow: hidden;
@@ -170,6 +170,63 @@
   font-weight: bold;
 }
 
+/* Social login divider */
+.social-divider {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+  color: #7f8c8d;
+  text-align: center;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background-color: #ddd;
+}
+
+.divider-text {
+  padding: 0 10px;
+  font-size: 0.9rem;
+}
+
+/* Social login buttons container */
+.social-login-buttons {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 1.5rem;
+}
+
+.social-button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 0.9rem;
+  color: #2c3e50;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.google-button:hover {
+  background-color: #f2f2f2;
+  border-color: #c6c6c6;
+}
+
+.facebook-button:hover {
+  background-color: #ebedf0;
+  border-color: #3b5998;
+}
+
+.social-button img {
+  height: 18px;
+  margin-right: 8px;
+}
+
 /* Responsive styles */
 @media (max-width: 992px) {
   .register-container {
@@ -204,3 +261,4 @@
     margin-top: 0.3rem;
   }
 }
+
