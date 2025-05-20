@@ -6,6 +6,7 @@ import AIConsultationPage from './components/AIConsultationPage';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import LoadingScreen from './components/LoadingScreen';
+import AboutUsPage from './components/AboutUsPage';
 
 // Create inner component that uses useLocation
 function AppContent() {
@@ -64,6 +65,7 @@ function AppContent() {
                     <Route path="/ai-consultation" element={<AIConsultationPage toggleDarkMode={toggleDarkMode} darkMode={darkMode} />} />
                     <Route path="/login" element={<LoginPage toggleDarkMode={toggleDarkMode} darkMode={darkMode} />} />
                     <Route path="/register" element={<RegisterPage toggleDarkMode={toggleDarkMode} darkMode={darkMode} />} />
+                    <Route path="/about" element={<AboutUsPage />} />
                 </Routes>
             </div>
         </div>

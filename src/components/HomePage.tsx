@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useInView } from 'react-intersection-observer';
 import Navbar from './Navbar';
 import Slideshow from './Slideshow';
 import Footer from './Footer';
@@ -9,6 +10,11 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const { ref: featureRef, inView: featureVisible } = useInView({
+    threshold: 0.1,
+    triggerOnce: false
+  });
 
   return (
     <div className="home-page">
@@ -98,40 +104,75 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="features-section">
+
+      {/* Why Choose Us Section - New Design */}
+      <section ref={featureRef} className="why-choose-us-section">
         <div className="section-container">
           <div className="section-header">
-            <h2>Tại Sao Chọn Cuoidi.vn?</h2>
-            <p>Chúng tôi mang đến trải nghiệm tổ chức cưới tuyệt vời nhất cho bạn</p>
+            <span className="section-subtitle">Điểm Khác Biệt</span>
+            <h2 className="section-title">Tại Sao Chọn Cuoidi.vn?</h2>
+            <div className="header-decor"></div>
           </div>
 
           <div className="features-grid">
-            <div className="feature-item">
-              <div className="feature-icon"></div>
-              <h3>Đối Tác Chất Lượng</h3>
-              <p>Tất cả đối tác đều được chọn lọc kỹ càng và đánh giá chất lượng thường xuyên.</p>
+            <div className={`feature-card ${featureVisible ? 'visible' : ''}`} data-delay="0">
+              <div className="feature-icon">
+                <i className="icon-ai">🤖</i>
+              </div>
+              <h3>Tư Vấn AI Thông Minh</h3>
+              <p>Ứng dụng công nghệ AI tiên tiến, giúp bạn lên kế hoạch đám cưới chi tiết và tìm kiếm dịch vụ phù hợp nhất</p>
             </div>
 
-            <div className="feature-item">
-              <div className="feature-icon"></div>
-              <h3>Tư Vấn AI</h3>
-              <p>Công nghệ AI hiện đại giúp bạn lên kế hoạch cưới phù hợp với ngân sách và sở thích.</p>
+            <div className={`feature-card ${featureVisible ? 'visible' : ''}`} data-delay="1">
+              <div className="feature-icon">
+                <i className="icon-partners">💎</i>
+              </div>
+              <h3>Đối Tác Uy Tín</h3>
+              <p>Hệ thống đối tác được thẩm định kỹ lưỡng, đảm bảo chất lượng dịch vụ tốt nhất cho ngày trọng đại</p>
             </div>
 
-            <div className="feature-item">
-              <div className="feature-icon"></div>
-              <h3>Tiết Kiệm Thời Gian</h3>
-              <p>Tìm kiếm và so sánh dịch vụ nhanh chóng, tiết kiệm thời gian tổ chức cưới.</p>
+            <div className={`feature-card ${featureVisible ? 'visible' : ''}`} data-delay="2">
+              <div className="feature-icon">
+                <i className="icon-customize">⚡</i>
+              </div>
+              <h3>Tùy Chỉnh Linh Hoạt</h3>
+              <p>Tự do điều chỉnh gói dịch vụ theo ngân sách và sở thích, tạo nên đám cưới độc đáo của riêng bạn</p>
             </div>
 
-            <div className="feature-item">
-              <div className="feature-icon"></div>
+            <div className={`feature-card ${featureVisible ? 'visible' : ''}`} data-delay="3">
+              <div className="feature-icon">
+                <i className="icon-support">🎯</i>
+              </div>
               <h3>Hỗ Trợ 24/7</h3>
-              <p>Đội ngũ hỗ trợ luôn sẵn sàng giải đáp mọi thắc mắc của bạn bất cứ lúc nào.</p>
+              <p>Đội ngũ chuyên viên tư vấn nhiệt tình, sẵn sàng hỗ trợ bạn mọi lúc mọi nơi</p>
+            </div>
+
+            <div className={`feature-card ${featureVisible ? 'visible' : ''}`} data-delay="4">
+              <div className="feature-icon">
+                <i className="icon-price">💰</i>
+              </div>
+              <h3>Giá Cả Minh Bạch</h3>
+              <p>Cam kết không phát sinh chi phí, bảo vệ quyền lợi khách hàng với chính sách rõ ràng</p>
+            </div>
+
+            <div className={`feature-card ${featureVisible ? 'visible' : ''}`} data-delay="5">
+              <div className="feature-icon">
+                <i className="icon-experience">🌟</i>
+              </div>
+              <h3>Trải Nghiệm Hoàn Hảo</h3>
+              <p>98% khách hàng hài lòng với dịch vụ, cùng hàng nghìn đám cưới thành công trên toàn quốc</p>
             </div>
           </div>
+
+          <div className={`features-cta ${featureVisible ? 'visible' : ''}`}>
+            <Link to="/register" className="cta-button">
+              <span className="button-text">Bắt Đầu Ngay</span>
+              <span className="button-icon">→</span>
+            </Link>
+          </div>
         </div>
+
+        <div className="background-decor"></div>
       </section>
 
       {/* Testimonials Section */}
@@ -312,3 +353,4 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
+
