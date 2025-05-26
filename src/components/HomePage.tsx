@@ -33,8 +33,8 @@ const HomePage: React.FC = () => {
               giúp bạn tổ chức đám cưới hoàn hảo mà không cần lo lắng.
             </p>
             <div className="hero-buttons">
-              <Link to="/services" className="btn btn-primary">Khám Phá Dịch Vụ</Link>
-              <Link to="/ai-consultation" className="btn btn-secondary">AI Tư Vấn</Link>
+              <Link to="/services" className="btn btn-hero-primary">Khám Phá Dịch Vụ</Link>
+              <Link to="/ai-consultation" className="btn btn-hero-secondary">AI Tư Vấn</Link>
             </div>
           </div>
         </div>
@@ -111,7 +111,6 @@ const HomePage: React.FC = () => {
           <div className="section-header">
             <span className="section-subtitle">Điểm Khác Biệt</span>
             <h2 className="section-title">Tại Sao Chọn Cuoidi.vn?</h2>
-            <div className="header-decor"></div>
           </div>
 
           <div className="features-grid">

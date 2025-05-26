@@ -145,7 +145,7 @@ const Navbar: React.FC = () => {
               </div>
             </li>
             <li className="nav-item">
-              <Link to="/partner-registration" className="btn btn-partner">Đăng Ký Đối Tác</Link>
+              <Link to="/partner-registration" className="btn btn-partner">Trở Thành Đối Tác</Link>
             </li>
             <li className="nav-item">
               <Link to="/login" className="btn btn-login">Đăng Nhập</Link>

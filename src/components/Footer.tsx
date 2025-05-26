@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaFacebookF, FaTiktok, FaInstagram, FaEnvelope, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
+import { FaFacebookF, FaTiktok, FaEnvelope, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
 import { BsMessenger } from 'react-icons/bs';
 import './Footer.css';
 
@@ -57,16 +57,6 @@ const Footer: React.FC = () => {
 
   // The toggleTheme function is kept but not used in the footer itself
   // This would be used if the footer had its own theme toggle button
-  const toggleTheme = () => {
-    const newTheme = !isDarkMode ? 'dark' : 'light';
-    localStorage.setItem('theme', newTheme);
-    setIsDarkMode(!isDarkMode);
-    
-    // Dispatch theme change event for other components
-    const event = new CustomEvent('themeChange', { detail: { theme: newTheme } });
-    window.dispatchEvent(event);
-  };
-
   return (
       <footer className={`footer ${isDarkMode ? 'dark' : 'light'}`}>
         <div className="footer-container">
@@ -122,17 +112,14 @@ const Footer: React.FC = () => {
             <h5>Kết Nối Với Chúng Tôi</h5>
             <p>Theo dõi chúng tôi trên mạng xã hội để nhận thông tin mới nhất về xu hướng cưới hỏi.</p>
             <div className="social-links">
-              <a href="https://facebook.com/cuoidi" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+              <a href="https://www.facebook.com/profile.php?id=61576263028400" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                 <FaFacebookF />
               </a>
-              <a href="https://m.me/cuoidi" target="_blank" rel="noopener noreferrer" aria-label="Messenger">
+              <a href="https://m.me/695104320343770" target="_blank" rel="noopener noreferrer" aria-label="Messenger">
                 <BsMessenger />
               </a>
-              <a href="https://tiktok.com/@cuoidi" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+              <a href="https://www.tiktok.com/@cuoidi.vn?_t=ZS-8wfWUoRKUgK&_r=1" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
                 <FaTiktok />
-              </a>
-              <a href="https://instagram.com/cuoidi" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                <FaInstagram />
               </a>
             </div>
           </div>
