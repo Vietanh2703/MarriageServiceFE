@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@dotlottie/react-player": "^1.6.19",
     "@gsap/react": "^2.1.2",
+    "@lottiefiles/dotlottie-web": "^0.44.0",
     "@types/react-router-dom": "^5.3.3",
     "gsap": "^3.13.0",
     "react": "^19.1.0",
