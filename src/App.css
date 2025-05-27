@@ -19,6 +19,14 @@ body {
   color: #333;
   background-color: #fff;
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+html {
+  scroll-behavior: auto !important; /* Disable smooth scrolling globally */
 }
 
 /* Smooth scrolling */
@@ -132,9 +140,10 @@ section {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
+    position: relative;
+    width: 100%;
 }
 
-/* Ensure each route starts from the top */
 .content > * {
     scroll-behavior: auto;
     overflow-anchor: none;
@@ -148,8 +157,9 @@ section {
     flex-direction: column;
 }
 
-/* Reset scroll position for new routes */
 .content > *:not(:first-child) {
     margin-top: 0;
     padding-top: 0;
 }
+
+
