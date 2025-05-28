@@ -14,7 +14,7 @@ const Navbar: React.FC = () => {
   });
 
   useEffect(() => {
-    // Apply theme on initial load without animation
+    // Apply theme on an initial load without animation
     if (isDarkMode) {
       document.body.classList.add('dark-theme');
 

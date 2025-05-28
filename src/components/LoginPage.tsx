@@ -3,13 +3,10 @@ import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import './LoginPage.css';
 import Footer from "./Footer";
-import ThemeToggle from './ThemeToggle';
-import { useTheme } from '../context/ThemeContext';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { isDarkMode } = useTheme();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,12 +15,8 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className={`login-page ${isDarkMode ? 'dark-theme' : 'light-theme'}`}>
+    <div className="login-page">
       <Navbar />
-      <div className="theme-toggle-container">
-        <ThemeToggle />
-      </div>
-
       <div className="login-container">
         <div className="login-form-container">
           <h1>Đăng Nhập</h1>

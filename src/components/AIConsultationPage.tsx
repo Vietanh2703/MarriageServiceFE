@@ -2,12 +2,14 @@ import React, { useEffect, useState, useLayoutEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { DotLottiePlayer } from '@dotlottie/react-player';
+import AuthPromptModal from './AuthPromptModal';
 import './AIConsultationPage.css';
 
 const AIConsultationPage: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     return document.body.classList.contains('dark-theme');
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Use useLayoutEffect to check dark mode before render
   useLayoutEffect(() => {
@@ -64,6 +66,10 @@ const AIConsultationPage: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
+  const handleAuthPrompt = () => {
+    setIsModalOpen(true);
+  };
+
   return (
       <div className="ai-consultation-page">
         <Navbar />
@@ -76,6 +82,16 @@ const AIConsultationPage: React.FC = () => {
                 Sử dụng công nghệ trí tuệ nhân tạo tiên tiến để lên kế hoạch cho ngày trọng đại của bạn.
                 Tiết kiệm thời gian, giảm stress và tạo ra đám cưới hoàn hảo với sự hỗ trợ của AI.
               </p>
+              <div className="hero-buttons animate-on-scroll fade-in-up animate-delay-3">
+                <button className="hero-button primary pulse-animation" onClick={handleAuthPrompt}>
+                  Trải Nghiệm Ngay
+                  <span className="button-effect"></span>
+                </button>
+                <button className="hero-button secondary glow-animation" onClick={handleAuthPrompt}>
+                  Đăng Ký Phiên Bản Nâng Cao
+                  <span className="button-effect"></span>
+                </button>
+              </div>
             </div>
             <DotLottiePlayer
                 src={isDarkMode
@@ -255,12 +271,19 @@ const AIConsultationPage: React.FC = () => {
             <div className="banner-content animate-on-scroll scale-in">
               <h2 className="animate-on-scroll fade-in-up">Bắt Đầu Lập Kế Hoạch Ngay Hôm Nay!</h2>
               <p className="animate-on-scroll fade-in-up animate-delay-1">Đăng ký ngay để nhận được sự hỗ trợ tốt nhất từ AI của chúng tôi.</p>
-              <button className="cta-button animate-on-scroll fade-in-up animate-delay-2">Đăng Ký Ngay</button>
+              <button className="cta-button animate-on-scroll fade-in-up animate-delay-2" onClick={handleAuthPrompt}>
+                Đăng Ký Ngay
+              </button>
             </div>
           </div>
         </section>
 
         <Footer />
+
+        <AuthPromptModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
       </div>
   );
 };

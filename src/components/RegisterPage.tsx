@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import ThemeToggle from './ThemeToggle';
 import './RegisterPage.css';
 import { useTheme } from '../context/ThemeContext';
 
@@ -23,10 +22,10 @@ const RegisterPage: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
+    setFormData(prev => ({
+      ...prev,
       [name]: type === 'checkbox' ? checked : value
-    });
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -38,10 +37,6 @@ const RegisterPage: React.FC = () => {
   return (
     <div className={`register-page ${isDarkMode ? 'dark-theme' : 'light-theme'}`}>
       <Navbar />
-      <div className="theme-toggle-container">
-        <ThemeToggle />
-      </div>
-
       <div className="register-container">
         <div className="register-form-container">
           <h1>Đăng Ký Tài Khoản</h1>
