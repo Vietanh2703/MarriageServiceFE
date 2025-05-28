@@ -8,6 +8,7 @@ import RegisterPage from './components/RegisterPage';
 import LoadingScreen from './components/LoadingScreen';
 import AboutUsPage from './components/AboutUsPage';
 import ScrollToTop from './components/ScrollToTop';
+import ServicesPage from "./components/ServicesPage.tsx";
 import { ThemeProvider } from './context/ThemeContext';
 
 function AppContent() {
@@ -67,6 +68,9 @@ function AppContent() {
                     } />
                     <Route path="/ai-consultation" element={
                         <AIConsultationPage  />
+                    } />
+                    <Route path="/services" element={
+                        <ServicesPage  />
                     } />
                     <Route path="/login" element={
                         <LoginPage />
