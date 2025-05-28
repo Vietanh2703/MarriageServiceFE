@@ -89,7 +89,7 @@ body.dark-theme {
 .ai-hero-animation {
   position: absolute;
   right: 5%;
-  top: -40%;
+  top: -20%;
   transform: translateY(-10%);
   width: 45%;
   height: auto;
@@ -146,7 +146,7 @@ body.dark-theme {
   .ai-hero-animation {
     position: relative;
     width: 80%;
-    margin: -40px auto 20px;
+    margin: -30px auto 20px;
     right: auto;
     top: auto;
     transform: none;
@@ -345,7 +345,6 @@ body.dark-theme {
   background-color: #b20c0c;
 }
 
-/* How It Works Section */
 .ai-how-it-works {
   padding: 80px 0;
   background-color: #f8f9fa;
@@ -394,7 +393,6 @@ body.dark-theme {
   line-height: 1.6;
 }
 
-/* Testimonials Section */
 .ai-testimonials {
   padding: 80px 0;
   background-color: white;
@@ -523,7 +521,6 @@ body.dark-theme {
   transition: color 0.3s ease;
 }
 
-/* Why Choose Us Section */
 .why-choose-section {
   padding: 100px 0;
   background: linear-gradient(135deg, #fcfaff 0%, #f5f3ff 100%);
