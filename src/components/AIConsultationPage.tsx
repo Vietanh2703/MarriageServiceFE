@@ -87,7 +87,7 @@ const AIConsultationPage: React.FC = () => {
                   Trải Nghiệm Ngay
                   <span className="button-effect"></span>
                 </button>
-                <button className="hero-button secondary glow-animation" onClick={handleAuthPrompt}>
+                <button className="hero-button secondary-ai glow-animation" onClick={handleAuthPrompt}>
                   Đăng Ký Phiên Bản Nâng Cao
                   <span className="button-effect"></span>
                 </button>

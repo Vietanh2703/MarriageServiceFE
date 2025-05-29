@@ -61,8 +61,10 @@ const Footer: React.FC = () => {
       <footer className={`footer ${isDarkMode ? 'dark' : 'light'}`}>
         <div className="footer-container">
           <div className="footer-column">
-            <div className="footer-logo">
-              <Link to="/">Cuoidi.vn</Link>
+            <div className="footer-logo-image">
+              <Link to="/">
+                <img src="/Cuoidi.png" alt="Cuoidi.vn Logo" className="logo-image-footer" />
+              </Link>
             </div>
             <p className="footer-description">
               Dịch vụ kết nối đối tác cung cấp dịch vụ cưới hỏi chuyên nghiệp hàng đầu Việt Nam.

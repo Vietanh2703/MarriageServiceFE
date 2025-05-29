@@ -107,7 +107,9 @@ const Navbar: React.FC = () => {
       <nav className="navbar">
         <div className="navbar-container">
           <div className="logo">
-            <Link to="/">Cuoidi.vn</Link>
+            <Link to="/">
+              <img src="/Cuoidi.png" alt="Cuoidi.vn Logo" className="logo-image" />
+            </Link>
           </div>
 
           <ul className="nav-items">
