@@ -122,10 +122,14 @@ const Navbar: React.FC = () => {
               </button>
               {isServicesOpen && (
                   <ul className="dropdown-menu">
-                    <li><Link to="/services/music">Âm Nhạc</Link></li>
-                    <li><Link to="/services/decoration">Trang Trí</Link></li>
+                    <li><Link to="/services/ceremony">Hình thức lễ cưới</Link></li>
+                    <li><Link to="/services/decoration">Trang Trí tiệc cưới</Link></li>
+                    <li><Link to="/services/photography">Chụp ảnh & quay phim</Link></li>
+                    <li><Link to="/services/wedding-cars">Xe cưới</Link></li>
+                    <li><Link to="/services/wedding-attire">Trang Phục</Link></li>
                     <li><Link to="/services/catering">Nấu Ăn</Link></li>
-                    <li><Link to="/services/clothing">Trang Phục</Link></li>
+                    <li><Link to="/services/makeup">Trang điểm</Link></li>
+                    <li><Link to="/services/invitation-design">Thiết kế thiệp cưới</Link></li>
                   </ul>
               )}
             </li>
@@ -159,3 +163,4 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
+

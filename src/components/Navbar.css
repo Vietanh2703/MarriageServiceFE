@@ -95,7 +95,7 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   padding: 1.0rem 0;
-  min-width: 180px;
+  min-width: 240px;
   list-style: none;
   z-index: 1001;
   animation: fadeIn 0.3s ease;

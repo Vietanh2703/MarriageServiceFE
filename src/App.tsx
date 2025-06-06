@@ -9,6 +9,14 @@ import LoadingScreen from './components/LoadingScreen';
 import AboutUsPage from './components/AboutUsPage';
 import ScrollToTop from './components/ScrollToTop';
 import ServicesPage from "./components/ServicesPage.tsx";
+import CateringPage from "./components/services/CateringPage.tsx";
+import DecorationPage from "./components/services/DecorationPage.tsx";
+import PhotographyPage from "./components/services/PhotographyPage";
+import InvitationDesignPage from "./components/services/InvitationDesignPage.tsx";
+import MakeupPage from "./components/services/MakeupPage.tsx";
+import WeddingAttirePage from "./components/services/WeddingAttirePage.tsx";
+import WeddingCarsPage from "./components/services/WeddingCarsPage.tsx";
+import WeddingCeremonyPage from "./components/services/WeddingCeremonyPage.tsx";
 import { ThemeProvider } from './context/ThemeContext';
 
 function AppContent() {
@@ -80,6 +88,36 @@ function AppContent() {
                     } />
                     <Route path="/about" element={
                         <AboutUsPage toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
+                    } />
+                    <Route path="/services/catering" element={
+                        <CateringPage />
+                    } />
+                    <Route path="/services/decoration" element={
+                        <DecorationPage />
+                    } />
+                    <Route path="/services/photography" element={
+                        <PhotographyPage />
+                    } />
+                    <Route path="/services/invitation-design" element={
+                        <InvitationDesignPage />
+                    } />
+                    <Route path="/services/makeup" element={
+                        <MakeupPage />
+                    } />
+                    <Route path="/services/wedding-attire" element={
+                        <WeddingAttirePage />
+                    } />
+                    <Route path="/services/wedding-cars" element={
+                        <WeddingCarsPage />
+                    } />
+                    <Route path="/services/ceremony" element={
+                        <WeddingCeremonyPage />
+                    } />
+                    <Route path="*" element={
+                        <div className="not-found">
+                            <h1>404 - Page Not Found</h1>
+                            <p>Sorry, the page you are looking for does not exist.</p>
+                        </div>
                     } />
                 </Routes>
             </div>
