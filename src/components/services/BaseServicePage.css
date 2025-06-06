@@ -13,7 +13,7 @@
   color: #ffffff;
 }
 
-.hero-section {
+.hero-service-section {
   height: 60vh;
   background-size: cover;
   background-position: center;
@@ -24,7 +24,7 @@
   justify-content: center;
 }
 
-.hero-section::before {
+.hero-service-section::before {
   content: '';
   position: absolute;
   top: 0;
@@ -34,7 +34,7 @@
   background: rgba(0, 0, 0, 0.5);
 }
 
-.hero-content {
+.hero-service-content {
   position: relative;
   text-align: center;
   color: white;
@@ -42,13 +42,13 @@
   animation: fadeIn 1s ease-in;
 }
 
-.hero-content h1 {
+.hero-service-content h1 {
   font-size: 3.5rem;
   margin-bottom: 1rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.hero-content p {
+.hero-service-content p {
   font-size: 1.2rem;
   max-width: 600px;
   margin: 0 auto;

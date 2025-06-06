@@ -35,8 +35,8 @@ const BaseServicePage: React.FC<BaseServicePageProps> = ({
     <div className={`service-page`}>
       <Navbar />
 
-      <div className="hero-section" style={{ backgroundImage: `url(${heroImage})` }}>
-        <div className="hero-content">
+      <div className="hero-service-section" style={{ backgroundImage: `url(${heroImage})` }}>
+        <div className="hero-service-content">
           <h1>{title}</h1>
           <p>{description}</p>
         </div>
