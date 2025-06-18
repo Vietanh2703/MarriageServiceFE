@@ -49,14 +49,15 @@
   position: relative;
 }
 
-.nav-item a {
+.nav-item a, .nav-item .dropdown-toggle {
+  font-size: 1.08rem;
   color: #333;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
 }
 
-.nav-item a:hover {
+.nav-item a:hover, .nav-item .dropdown-toggle:hover {
   color: #ff6b6b;
 }
 
@@ -325,4 +326,3 @@ body.dark-theme .dropdown-menu a:hover {
   position: absolute;
   right: 15px;
 }
-

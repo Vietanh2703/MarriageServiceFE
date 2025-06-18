@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import {useInView} from 'react-intersection-observer';
 import Navbar from './Navbar';
-import Slideshow from './Slideshow';
+import Slideshow from './Slideshowhome';
 import Footer from './Footer';
 import './HomePage.css';
 
@@ -405,6 +405,8 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
+
+
 
 
 

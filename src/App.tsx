@@ -17,6 +17,7 @@ import MakeupPage from "./components/services/MakeupPage.tsx";
 import WeddingAttirePage from "./components/services/WeddingAttirePage.tsx";
 import WeddingCarsPage from "./components/services/WeddingCarsPage.tsx";
 import WeddingCeremonyPage from "./components/services/WeddingCeremonyPage.tsx";
+import HomeLoggedPage from "./components/HomeLoggedPage.tsx";
 import { ThemeProvider } from './context/ThemeContext';
 
 function AppContent() {
@@ -113,6 +114,10 @@ function AppContent() {
                     <Route path="/services/ceremony" element={
                         <WeddingCeremonyPage />
                     } />
+                    <Route path="/home" element={
+                        <HomeLoggedPage />
+                    } />
+                    {/* Thêm các route khác nếu cần */}
                     <Route path="*" element={
                         <div className="not-found">
                             <h1>404 - Page Not Found</h1>

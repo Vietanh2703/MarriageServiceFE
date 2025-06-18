@@ -20,7 +20,7 @@
   flex: 1;
   padding: 3rem;
   background-color: #fff;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease; 
 }
 
 .register-form-container h1 {
