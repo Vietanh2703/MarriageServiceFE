@@ -101,7 +101,7 @@
   background: linear-gradient(45deg, #ff4081, #ff6b6b);
 }
 
-.hero-service-content p {
+.hero-service-content  p {
   font-size: 1.4rem;
   margin-bottom: 2.5rem;
   line-height: 1.7;

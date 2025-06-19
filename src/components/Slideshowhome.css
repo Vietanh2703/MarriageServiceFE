@@ -45,7 +45,7 @@
 .slide-content {
     position: absolute;
     left: 10%;
-    top: 30%; /* Đưa content lên cao hơn */
+    top: 45%; /* Điều chỉnh từ 50% xuống 45% để đưa content lên cao hơn */
     transform: translateY(-50%);
     color: white;
     width: 70%;
@@ -54,19 +54,19 @@
     padding: 2rem;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem; /* Giảm khoảng cách giữa các phần tử */
     opacity: 0;
 }
 
 .slide-content h2 {
     font-family: 'Dancing Script', cursive;
-    font-size: 6rem; /* Tăng kích thước chữ title lớn hơn */
+    font-size: 4rem; /* Giảm kích thước tiêu đề */
     line-height: 1.2;
     font-weight: 700;
     color: #fff;
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3),
                  4px 4px 12px rgba(255, 182, 193, 0.4);
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem; /* Giảm margin bottom */
     transform: rotate(-2deg);
     transition: all 0.3s ease;
     opacity: 0;
@@ -79,8 +79,8 @@
 }
 
 .slide-content p {
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
+    font-size: 1.1rem; /* Giảm kích thước đoạn văn */
+    margin-bottom: 1.5rem;
     line-height: 1.6;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     max-width: 600px;
@@ -233,17 +233,17 @@
     }
 
     .slide-content {
-        top: 35%;
+        top: 45%; /* Điều chỉnh cho mobile */
         width: 90%;
     }
 
     .slide-content h2 {
-        font-size: 3.5rem; /* Điều chỉnh kích thước cho mobile */
+        font-size: 2.8rem; /* Giảm kích thước tiêu đề trên mobile */
         transform: rotate(0deg);
     }
 
     .slide-content p {
-        font-size: 1.2rem;
+        font-size: 1rem; /* Giảm kích thước đoạn văn trên mobile */
     }
 
     .slide.active .slide-content h2,

@@ -18,6 +18,7 @@ import WeddingAttirePage from "./components/services/WeddingAttirePage.tsx";
 import WeddingCarsPage from "./components/services/WeddingCarsPage.tsx";
 import WeddingCeremonyPage from "./components/services/WeddingCeremonyPage.tsx";
 import HomeLoggedPage from "./components/HomeLoggedPage.tsx";
+import ChatbotPage from "./components/ChatbotPage.tsx";
 import { ThemeProvider } from './context/ThemeContext';
 
 function AppContent() {
@@ -116,6 +117,9 @@ function AppContent() {
                     } />
                     <Route path="/home" element={
                         <HomeLoggedPage />
+                    } />
+                    <Route path="/chatbot" element={
+                        <ChatbotPage />
                     } />
                     {/* Thêm các route khác nếu cần */}
                     <Route path="*" element={

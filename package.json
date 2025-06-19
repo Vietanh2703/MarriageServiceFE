@@ -11,10 +11,11 @@
   },
   "dependencies": {
     "@dotlottie/react-player": "^1.6.19",
+    "@emotion/react": "^11.14.0",
     "@gsap/react": "^2.1.2",
     "@lottiefiles/dotlottie-web": "^0.44.0",
     "@types/react-router-dom": "^5.3.3",
-    "framer-motion": "^12.15.0",
+    "framer-motion": "^12.16.0",
     "gsap": "^3.13.0",
     "react": "^19.1.0",
     "react-countup": "^6.5.3",
