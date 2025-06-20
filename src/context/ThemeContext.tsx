@@ -19,6 +19,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     document.body.classList.toggle('dark-theme', isDarkMode);
     // Save theme preference
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    // Dispatch custom event for other components
+    const event = new CustomEvent('themeChange', {
+      detail: { theme: isDarkMode ? 'dark' : 'light' }
+    });
+    window.dispatchEvent(event);
   }, [isDarkMode]);
 
   const toggleTheme = () => {

@@ -1,440 +1,481 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import Slideshow from './AdvertisingSlideshow.tsx';
+import Slideshow from './AdvertisingSlideshow';
 import { ThemeContext } from '../context/ThemeContext';
 import './HomeLoggedPage.css';
-import Navbar from "./Navbar.tsx";
-import Footer from "./Footer.tsx";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
+import VoucherCard from './VoucherCard';
 
 const serviceNavItems = [
-  {
-    icon: "💐",
-    text: "Trang Trí",
-    path: "/services/decoration"
-  },
-  {
-    icon: "👗",
-    text: "Trang Phục",
-    path: "/services/wedding-attire"
-  },
-  {
-    icon: "🚗",
-    text: "Xe Cưới",
-    path: "/services/wedding-cars"
-  },
-  {
-    icon: "📸",
-    text: "Chụp Ảnh",
-    path: "/services/photography"
-  },
-  {
-    icon: "💄",
-    text: "Trang Điểm",
-    path: "/services/makeup"
-  },
-  {
-    icon: "🎂",
-    text: "Ẩm Thực",
-    path: "/services/catering"
-  },
-  {
-    icon: "💌",
-    text: "Thiệp Cưới",
-    path: "/services/invitation-design"
-  },
-  {
-    icon: "✨",
-    text: "Nghi Lễ",
-    path: "/services/wedding-ceremony"
-  }
+	{
+		icon: "💐",
+		text: "Trang Trí",
+		path: "/services/decoration"
+	},
+	{
+		icon: "👗",
+		text: "Trang Phục",
+		path: "/services/wedding-attire"
+	},
+	{
+		icon: "🚗",
+		text: "Xe Cưới",
+		path: "/services/wedding-cars"
+	},
+	{
+		icon: "📸",
+		text: "Chụp Ảnh",
+		path: "/services/photography"
+	},
+	{
+		icon: "💄",
+		text: "Trang Điểm",
+		path: "/services/makeup"
+	},
+	{
+		icon: "🎂",
+		text: "Ẩm Thực",
+		path: "/services/catering"
+	},
+	{
+		icon: "💌",
+		text: "Thiệp Cưới",
+		path: "/services/invitation-design"
+	},
+	{
+		icon: "✨",
+		text: "Nghi Lễ",
+		path: "/services/wedding-ceremony"
+	}
 ];
 
-const suggestedCompanies = [
-  {
-    name: 'Dream Weddings',
-    description: 'Dịch vụ tổ chức tiệc cưới trọn gói',
-    logo: '/public/logo.png',
-    rating: 4.8,
-    specialties: ['Lên kế hoạch', 'Trang trí', 'Điều phối']
-  },
-  {
-    name: 'Floral Paradise',
-    description: 'Trang trí hoa tươi cao cấp',
-    logo: '/public/decor.jpg',
-    rating: 4.7,
-    specialties: ['Hoa cưới', 'Backdrop', 'Bàn tiệc']
-  },
-  {
-    name: 'Gourmet Catering',
-    description: 'Ẩm thực phong cách Âu - Á',
-    logo: '/public/nau-an.jpg',
-    rating: 4.9,
-    specialties: ['Buffet', 'Tiệc ngồi', 'Bánh cưới']
-  },
-  {
-    name: 'LuxuryCars',
-    description: 'Dịch vụ xe cưới hạng sang',
-    logo: '/public/xe-cuoi.jpg',
-    rating: 4.6,
-    specialties: ['Xe hoa', 'Xe đưa đón', 'Xe cổ điển']
-  },
-];
 
-const popularServices = [
-  {
-    name: 'Trang Điểm Cô Dâu',
-    description: 'Dịch vụ makeup chuyên nghiệp',
-    image: '/public/trang-diem.jpeg',
-    stats: '95% khách hàng hài lòng'
-  },
-  {
-    name: 'Chụp Ảnh Cưới',
-    description: 'Chụp ảnh cưới trong & ngoài studio',
-    image: '/public/photo-service.jpg',
-    stats: 'Đã phục vụ 5,000+ cặp đôi'
-  },
-  {
-    name: 'Váy Cưới Cao Cấp',
-    description: 'Thiết kế và may đo theo yêu cầu',
-    image: '/public/vay-cuoi.jpg',
-    stats: '200+ mẫu thiết kế độc quyền'
-  },
-  {
-    name: 'Thiệp Cưới',
-    description: 'In ấn thiệp cưới cao cấp',
-    image: '/public/thiep-cuoi.jpg',
-    stats: 'Giao hàng trong 48h'
-  },
-];
+const HomeLoggedPage = () => {
+	const theme = useContext(ThemeContext);
+	const isDarkMode = theme?.isDarkMode || false;
+	const [visiblePartners, setVisiblePartners] = useState(4);
+	const [visibleServices, setVisibleServices] = useState(6);
+	const [visibleVouchers, setVisibleVouchers] = useState(3);
+	const [visibleBlogs, setVisibleBlogs] = useState(3);
+	const [visibleEvents, setVisibleEvents] = useState(4);
+	const [visibleNews, setVisibleNews] = useState(3);
 
-const blogs = [
-  {
-    title: 'Lựa Chọn Địa Điểm Tổ Chức Đám Cưới',
-    summary: 'Những yếu tố cần cân nhắc khi chọn địa điểm tổ chức.',
-    date: '15/06/2025',
-    author: 'Minh Tâm',
-    link: '#',
-    image: '/public/decor.jpg'
-  },
-  {
-    title: 'Xu Hướng Trang Điểm Cô Dâu 2025',
-    summary: 'Các phong cách trang điểm được yêu thích nhất năm nay.',
-    date: '10/06/2025',
-    author: 'Thu Hà',
-    link: '#',
-    image: '/public/trang-diem.jpeg'
-  },
-  {
-    title: 'Lên Ngân Sách Cho Đám Cưới Hợp Lý',
-    summary: 'Cách quản lý chi phí hiệu quả cho ngày trọng đại.',
-    date: '05/06/2025',
-    author: 'Hoàng Nam',
-    link: '#',
-    image: '/public/wedding-couple.jpg'
-  },
-  {
-    title: '10 Ý Tưởng Chụp Ảnh Cưới Độc Đáo',
-    summary: 'Gợi ý concept chụp ảnh cưới sáng tạo và ấn tượng.',
-    date: '01/06/2025',
-    author: 'Thanh Vân',
-    link: '#',
-    image: '/public/photo-service.jpg'
-  },
-];
+	const partners = [
+		{
+			id: 1,
+			name: "Wedding Paradise",
+			logo: "/logo.png",
+			rating: 4.8,
+			reviews: 156,
+			description: "Chuyên tổ chức tiệc cưới cao cấp"
+		},
+		{
+			id: 2,
+			name: "Floral Elegance",
+			logo: "/public/decor.jpg",
+			rating: 4.7,
+			reviews: 120,
+			description: "Trang trí hoa tươi và backdrop chuyên nghiệp"
+		},
+		{
+			id: 3,
+			name: "Gourmet Catering",
+			logo: "/public/nau-an.jpg",
+			rating: 4.9,
+			reviews: 98,
+			description: "Ẩm thực Âu - Á phong phú, đa dạng"
+		},
+		{
+			id: 4,
+			name: "Luxury Cars",
+			logo: "/public/xe-cuoi.jpg",
+			rating: 4.6,
+			reviews: 75,
+			description: "Dịch vụ cho thuê xe cưới hạng sang"
+		},
+		{
+			id: 5,
+			name: "Dream Weddings",
+			logo: "/public/logo.png",
+			rating: 4.8,
+			reviews: 156,
+			description: "Dịch vụ tổ chức tiệc cưới trọn gói"
+		},
+		{
+			id: 6,
+			name: "Elegant Bride",
+			logo: "/public/vay-cuoi.jpg",
+			rating: 4.7,
+			reviews: 130,
+			description: "Thiết kế và may đo váy cưới cao cấp"
+		},
+		{
+			id: 7,
+			name: "Perfect Moments",
+			logo: "/public/photo-service.jpg",
+			rating: 4.9,
+			reviews: 200,
+			description: "Gói chụp ảnh cưới chuyên nghiệp"
+		},
+		{
+			id: 8,
+			name: "Gourmet Catering",
+			logo: "/public/nau-an.jpg",
+			rating: 4.9,
+			reviews: 180,
+			description: "Dịch vụ ẩm thực tiệc cưới đẳng cấp"
+		},
+	];
 
-const events = [
-  {
-    name: 'Triển Lãm Cưới 2025',
-    date: '2025-06-22',
-    location: 'Trung tâm Hội nghị Quốc gia, Hà Nội',
-    details: 'Sự kiện quy tụ hơn 100 nhà cung cấp dịch vụ cưới hàng đầu. Cơ hội nhận nhiều ưu đãi và quà tặng giá trị.',
-    time: '09:00 - 21:00',
-    entryFee: 'Miễn phí'
-  },
-  {
-    name: 'Fashion Show Váy Cưới',
-    date: '2025-06-28',
-    location: 'White Palace Convention Center, TP.HCM',
-    details: 'Trình diễn bộ sưu tập váy cưới mới nhất từ các nhà thiết kế nổi tiếng trong và ngoài nước.',
-    time: '19:30 - 21:30',
-    entryFee: '200,000 VND'
-  },
-  {
-    name: 'Workshop Trang Điểm Cô Dâu',
-    date: '2025-06-15',
-    location: 'Makeup Studio, 123 Nguyễn Huệ, TP.HCM',
-    details: 'Học hỏi kỹ thuật trang điểm cô dâu từ chuyên gia. Số lượng có hạn, đăng ký sớm để đảm bảo chỗ.',
-    time: '14:00 - 17:00',
-    entryFee: '500,000 VND'
-  },
-  {
-    name: 'Ngày Hội Tư Vấn Đám Cưới',
-    date: '2025-06-10',
-    location: 'Rex Hotel, TP.HCM',
-    details: 'Gặp gỡ và tư vấn trực tiếp với các chuyên gia về kế hoạch tổ chức đám cưới hoàn hảo.',
-    time: '10:00 - 18:00',
-    entryFee: 'Miễn phí'
-  },
-];
+	const suggestedServices = [
+		{
+			id: 1,
+			name: "Gói chụp ảnh cưới cao cấp",
+			image: "/public/photo-service.jpg",
+			provider: "Studio Love",
+			rating: 4.9,
+			price: "15,000,000đ",
+			description: "Trọn gói chụp ảnh cưới cao cấp"
+		},
+		{
+			id: 2,
+			name: "Trang trí tiệc cưới cơ bản",
+			image: "/public/decor.jpg",
+			provider: "Paradise Decor",
+			rating: 4.8,
+			price: "10,000,000đ",
+			description: "Gói trang trí tiệc cưới cơ bản"
+		},
+		{
+			id: 3,
+			name: "Xe cưới hạng sang",
+			image: "/public/xe-cuoi.jpg",
+			provider: "Luxury Cars",
+			rating: 4.7,
+			price: "20,000,000đ",
+			description: "Dịch v�� cho thuê xe cưới hạng sang"
+		},
+		{
+			id: 4,
+			name: "Trang điểm cô dâu",
+			image: "/public/trang-diem.jpeg",
+			provider: "Beauty Studio",
+			rating: 4.9,
+			price: "5,000,000đ",
+			description: "Dịch vụ trang điểm cô dâu chuyên nghiệp"
+		},
+		{
+			id: 5,
+			name: "Thiệp cưới cao cấp",
+			image: "/public/thiep-cuoi.jpg",
+			provider: "Cardinal",
+			rating: 4.8,
+			price: "2,000,000đ",
+			description: "In ấn thiệp cưới cao cấp, thiết kế độc quyền"
+		},
+		{
+			id: 6,
+			name: "Bánh cưới ��a dạng",
+			image: "/public/nau-an.jpg",
+			provider: "Gourmet Bakery",
+			rating: 4.9,
+			price: "3,000,000đ",
+			description: "Đặt bánh cưới theo yêu cầu, nhiều hương vị"
+		},
+	];
+	const blogs = [
+		{
+			id: 1,
+			title: "Top 10 xu hướng trang trí tiệc cưới 2025",
+			image: "/public/decor.jpg",
+			date: "18/06/2025",
+			author: "Wedding Expert",
+			excerpt: "Khám phá những xu hướng trang trí tiệc cưới mới nhất..."
+		},
+		{
+			id: 2,
+			title: "Kinh nghiệm chọn váy cưới cho cô dâu",
+			image: "/public/vay-cuoi.jpg",
+			date: "12/06/2025",
+			author: "Fashion Guru",
+			excerpt: "Những điều cần lưu ý khi chọn váy cưới..."
+		},
+		{
+			id: 3,
+			title: "Những địa điểm chụp ảnh cưới lý tưởng",
+			image: "/public/photo-service.jpg",
+			date: "05/06/2025",
+			author: "Photo Master",
+			excerpt: "Gợi ý những địa điểm chụp ảnh cưới đẹp và lãng mạn..."
+		},
+	];
 
-const HomeLoggedPage: React.FC = () => {
-  const [showAllCompanies, setShowAllCompanies] = useState(false);
-  const [expandedEvents, setExpandedEvents] = useState<number[]>([]);
-  const themeContext = useContext(ThemeContext);
-  const isDarkMode = themeContext?.isDarkMode || false;
+	const events = [
+		{
+			id: 1,
+			title: "Triển lãm cưới Wedding Fair 2025",
+			image: "/public/welcome.png",
+			date: "25/07/2025",
+			location: "Trung tâm Hội nghị Quốc gia, Hà Nội",
+			description: "Tri����n lãm cưới lớn nhất năm với nhiều ưu đãi hấp dẫn"
+		},
+		{
+			id: 2,
+			title: "Hội thảo lập kế hoạch cưới",
+			image: "/public/decor.jpg",
+			date: "20/07/2025",
+			location: "Khách sạn Rex, TP.HCM",
+			description: "Hội thảo chia sẻ kinh nghiệm lập kế hoạch cưới hoàn hảo"
+		},
+		{
+			id: 3,
+			title: "Triển lãm váy cưới 2025",
+			image: "/public/decor.jpg",
+			date: "15/07/2025",
+			location: "Saigon Exhibition and Convention Center, TP.HCM",
+			description: "Triển lãm giới thiệu bộ sưu tập váy cưới mới nhất"
+		},
+	];
 
-  const toggleEventExpand = (index: number) => {
-    setExpandedEvents(prev => {
-      if (prev.includes(index)) {
-        return prev.filter(i => i !== index);
-      } else {
-        return [...prev, index];
-      }
-    });
-  };
+	const news = [
+		{
+			id: 1,
+			title: "Xu hướng trang trí tiệc cưới mùa thu 2025",
+			image: "/public/decor.jpg",
+			date: "19/06/2025",
+			category: "Xu hướng"
+		},
+		{
+			id: 2,
+			title: "Top 5 địa điểm chụp ảnh cưới đẹp tại Hà Nội",
+			image: "/public/photo-service.jpg",
+			date: "18/06/2025",
+			category: "Địa điểm"
+		},
+		{
+			id: 3,
+			title: "Cách chọn váy cưới phù hợp với dáng người",
+			image: "/public/vay-cuoi.jpg",
+			date: "17/06/2025",
+			category: "Tư vấn"
+		},
+		{
+			id: 4,
+			title: "Những món ăn không thể thiếu trong tiệc cưới",
+			image: "/public/nau-an.jpg",
+			date: "16/06/2025",
+			category: "Ẩm thực"
+		}
+	];
 
-  return (
-    <div className={`home-logged-page ${isDarkMode ? 'dark-mode' : ''}`}>
-      <Navbar />
+	const adBanner = {
+		image: "/public/ads.jpg",
+		title: "Wedding Fair 2025",
+		description: "Triển lãm cưới lớn nhất năm - Ưu đãi lên đến 50%"
+	};
 
-      {/* Full Width Advertising Slideshow */}
-      <section className="full-width-slideshow">
-        <Slideshow />
-      </section>
-      <nav className="service-navbar">
-        {serviceNavItems.map((item, index) => (
-            <Link key={index} to={item.path} className="service-nav-item">
-              <span className="service-nav-icon">{item.icon}</span>
-              <span className="service-nav-text">{item.text}</span>
-            </Link>
-        ))}
-      </nav>
-      {/* Voucher Offers Section */}
-      <section className="voucher-offers-section">
-        <div className="section-container">
-          <h2>Ưu Đãi Voucher Hấp Dẫn</h2>
-          <div className="voucher-list">
-            <div className="voucher-card">
-              <div className="voucher-left">
-                <div className="voucher-logo">
-                  <img src="/public/logo.png" alt="Dream Weddings" />
-                </div>
-                <div className="voucher-discount">-25%</div>
-              </div>
-              <div className="voucher-content">
-                <h3>Dream Weddings</h3>
-                <p>Giảm 25% gói trang trí tiệc cưới cao cấp</p>
-                <div className="voucher-meta">
-                  <span className="voucher-expiry">Hết hạn: 30/07/2025</span>
-                  <span className="voucher-code">DREAM25</span>
-                </div>
-              </div>
-              <div className="voucher-cta">
-                <button className="voucher-btn">Lưu</button>
-              </div>
-            </div>
+	const voucherList = [
+		{
+			code: "WEDDING2025",
+			discount: "Giảm 25%",
+			expireDate: "2025-12-31T23:59:59",
+			description: "Ưu đãi cho dịch vụ trang trí tiệc cưới"
+		},
+		{
+			code: "SUMMER2025",
+			discount: "Giảm 1.500.000đ",
+			expireDate: "2025-08-31T23:59:59",
+			description: "Áp dụng cho gói chụp ảnh cưới"
+		},
+		{
+			code: "SPECIAL2025",
+			discount: "Giảm 30%",
+			expireDate: "2025-07-31T23:59:59",
+			description: "Ưu đãi đặc biệt cho gói dịch vụ trọn gói"
+		},
+		{
+			code: "NEWYEAR2025",
+			discount: "Giảm 2.000.000đ",
+			expireDate: "2025-06-21T23:59:59",
+			description: "Ưu đãi đặc biệt cho dịch vụ váy cưới cao cấp"
+		}
+	];
 
-            <div className="voucher-card">
-              <div className="voucher-left">
-                <div className="voucher-logo">
-                  <img src="/public/photo-service.jpg" alt="Perfect Moments" />
-                </div>
-                <div className="voucher-discount">-30%</div>
-              </div>
-              <div className="voucher-content">
-                <h3>Perfect Moments</h3>
-                <p>Giảm 30% gói chụp ảnh cưới ngoại cảnh</p>
-                <div className="voucher-meta">
-                  <span className="voucher-expiry">Hết hạn: 15/07/2025</span>
-                  <span className="voucher-code">PHOTO30</span>
-                </div>
-              </div>
-              <div className="voucher-cta">
-                <button className="voucher-btn">Lưu</button>
-              </div>
-            </div>
+	return (
+		<div className={`home-logged-page ${isDarkMode ? 'dark-mode' : ''}`}>
+			<Navbar />
+			<Slideshow />
 
-            <div className="voucher-card">
-              <div className="voucher-left">
-                <div className="voucher-logo">
-                  <img src="/public/vay-cuoi.jpg" alt="Elegant Bride" />
-                </div>
-                <div className="voucher-discount">-20%</div>
-              </div>
-              <div className="voucher-content">
-                <h3>Elegant Bride</h3>
-                <p>Giảm 20% khi thuê váy cưới + áo dài</p>
-                <div className="voucher-meta">
-                  <span className="voucher-expiry">Hết hạn: 20/07/2025</span>
-                  <span className="voucher-code">BRIDE20</span>
-                </div>
-              </div>
-              <div className="voucher-cta">
-                <button className="voucher-btn">Lưu</button>
-              </div>
-            </div>
+			<div className="service-navbar">
+				{serviceNavItems.map((item, index) => (
+					<Link key={index} to={item.path} className="service-nav-item">
+						<span className="service-nav-icon">{item.icon}</span>
+						<span className="service-nav-text">{item.text}</span>
+					</Link>
+				))}
+			</div>
 
-            <div className="voucher-card">
-              <div className="voucher-left">
-                <div className="voucher-logo">
-                  <img src="/public/nau-an.jpg" alt="Gourmet Catering" />
-                </div>
-                <div className="voucher-discount">-15%</div>
-              </div>
-              <div className="voucher-content">
-                <h3>Gourmet Catering</h3>
-                <p>Giảm 15% thực đơn tiệc cưới trên 30 bàn</p>
-                <div className="voucher-meta">
-                  <span className="voucher-expiry">Hết hạn: 25/07/2025</span>
-                  <span className="voucher-code">FOOD15</span>
-                </div>
-              </div>
-              <div className="voucher-cta">
-                <button className="voucher-btn">Lưu</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+			<div className="content-container">
+				<div className="left-column">
+					{/* Popular Partners Section */}
+					<section className="section">
+						<div className="section-title">
+							Đối tác được tìm kiếm nhiều nhất
+							<button className="view-more-btn" onClick={() => setVisiblePartners(prev => prev + 4)}>
+								Xem thêm <span>→</span>
+							</button>
+						</div>
+						<div className="cards-grid">
+							{partners.slice(0, visiblePartners).map(partner => (
+								<div key={partner.id} className="card partner-card fade-in">
+									<img src={partner.logo} alt={partner.name} className="partner-logo" />
+									<div className="partner-info">
+										<h3>{partner.name}</h3>
+										<div className="rating">★ {partner.rating} ({partner.reviews} đánh giá)</div>
+										<p>{partner.description}</p>
+									</div>
+								</div>
+							))}
+						</div>
+					</section>
 
-      {/* Suggested Companies */}
-      <section className="suggested-companies-section">
-        <div className="section-container">
-          <h2>Đối Tác Phù Hợp Với Bạn</h2>
-          <div className="company-list">
-            {suggestedCompanies.map((company, idx) => (
-              <div className="company-card" key={idx}>
-                <div className="company-logo">
-                  <img src={company.logo} alt={company.name} />
-                </div>
-                <div className="company-info">
-                  <h3>{company.name}</h3>
-                  <div className="rating">
-                    <span className="stars">
-                      {'★'.repeat(Math.floor(company.rating))}
-                      {'☆'.repeat(5 - Math.floor(company.rating))}
-                    </span>
-                    <span className="rating-number">{company.rating}</span>
-                  </div>
-                  <p>{company.description}</p>
-                  <div className="specialties">
-                    {company.specialties.map((specialty, i) => (
-                      <span key={i} className="specialty-tag">{specialty}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+					{/* Suggested Services Section */}
+					<section className="section">
+						<div className="section-title">
+							Dịch vụ đề xuất
+							<button className="view-more-btn" onClick={() => setVisibleServices(prev => prev + 3)}>
+								Xem thêm <span>→</span>
+							</button>
+						</div>
+						<div className="cards-grid">
+							{suggestedServices.slice(0, visibleServices).map(service => (
+								<div key={service.id} className="card fade-in">
+									<img src={service.image} alt={service.name} className="service-image" />
+									<div className="service-info">
+										<h3>{service.name}</h3>
+										<p>{service.provider}</p>
+										<div className="rating">★ {service.rating}</div>
+										<p className="price">{service.price}</p>
+									</div>
+								</div>
+							))}
+						</div>
+					</section>
 
-      {/* Popular Services */}
-      <section className="popular-services-section">
-        <div className="section-container">
-          <h2>Dịch Vụ Phổ Biến</h2>
-          <div className="service-list">
-            {popularServices.map((service, idx) => (
-              <div className="service-card" key={idx}>
-                <div className="service-image">
-                  <img src={service.image} alt={service.name} />
-                  <div className="service-stats">{service.stats}</div>
-                </div>
-                <div className="service-info">
-                  <h3>{service.name}</h3>
-                  <p>{service.description}</p>
-                  <Link to={`/services/${service.name.toLowerCase().replace(/ /g, '-')}`} className="service-link">
-                    Xem chi tiết
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-          <button
-            className="show-more-btn"
-            onClick={() => setShowAllCompanies(!showAllCompanies)}
-          >
-            {showAllCompanies ? 'Thu gọn' : 'Xem thêm công ty'}
-          </button>
-        </div>
-      </section>
+					{/* Vouchers & Offers Section */}
+					<section className="section">
+						<div className="section-title">
+							Voucher & Ưu đãi
+							<button className="view-more-btn" onClick={() => setVisibleVouchers(prev => prev + 3)}>
+								Xem thêm <span>→</span>
+							</button>
+						</div>
+						<div className="vouchers-grid">
+							{voucherList.slice(0, visibleVouchers).map((voucher, index) => (
+								<VoucherCard
+									key={index}
+									code={voucher.code}
+									discount={voucher.discount}
+									expireDate={voucher.expireDate}
+									description={voucher.description}
+								/>
+							))}
+						</div>
+					</section>
 
-      {/* Bottom Section: Blogs & Events */}
-      <section className="bottom-section">
-        <div className="section-container">
-          <div className="two-column-layout">
-            {/* Left Column: Blogs */}
-            <div className="blogs-column">
-              <h2>Tư Vấn Dịch Vụ Cưới</h2>
-              <div className="blog-list">
-                {blogs.map((blog, idx) => (
-                  <div className="blog-card" key={idx}>
-                    <div className="blog-image">
-                      <img src={blog.image} alt={blog.title} />
-                    </div>
-                    <div className="blog-content">
-                      <h4>{blog.title}</h4>
-                      <p className="blog-meta">
-                        <span className="blog-date">{blog.date}</span> |
-                        <span className="blog-author"> {blog.author}</span>
-                      </p>
-                      <p className="blog-summary">{blog.summary}</p>
-                      <a href={blog.link} className="read-more">Đọc tiếp</a>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="view-all-container">
-                <Link to="/blogs" className="view-all-link">Xem tất cả bài viết</Link>
-              </div>
-            </div>
+					{/* Blog Posts Section */}
+					<section className="section">
+						<div className="section-title">
+							Blog & Tư vấn
+							<button className="view-more-btn" onClick={() => setVisibleBlogs(prev => prev + 3)}>
+								Xem thêm <span>→</span>
+							</button>
+						</div>
+						{blogs.slice(0, visibleBlogs).map(blog => (
+							<div key={blog.id} className="card blog-card fade-in">
+								<img src={blog.image} alt={blog.title} className="blog-image" />
+								<div className="blog-info">
+									<h3>{blog.title}</h3>
+									<div className="blog-meta">
+										{blog.date} • {blog.author}
+									</div>
+									<p>{blog.excerpt}</p>
+								</div>
+							</div>
+						))}
+					</section>
+				</div>
 
-            {/* Right Column: Events */}
-            <div className="events-column">
-              <h2>Sự Kiện Sắp Diễn Ra</h2>
-              <div className="event-list">
-                {events.map((event, idx) => (
-                  <div className="event-card" key={idx}>
-                    <div className="event-date">
-                      <span className="day">{new Date(event.date).getDate()}</span>
-                      <span className="month">{new Date(event.date).toLocaleString('vi', { month: 'short' })}</span>
-                    </div>
-                    <div className="event-details">
-                      <h4>{event.name}</h4>
-                      <p className="event-location">
-                        <span className="location-icon">📍</span> {event.location}
-                      </p>
-                      <p className="event-time">
-                        <span className="time-icon">🕒</span> {event.time}
-                      </p>
-                      {expandedEvents.includes(idx) && (
-                        <div className="event-expanded">
-                          <p className="event-description">{event.details}</p>
-                          <p className="event-entry">
-                            <strong>Vé vào cửa:</strong> {event.entryFee}
-                          </p>
-                        </div>
-                      )}
-                      <button
-                        className="expand-event-btn"
-                        onClick={() => toggleEventExpand(idx)}
-                      >
-                        {expandedEvents.includes(idx) ? 'Thu gọn' : 'Xem thêm'}
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="view-all-container">
-                <Link to="/events" className="view-all-link">Xem tất cả sự kiện</Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <Footer />
-    </div>
-  );
+				<div className="right-column">
+					{/* Banner quảng cáo */}
+					<div className="vertical-banner">
+						<img src={adBanner.image} alt={adBanner.title} />
+						<div className="banner-content">
+							<h3>{adBanner.title}</h3>
+							<p>{adBanner.description}</p>
+						</div>
+					</div>
+
+					{/* Sự kiện sắp diễn ra */}
+					<section className="section">
+						<div className="section-header">
+							<h3 className="section-title">Sự kiện sắp diễn ra</h3>
+							<button className="view-more-btn" onClick={() => setVisibleEvents(prev => prev + 2)}>
+								Xem thêm
+							</button>
+						</div>
+						{events.slice(0, visibleEvents).map(event => (
+							<div key={event.id} className="event-card fade-in">
+								<img src={event.image} alt={event.title} className="event-image" />
+								<div className="event-date">{event.date}</div>
+								<div className="event-info">
+									<h3>{event.title}</h3>
+									<p className="event-location">
+										<i className="fas fa-map-marker-alt"></i>
+										{event.location}
+									</p>
+									<button className="event-detail-btn">
+										Xem chi tiết
+									</button>
+								</div>
+							</div>
+						))}
+					</section>
+
+					{/* Tin tức & Blog */}
+					<section className="section">
+						<div className="section-header">
+							<h3 className="section-title">Tin tức mới nhất</h3>
+							<button className="view-more-btn" onClick={() => setVisibleNews(prev => prev + 3)}>
+								Xem thêm
+							</button>
+						</div>
+						{news.slice(0, visibleNews).map(item => (
+							<div key={item.id} className="news-card fade-in">
+								<img src={item.image} alt={item.title} className="news-image" />
+								<div className="news-info">
+									<h4>{item.title}</h4>
+									<div className="news-meta">
+										<span className="news-date">
+											<i className="far fa-calendar"></i>
+											{item.date}
+										</span>
+										<span className="news-category">{item.category}</span>
+									</div>
+									<button className="news-detail-btn">
+										Đọc thêm <i className="fas fa-arrow-right"></i>
+									</button>
+								</div>
+							</div>
+						))}
+					</section>
+				</div>
+			</div>
+
+			<Footer />
+		</div>
+	);
 };
 
 export default HomeLoggedPage;

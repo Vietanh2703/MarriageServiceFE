@@ -19,6 +19,7 @@ import WeddingCarsPage from "./components/services/WeddingCarsPage.tsx";
 import WeddingCeremonyPage from "./components/services/WeddingCeremonyPage.tsx";
 import HomeLoggedPage from "./components/HomeLoggedPage.tsx";
 import ChatbotPage from "./components/ChatbotPage.tsx";
+import MisaProPage from "./components/MisaProPage.tsx";
 import { ThemeProvider } from './context/ThemeContext';
 
 function AppContent() {
@@ -29,20 +30,20 @@ function AppContent() {
     const [darkMode, setDarkMode] = useState(() => {
         return localStorage.getItem('theme') === 'dark';
     });
-    
+
     // Lắng nghe sự thay đổi theme
     useEffect(() => {
         const handleThemeChange = (e: CustomEvent<{ theme: string }>) => {
             setDarkMode(e.detail.theme === 'dark');
         };
-        
+
         window.addEventListener('themeChanged', handleThemeChange as EventListener);
 
         return () => {
             window.removeEventListener('themeChanged', handleThemeChange as EventListener);
         };
     }, []);
-    
+
     // Xử lý toggle dark mode
     const toggleDarkMode = () => {
         const newDarkMode = !darkMode;
@@ -55,7 +56,7 @@ function AppContent() {
         });
         window.dispatchEvent(themeChangeEvent);
     };
-    
+
     // Xử lý loading khi chuyển trang
     useEffect(() => {
         setIsLoading(true);
@@ -120,6 +121,9 @@ function AppContent() {
                     } />
                     <Route path="/chatbot" element={
                         <ChatbotPage />
+                    } />
+                    <Route path="/misa-pro" element={
+                        <MisaProPage />
                     } />
                     {/* Thêm các route khác nếu cần */}
                     <Route path="*" element={

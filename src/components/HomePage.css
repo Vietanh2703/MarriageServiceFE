@@ -134,18 +134,31 @@
 }
 
 .hero-content h1 {
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 4rem;
+  font-weight: 800;
   margin-bottom: 1.5rem;
   color: #2c3e50;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
   line-height: 1.2;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #ff6b6b, #ff9a9e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fadeInUp 1s ease-out;
 }
 
-@media (min-width: 768px) {
-  .hero-content h1 {
-    font-size: 1rem;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
+
 
 .hero-content p {
   font-size: 1rem;
@@ -1094,8 +1107,8 @@ body.dark-theme .testimonial-rating .rating-text {
   right: 0;
   bottom: 0;
   background:
-    radial-gradient(circle at 10% 20%, rgba(124, 58, 237, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 90% 80%, rgba(192, 132, 252, 0.05) 0%, transparent 50%);
+          radial-gradient(circle at 10% 20%, rgba(124, 58, 237, 0.05) 0%, transparent 50%),
+          radial-gradient(circle at 90% 80%, rgba(192, 132, 252, 0.05) 0%, transparent 50%);
   z-index: 1;
   transition: opacity 0.3s ease;
 }

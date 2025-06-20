@@ -112,18 +112,18 @@ const HomePage: React.FC = () => {
                             <Link to="/services/clothing" className="service-link">Tìm hiểu thêm</Link>
                         </div>
 
-                      <div className="service-card">
-                        <div className="service-icon photography-icon"></div>
-                        <h3>Ảnh & Video</h3>
-                        <p>Lưu giữ những khoảnh khắc đẹp nhất trong ngày cưới của bạn với đội ngũ nhiếp ảnh gia chuyên nghiệp và thiết bị hiện đại.</p>
-                        <ul className="service-features">
-                          <li>Chụp ảnh cưới nghệ thuật</li>
-                          <li>Quay phim chất lượng 4K</li>
-                          <li>Album ảnh cao cấp</li>
-                          <li>Flycam và góc quay đặc biệt</li>
-                        </ul>
-                        <Link to="/services/photography" className="service-link">Tìm hiểu thêm</Link>
-                      </div>
+                        <div className="service-card">
+                            <div className="service-icon photography-icon"></div>
+                            <h3>Ảnh & Video</h3>
+                            <p>Lưu giữ những khoảnh khắc đẹp nhất trong ngày cưới của bạn với đội ngũ nhiếp ảnh gia chuyên nghiệp và thiết bị hiện đại.</p>
+                            <ul className="service-features">
+                                <li>Chụp ảnh cưới nghệ thuật</li>
+                                <li>Quay phim chất lượng 4K</li>
+                                <li>Album ảnh cao cấp</li>
+                                <li>Flycam và góc quay đặc biệt</li>
+                            </ul>
+                            <Link to="/services/photography" className="service-link">Tìm hiểu thêm</Link>
+                        </div>
 
                         <div className="service-card">
                             <div className="service-icon venue-icon"></div>
@@ -405,7 +405,6 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
-
 
 
 

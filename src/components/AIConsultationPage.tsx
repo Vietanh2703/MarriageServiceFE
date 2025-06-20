@@ -178,17 +178,11 @@ const AIConsultationPage: React.FC = () => {
         {/* Why Choose Us Section */}
         <section className="why-choose-us">
           <div className="container">
-            <h2 className="section-title animate-on-scroll fade-in-up">
+            <h2 className=" animate-on-scroll fade-in-up">
               Tại Sao Chọn Chatbot AI Của Cuoidi.vn?
             </h2>
             <div className="benefits-grid">
               {[
-                {
-                  icon: '🧠',
-                  title: 'AI Thông Minh',
-                  description: 'Được huấn luyện với dữ liệu từ hơn 10,000+ đám cưới thành công, hiểu rõ văn hóa Việt Nam.',
-                  delay: 1
-                },
                 {
                   icon: '🎯',
                   title: 'Tư Vấn Cá Nhân Hóa',
@@ -206,12 +200,6 @@ const AIConsultationPage: React.FC = () => {
                   title: 'Tích Hợp Đa Dịch Vụ',
                   description: 'Kết nối trực tiếp với các nhà cung cấp dịch vụ cưới uy tín trên nền tảng.',
                   delay: 4
-                },
-                {
-                  icon: '🔒',
-                  title: 'Bảo Mật Thông Tin',
-                  description: 'Đảm bảo an toàn dữ liệu cá nhân với công nghệ mã hóa tiên tiến.',
-                  delay: 5
                 },
                 {
                   icon: '📈',

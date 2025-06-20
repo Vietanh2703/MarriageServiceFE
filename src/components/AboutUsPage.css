@@ -648,9 +648,14 @@ section {
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 30px;
-  max-width: 1200px;
-  margin-top: 60px;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    margin-left: 2rem; /* Giảm margin trên màn hình nhỏ */
+  }
 }
 
 .stat-item {
@@ -1379,4 +1384,3 @@ section {
     padding: 30px 20px;
   }
 }
-
