@@ -20,6 +20,8 @@ import WeddingCeremonyPage from "./components/services/WeddingCeremonyPage.tsx";
 import HomeLoggedPage from "./components/HomeLoggedPage.tsx";
 import ChatbotPage from "./components/ChatbotPage.tsx";
 import MisaProPage from "./components/MisaProPage.tsx";
+import PartnerRegistrationIntroPage from "./components/partner/PartnerRegistrationIntroPage";
+import PartnerRegistrationForm from "./components/partner/PartnerRegistrationForm";
 import { ThemeProvider } from './context/ThemeContext';
 
 function AppContent() {
@@ -124,6 +126,12 @@ function AppContent() {
                     } />
                     <Route path="/misa-pro" element={
                         <MisaProPage />
+                    } />
+                    <Route path="/partner-registration" element={
+                        <PartnerRegistrationIntroPage />
+                    } />
+                    <Route path="/partner-registration/register" element={
+                        <PartnerRegistrationForm />
                     } />
                     {/* Thêm các route khác nếu cần */}
                     <Route path="*" element={
