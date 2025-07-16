@@ -55,7 +55,6 @@ const PartnerRegistrationForm: React.FC = () => {
       body.classList.remove('dark-theme');
     }
 
-    // Cleanup on unmount
     return () => {
       body.classList.remove('dark-theme');
     };

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ChatbotPage.css';
-import Navbar from './Navbar';
+import HomeNavbar from './HomeNavbar';
 import Footer from './Footer';
 import { useTheme } from '../context/ThemeContext';
 
@@ -209,7 +209,7 @@ const ChatbotPage: React.FC = () => {
 
     return (
         <div className={`chatbot-page ${isDarkMode ? 'dark' : ''}`}>
-            <Navbar />
+            <HomeNavbar />
             <div className="chatbot-layout">
                 <aside className="chatbot-sidebar">
                     <div className="sidebar-header">

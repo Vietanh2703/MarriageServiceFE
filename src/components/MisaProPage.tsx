@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import Navbar from './Navbar';
 import Footer from './Footer';
 import './MisaProPage.css';
+import HomeNavbar from "./HomeNavbar.tsx";
 
 const MisaProPage: React.FC = () => {
     useEffect(() => {
@@ -23,7 +23,7 @@ const MisaProPage: React.FC = () => {
 
     return (
         <div className="misa-pro-page">
-            <Navbar />
+            <HomeNavbar />
 
             <div className="misa-hero">
                 <div className="misa-hero-content">

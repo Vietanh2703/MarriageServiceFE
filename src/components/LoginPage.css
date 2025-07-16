@@ -101,15 +101,17 @@
 
 .login-button {
   width: 100%;
-  padding: 1rem;
-  background-color: #ff6b6b;
+  padding: 12px;
+  background: linear-gradient(135deg, #e91e63, #ff6b6b);
   color: white;
   border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-weight: 500;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .login-button:hover {

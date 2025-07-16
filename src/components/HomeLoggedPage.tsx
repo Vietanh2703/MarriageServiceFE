@@ -1,11 +1,33 @@
-import { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useContext, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 import Slideshow from './AdvertisingSlideshow';
 import { ThemeContext } from '../context/ThemeContext';
 import './HomeLoggedPage.css';
-import Navbar from "./Navbar";
+import HomeNavbar from "./HomeNavbar";
 import Footer from "./Footer";
 import VoucherCard from './VoucherCard';
+
+// TypeScript interfaces
+interface UserInfo {
+	email: string;
+	userName: string;
+	id?: string;
+	[key: string]: unknown;
+}
+
+interface DecodedToken {
+	email?: string;
+	sub?: string;
+	user_email?: string;
+	username?: string;
+	unique_name?: string;
+	nameid?: string;
+	'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'?: string;
+	'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'?: string;
+	'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'?: string;
+}
 
 const serviceNavItems = [
 	{
@@ -54,6 +76,10 @@ const serviceNavItems = [
 const HomeLoggedPage = () => {
 	const theme = useContext(ThemeContext);
 	const isDarkMode = theme?.isDarkMode || false;
+	const navigate = useNavigate();
+
+	// State management
+	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [visiblePartners, setVisiblePartners] = useState(4);
 	const [visibleServices, setVisibleServices] = useState(6);
 	const [visibleVouchers, setVisibleVouchers] = useState(3);
@@ -154,7 +180,7 @@ const HomeLoggedPage = () => {
 			provider: "Luxury Cars",
 			rating: 4.7,
 			price: "20,000,000đ",
-			description: "Dịch v�� cho thuê xe cưới hạng sang"
+			description: "Dịch vụ cho thuê xe cưới hạng sang"
 		},
 		{
 			id: 4,
@@ -176,7 +202,7 @@ const HomeLoggedPage = () => {
 		},
 		{
 			id: 6,
-			name: "Bánh cưới ��a dạng",
+			name: "Bánh cưới đa dạng",
 			image: "/public/nau-an.jpg",
 			provider: "Gourmet Bakery",
 			rating: 4.9,
@@ -302,9 +328,124 @@ const HomeLoggedPage = () => {
 		}
 	];
 
+	// Extract user info from token
+	const getUserInfoFromToken = (token: string): UserInfo | null => {
+		try {
+			const decodedToken = jwtDecode<DecodedToken>(token);
+
+			const email = decodedToken.email ||
+						 decodedToken.sub ||
+						 decodedToken.user_email ||
+						 decodedToken.username ||
+						 decodedToken.unique_name ||
+						 decodedToken.nameid ||
+						 decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ||
+						 decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
+
+			return email ? { email, userName: email } : null;
+		} catch {
+			return null;
+		}
+	};
+
+	// Fetch user data from API
+	const fetchUserData = async (email: string, accessToken: string): Promise<UserInfo | null> => {
+		try {
+			const encodedEmail = encodeURIComponent(email);
+			const response = await axios.get(`https://localhost:7121/user/email/${encodedEmail}`, {
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${accessToken}`
+				}
+			});
+
+			if (response.data.isSuccess && response.data.result) {
+				return response.data.result;
+			}
+			return null;
+		} catch (error) {
+			const axiosError = error as { response?: { status: number } };
+			if (axiosError.response?.status === 401) {
+				throw new Error('Unauthorized');
+			}
+			return null;
+		}
+	};
+
+	// Main authentication check
+	useEffect(() => {
+		const checkAuthentication = async () => {
+			const accessToken = localStorage.getItem('accessToken');
+			const refreshToken = localStorage.getItem('refreshToken');
+
+			if (!accessToken || !refreshToken) {
+				setTimeout(() => {
+					const retryAccessToken = localStorage.getItem('accessToken');
+					const retryRefreshToken = localStorage.getItem('refreshToken');
+
+					if (!retryAccessToken || !retryRefreshToken) {
+						navigate('/login');
+					} else {
+						checkAuthentication();
+					}
+				}, 2000);
+				return;
+			}
+
+			const userInfoFromToken = getUserInfoFromToken(accessToken);
+
+			if (!userInfoFromToken) {
+				navigate('/login');
+				return;
+			}
+
+			try {
+				const userData = await fetchUserData(userInfoFromToken.email, accessToken);
+
+				if (userData) {
+					localStorage.setItem('userInfo', JSON.stringify(userData));
+				}
+				setIsAuthenticated(true);
+			} catch (error) {
+				const err = error as Error;
+				if (err.message === 'Unauthorized') {
+					navigate('/login');
+				} else {
+					setIsAuthenticated(true);
+				}
+			}
+		};
+
+		// Initial check with delay
+		const initialDelay = setTimeout(checkAuthentication, 500);
+
+		// Listen for storage changes
+		const handleStorageChange = (e: StorageEvent) => {
+			if (e.key === 'accessToken' || e.key === 'refreshToken' || e.key === 'userInfo') {
+				checkAuthentication();
+			}
+		};
+
+		const handleUserInfoUpdate = () => checkAuthentication();
+
+		window.addEventListener('storage', handleStorageChange);
+		window.addEventListener('userInfoUpdated', handleUserInfoUpdate);
+
+		return () => {
+			clearTimeout(initialDelay);
+			window.removeEventListener('storage', handleStorageChange);
+			window.removeEventListener('userInfoUpdated', handleUserInfoUpdate);
+		};
+	}, [navigate]);
+
+	// Don't render if not authenticated
+	if (!isAuthenticated) {
+		return <div>Loading...</div>;
+	}
+
 	return (
 		<div className={`home-logged-page ${isDarkMode ? 'dark-mode' : ''}`}>
-			<Navbar />
+			<HomeNavbar />
 			<Slideshow />
 
 			<div className="service-navbar">

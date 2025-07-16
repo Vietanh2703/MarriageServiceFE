@@ -6,12 +6,39 @@ import './Navbar.css';
 
 const Navbar: React.FC = () => {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     // Initialize from localStorage during state initialization
     const savedTheme = localStorage.getItem('theme');
     return savedTheme === 'dark' ||
         (savedTheme === null && window.matchMedia('(prefers-color-scheme: dark)').matches);
   });
+
+  useEffect(() => {
+    // Check if user is logged in
+    const checkAuthStatus = () => {
+      const accessToken = localStorage.getItem('accessToken');
+      setIsLoggedIn(!!accessToken);
+    };
+
+    // Check on component mount
+    checkAuthStatus();
+
+    // Listen for storage changes (when user logs in/out in other tabs)
+    const handleStorageChange = () => {
+      checkAuthStatus();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    // Also check periodically in case localStorage changes in same tab
+    const interval = setInterval(checkAuthStatus, 1000);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, []);
 
   useEffect(() => {
     // Apply theme on an initial load without animation
@@ -107,7 +134,7 @@ const Navbar: React.FC = () => {
       <nav className="navbar">
         <div className="navbar-container">
           <div className="logo">
-            <Link to="/">
+            <Link to={isLoggedIn ? "/home" : "/"}>
               <img src="/Cuoidi.png" alt="Cuoidi.vn Logo" className="logo-image" />
             </Link>
           </div>
@@ -163,6 +190,3 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
-
-
-
