@@ -5,6 +5,7 @@ import Footer from './Footer';
 import Notification from './Notification';
 import './RegisterPage.css';
 import { useTheme } from '../context/ThemeContext';
+import { apiRequest, API_CONFIG } from '../utils/apiConfig';
 
 const RegisterPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -61,11 +62,8 @@ const RegisterPage: React.FC = () => {
 
     setLoading(true);
     try {
-      const response = await fetch('https://localhost:7121/api/Auth/register', {
+      const response = await apiRequest(API_CONFIG.ENDPOINTS.AUTH.REGISTER, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           email: formData.email,
           phone: formData.phone,
