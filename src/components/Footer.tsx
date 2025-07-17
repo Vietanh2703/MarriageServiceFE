@@ -33,7 +33,6 @@ const Footer: React.FC = () => {
       }
     };
 
-    // Listen for custom theme change events (within same window)
     const handleThemeChange = (e: any) => {
       if (e.detail && 'theme' in e.detail) {
         setIsDarkMode(e.detail.theme === 'dark');

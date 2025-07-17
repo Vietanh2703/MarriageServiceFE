@@ -4,6 +4,7 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import Notification from './Notification';
 import { useTheme } from '../context/ThemeContext';
+import { apiRequest, API_CONFIG } from '../utils/apiConfig';
 import './OTPVerificationPage.css';
 
 const OTPVerificationPage: React.FC = () => {
@@ -69,11 +70,8 @@ const OTPVerificationPage: React.FC = () => {
 
     setLoading(true);
     try {
-      const response = await fetch('https://localhost:7121/api/Auth/verify-otp', {
+      const response = await apiRequest(API_CONFIG.ENDPOINTS.AUTH.VERIFY_OTP, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           email: email,
           otp: otpCode
@@ -113,11 +111,8 @@ const OTPVerificationPage: React.FC = () => {
 
     setLoading(true);
     try {
-      const response = await fetch('https://localhost:7121/api/Auth/resend-otp', {
+      const response = await apiRequest(API_CONFIG.ENDPOINTS.AUTH.RESEND_OTP, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify(email),
       });
 
