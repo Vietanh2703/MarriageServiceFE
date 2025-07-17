@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import { DotLottiePlayer } from '@dotlottie/react-player';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import AuthPromptModal from './AuthPromptModal';
 import './AIConsultationPage.css';
 
@@ -93,7 +93,7 @@ const AIConsultationPage: React.FC = () => {
                 </button>
               </div>
             </div>
-            <DotLottiePlayer
+            <DotLottieReact
                 src={isDarkMode
                     ? "https://lottie.host/79ed01b9-27c8-458b-82e8-7176b021d544/wg3zxWb9TF.lottie"
                     : "https://lottie.host/f9b1866e-22cb-49bd-9cb9-e930c3e40598/lt7ug0D1H2.lottie"
@@ -119,7 +119,7 @@ const AIConsultationPage: React.FC = () => {
                 </ul>
               </div>
               <div className="feature-animation animate-on-scroll slide-in-right scale-in animate-delay-2">
-                <DotLottiePlayer
+                <DotLottieReact
                     src="https://lottie.host/d7a26c46-b2fb-498d-8193-4c0fb1ce8233/x0tJ7w4cIa.lottie"
                     loop
                     autoplay
@@ -133,7 +133,7 @@ const AIConsultationPage: React.FC = () => {
           <div className="container">
             <div className="feature-content right">
               <div className="feature-animation animate-on-scroll slide-in-left scale-in">
-                <DotLottiePlayer
+                <DotLottieReact
                     src="https://lottie.host/c4a97bd1-6647-40a9-bf8f-dd54525ddbe9/WQ7xucR250.lottie"
                     loop
                     autoplay
@@ -165,7 +165,7 @@ const AIConsultationPage: React.FC = () => {
                 </ul>
               </div>
               <div className="feature-animation animate-on-scroll slide-in-right scale-in animate-delay-2">
-                <DotLottiePlayer
+                <DotLottieReact
                     src="https://lottie.host/f959d26b-26c5-48b9-a115-edb5f56b9cd0/mX2OxTlTsr.lottie"
                     loop
                     autoplay
@@ -277,4 +277,3 @@ const AIConsultationPage: React.FC = () => {
 };
 
 export default AIConsultationPage;
-
