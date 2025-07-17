@@ -1,0 +1,198 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.modal-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  background: var(--bg-color, #ffffff);
+  border-radius: 20px;
+  padding: 40px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  transform: scale(0.7);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-overlay.show .modal-content {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-button svg {
+  fill: var(--text-primary, #2c3e50);
+  transition: all 0.3s ease;
+}
+
+.close-button:hover {
+  background: rgba(0, 0, 0, 0.05);
+  transform: rotate(90deg);
+}
+
+.modal-body {
+  text-align: center;
+}
+
+.modal-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+  animation: bounce 1s ease infinite;
+}
+
+.modal-body h2 {
+  color: var(--text-primary, #2c3e50);
+  font-size: 2rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.modal-body p {
+  color: var(--text-secondary, #666);
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.modal-button {
+  display: block;
+  padding: 15px 30px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  margin: 15px 0;
+}
+
+.modal-button.register {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+  color: white;
+  box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+}
+
+.modal-button.register:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
+}
+
+.modal-button.login {
+  background: transparent;
+  border: 2px solid var(--primary-color, #ff6b6b);
+  color: var(--primary-color, #ff6b6b);
+}
+
+.modal-button.login:hover {
+  background: rgba(255, 107, 107, 0.1);
+}
+
+.modal-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 25px 0;
+  color: var(--text-secondary, #666);
+}
+
+.modal-divider::before,
+.modal-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--border-color, #eee);
+}
+
+.modal-divider span {
+  padding: 0 10px;
+  font-size: 0.9rem;
+}
+
+.login-prompt {
+  font-size: 0.95rem;
+  margin: 15px 0 10px;
+  color: var(--text-secondary, #666);
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Dark mode styles */
+body.dark-theme .modal-content {
+  background: var(--dark-bg, #1e293b);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-theme .close-button svg {
+  fill: var(--text-primary, #e2e8f0);
+}
+
+body.dark-theme .close-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-theme .modal-button.login {
+  border-color: var(--primary-color, #ff6b6b);
+}
+
+body.dark-theme .modal-button.login:hover {
+  background: rgba(255, 107, 107, 0.2);
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .modal-content {
+    padding: 30px;
+  }
+
+  .modal-body h2 {
+    font-size: 1.8rem;
+  }
+
+  .modal-body p {
+    font-size: 1rem;
+  }
+
+  .modal-button {
+    font-size: 1rem;
+    padding: 12px 25px;
+  }
+}

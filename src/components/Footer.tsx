@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaFacebookF, FaTiktok, FaInstagram, FaEnvelope, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
+import { FaFacebookF, FaTiktok, FaEnvelope, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
 import { BsMessenger } from 'react-icons/bs';
 import './Footer.css';
 
@@ -15,67 +15,56 @@ const Footer: React.FC = () => {
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
 
-  // Listen for theme changes in localStorage
+  // Check for theme changes from navbar or other components
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      document.body.classList.toggle('dark-theme', savedTheme === 'dark');
-    } else {
-      document.body.classList.toggle('dark-theme', window.matchMedia('(prefers-color-scheme: dark)').matches);
-    }
-  }, []);
+    // Function to update theme based on localStorage
+    const updateThemeFromStorage = () => {
+      const currentTheme = localStorage.getItem('theme');
+      setIsDarkMode(currentTheme === 'dark');
+    };
 
-  // Update body class when isDarkMode changes
-  useEffect(() => {
-    if (isDarkMode) {
-      document.body.classList.add('dark-theme');
-      document.body.classList.remove('light-theme');
-    } else {
-      document.body.classList.remove('dark-theme');
-      document.body.classList.add('light-theme');
-    }
-  }, [isDarkMode]);
+    // Initial sync with actual localStorage value
+    updateThemeFromStorage();
 
-  useEffect(() => {
-    const theme = isDarkMode ? 'dark' : 'light';
-    localStorage.setItem('theme', theme);
-    document.body.classList.toggle('dark-theme', isDarkMode);
-    
-    // Dispatch theme change event
-    const event = new CustomEvent('themeChange', { detail: { theme } });
-    window.dispatchEvent(event);
-  }, [isDarkMode]);
-
-  useEffect(() => {
+    // Listen for theme changes in localStorage (works across tabs)
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'theme') {
         setIsDarkMode(e.newValue === 'dark');
       }
     };
 
-    const handleThemeChange = (e: CustomEvent) => {
-      setIsDarkMode(e.detail.theme === 'dark');
+    // Listen for custom theme change events (within same window)
+    const handleThemeChange = (e: any) => {
+      if (e.detail && 'theme' in e.detail) {
+        setIsDarkMode(e.detail.theme === 'dark');
+      }
     };
 
-    window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('themeChange', handleThemeChange as EventListener);
+    // Check for theme changes periodically (as fallback)
+    const intervalCheck = setInterval(updateThemeFromStorage, 500);
 
+    // Set up all event listeners
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('themeChange', handleThemeChange);
+
+    // Cleanup function
     return () => {
       window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('themeChange', handleThemeChange as EventListener);
+      window.removeEventListener('themeChange', handleThemeChange);
+      clearInterval(intervalCheck);
     };
   }, []);
 
-  const toggleTheme = () => {
-    setIsDarkMode(prev => !prev);
-  };
-
+  // The toggleTheme function is kept but not used in the footer itself
+  // This would be used if the footer had its own theme toggle button
   return (
       <footer className={`footer ${isDarkMode ? 'dark' : 'light'}`}>
         <div className="footer-container">
           <div className="footer-column">
-            <div className="footer-logo">
-              <Link to="/">Cuoidi.vn</Link>
+            <div className="footer-logo-image">
+              <Link to="/">
+                <img src="/Cuoidi.png" alt="Cuoidi.vn Logo" className="logo-image-footer" />
+              </Link>
             </div>
             <p className="footer-description">
               Dịch vụ kết nối đối tác cung cấp dịch vụ cưới hỏi chuyên nghiệp hàng đầu Việt Nam.
@@ -125,17 +114,14 @@ const Footer: React.FC = () => {
             <h5>Kết Nối Với Chúng Tôi</h5>
             <p>Theo dõi chúng tôi trên mạng xã hội để nhận thông tin mới nhất về xu hướng cưới hỏi.</p>
             <div className="social-links">
-              <a href="https://facebook.com/cuoidi" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+              <a href="https://www.facebook.com/profile.php?id=61576263028400" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                 <FaFacebookF />
               </a>
-              <a href="https://m.me/cuoidi" target="_blank" rel="noopener noreferrer" aria-label="Messenger">
+              <a href="https://m.me/695104320343770" target="_blank" rel="noopener noreferrer" aria-label="Messenger">
                 <BsMessenger />
               </a>
-              <a href="https://tiktok.com/@cuoidi" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+              <a href="https://www.tiktok.com/@cuoidi.vn?_t=ZS-8wfWUoRKUgK&_r=1" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
                 <FaTiktok />
-              </a>
-              <a href="https://instagram.com/cuoidi" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                <FaInstagram />
               </a>
             </div>
           </div>

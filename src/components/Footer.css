@@ -15,6 +15,12 @@
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
+.logo-image-footer {
+  height: 70px; /* Adjust based on your navbar height */
+  width: auto;
+  display: block;
+}
+
 .footer::before {
   content: "";
   position: absolute;
