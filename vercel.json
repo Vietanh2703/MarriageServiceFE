@@ -5,18 +5,10 @@
   "outputDirectory": "dist",
   "installCommand": "npm install --legacy-peer-deps --force",
   "devCommand": "npm run dev",
-  "routes": [
+  "rewrites": [
     {
-      "src": "/[^.]+",
-      "dest": "/",
-      "status": 200
-    }
-  ],
-  "redirects": [
-    {
-      "source": "/www/(.*)",
-      "destination": "/$1",
-      "permanent": true
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [
@@ -39,4 +31,3 @@
     }
   ]
 }
-
