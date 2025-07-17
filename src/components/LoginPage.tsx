@@ -4,6 +4,7 @@ import Navbar from './Navbar';
 import './LoginPage.css';
 import Footer from "./Footer";
 import Notification from './Notification';
+import { apiRequest, API_CONFIG } from '../utils/apiConfig';
 
 interface LoginRequest {
   email: string;
@@ -58,16 +59,12 @@ const LoginPage: React.FC = () => {
 
   const loginAPI = async (credentials: LoginRequest): Promise<LoginResponse> => {
     try {
-      const response = await fetch('https://localhost:7121/api/Auth/login', {
+      const response = await apiRequest(API_CONFIG.ENDPOINTS.AUTH.LOGIN, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify(credentials),
       });
 
       const data = await response.json();
-
 
       if (response.ok) {
         // Handle different possible API response structures
@@ -102,7 +99,7 @@ const LoginPage: React.FC = () => {
       console.error('Login error:', error);
       return {
         success: false,
-        message: 'Lỗi kết nối. Vui lòng thử lại sau.',
+        message: 'Có lỗi xảy ra. Vui lòng kiểm tra kết nối mạng và thử lại.',
       };
     }
   };
