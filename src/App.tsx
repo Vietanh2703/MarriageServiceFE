@@ -5,6 +5,7 @@ import HomePage from './components/HomePage';
 import AIConsultationPage from './components/AIConsultationPage';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
+import OTPVerificationPage from './components/OTPVerificationPage';
 import LoadingScreen from './components/LoadingScreen';
 import AboutUsPage from './components/AboutUsPage';
 import ScrollToTop from './components/ScrollToTop';
@@ -89,6 +90,9 @@ function AppContent() {
                     } />
                     <Route path="/register" element={
                         <RegisterPage  />
+                    } />
+                    <Route path="/otp-verification" element={
+                        <OTPVerificationPage />
                     } />
                     <Route path="/about" element={
                         <AboutUsPage toggleDarkMode={toggleDarkMode} darkMode={darkMode} />

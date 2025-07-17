@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import Notification from './Notification';
 import './RegisterPage.css';
 import { useTheme } from '../context/ThemeContext';
 
@@ -14,7 +15,14 @@ const RegisterPage: React.FC = () => {
     phone: '',
     agreeTerms: false
   });
+  const [loading, setLoading] = useState(false);
+  const [notification, setNotification] = useState({
+    message: '',
+    type: 'success' as 'success' | 'error',
+    isVisible: false
+  });
   const { isDarkMode } = useTheme();
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -28,10 +36,73 @@ const RegisterPage: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle registration logic here
-    console.log('Registration attempt with:', formData);
+
+    // Validate password confirmation
+    if (formData.password !== formData.confirmPassword) {
+      setNotification({
+        message: 'Mật khẩu xác nhận không khớp',
+        type: 'error',
+        isVisible: true
+      });
+      return;
+    }
+
+    // Validate password strength
+    if (formData.password.length < 6) {
+      setNotification({
+        message: 'Mật khẩu phải có ít nhất 6 ký tự',
+        type: 'error',
+        isVisible: true
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await fetch('https://localhost:7121/api/Auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          phone: formData.phone,
+          password: formData.password
+        }),
+      });
+
+      if (response.ok) {
+        setNotification({
+          message: 'Đăng ký thành công! Mã OTP đã được gửi đến email của bạn',
+          type: 'success',
+          isVisible: true
+        });
+
+        // Navigate to OTP page after a short delay
+        setTimeout(() => {
+          navigate('/otp-verification', {
+            state: { email: formData.email }
+          });
+        }, 2000);
+      } else {
+        const errorData = await response.json();
+        setNotification({
+          message: errorData.message || 'Đăng ký thất bại. Vui lòng thử lại',
+          type: 'error',
+          isVisible: true
+        });
+      }
+    } catch (error) {
+      setNotification({
+        message: 'Có lỗi xảy ra. Vui lòng kiểm tra kết nối mạng và thử lại',
+        type: 'error',
+        isVisible: true
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -109,8 +180,12 @@ const RegisterPage: React.FC = () => {
               </label>
             </div>
 
-            <button type="submit" className="register-button" disabled={!formData.agreeTerms}>
-              Đăng Ký
+            <button
+              type="submit"
+              className="register-button"
+              disabled={!formData.agreeTerms || loading}
+            >
+              {loading ? 'Đang đăng ký...' : 'Đăng Ký'}
             </button>
 
             {/* Divider with "hoặc" text */}
@@ -150,6 +225,13 @@ const RegisterPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <Notification
+        message={notification.message}
+        type={notification.type}
+        isVisible={notification.isVisible}
+        onClose={() => setNotification(prev => ({ ...prev, isVisible: false }))}
+      />
 
       <Footer />
     </div>
