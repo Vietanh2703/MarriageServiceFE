@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import Navbar from '../Navbar';
+import Navbar from '../HomeNavbar';
 import Footer from '../Footer';
 import './PartnerRegistrationForm.css';
 

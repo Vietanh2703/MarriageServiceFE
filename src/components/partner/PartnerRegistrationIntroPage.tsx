@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { motion } from 'framer-motion';
-import Navbar from '../Navbar';
+import Navbar from '../HomeNavbar';
 import Footer from '../Footer';
 import './PartnerRegistrationIntroPage.css';
 
