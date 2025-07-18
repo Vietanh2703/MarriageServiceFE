@@ -16,10 +16,6 @@
   background: linear-gradient(135deg, #fff6f6 0%, #f8e8ee 100%);
 }
 
-/* Dark mode styles with dark blue background */
-.loading-screen.dark-mode {
-  background: linear-gradient(135deg, #0a1929 0%, #1a365d 100%);
-}
 
 .loading-container {
   position: relative;

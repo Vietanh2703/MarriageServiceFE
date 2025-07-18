@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from '../HomeNavbar';
 import Footer from '../Footer';
 import './PartnerRegistrationForm.css';
 
 const PartnerRegistrationForm: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const selectedPlan = queryParams.get('plan') || 'basic';
 
@@ -45,10 +46,12 @@ const PartnerRegistrationForm: React.FC = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    return () => {
-      // Cleanup if necessary
-    };
-  }, []);
+    // Lấy dữ liệu từ state nếu user quay lại từ checkout
+    const savedData = location.state?.registrationData;
+    if (savedData) {
+      setFormData(savedData);
+    }
+  }, [location.state]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
@@ -62,9 +65,26 @@ const PartnerRegistrationForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle registration logic here
-    console.log('Partner registration attempt with:', formData);
-    // In a real application, you would send this data to your backend
+
+    // Validate required fields
+    if (!formData.businessName || !formData.businessType || !formData.businessAddress ||
+        !formData.businessPhone || !formData.businessEmail || !formData.contactName ||
+        !formData.contactPhone || !formData.contactEmail || !formData.contactPosition ||
+        !formData.serviceCategory || !formData.serviceDescription || !formData.serviceArea ||
+        !formData.password || !formData.confirmPassword || !formData.agreeTerms || !formData.agreePrivacy) {
+      alert('Vui lòng điền đầy đủ thông tin bắt buộc và đồng ý với điều khoản');
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      alert('Mật khẩu xác nhận không khớp');
+      return;
+    }
+
+    // Navigate to checkout with form data
+    navigate('/partner-registration/checkout', {
+      state: { registrationData: formData }
+    });
   };
 
   const serviceCategories = [
@@ -160,7 +180,7 @@ const PartnerRegistrationForm: React.FC = () => {
                       placeholder="Nhập số điện thoại doanh nghiệp"
                     />
                   </div>
-                  
+
                   <div className="form-group">
                     <label htmlFor="businessEmail">Email doanh nghiệp <span className="required">*</span></label>
                     <input
@@ -174,7 +194,7 @@ const PartnerRegistrationForm: React.FC = () => {
                     />
                   </div>
                 </div>
-                
+
                 <div className="form-row">
                   <div className="form-group">
                     <label htmlFor="website">Website</label>
@@ -187,7 +207,7 @@ const PartnerRegistrationForm: React.FC = () => {
                       placeholder="Nhập website của doanh nghiệp (nếu có)"
                     />
                   </div>
-                  
+
                   <div className="form-group">
                     <label htmlFor="taxId">Mã số thuế</label>
                     <input
@@ -201,10 +221,10 @@ const PartnerRegistrationForm: React.FC = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="form-section">
                 <h2>Thông Tin Người Liên Hệ</h2>
-                
+
                 <div className="form-group">
                   <label htmlFor="contactName">Họ và tên <span className="required">*</span></label>
                   <input
@@ -217,7 +237,7 @@ const PartnerRegistrationForm: React.FC = () => {
                     placeholder="Nhập họ và tên người liên hệ"
                   />
                 </div>
-                
+
                 <div className="form-row">
                   <div className="form-group">
                     <label htmlFor="contactPhone">Số điện thoại <span className="required">*</span></label>
@@ -231,7 +251,7 @@ const PartnerRegistrationForm: React.FC = () => {
                       placeholder="Nhập số điện thoại liên hệ"
                     />
                   </div>
-                  
+
                   <div className="form-group">
                     <label htmlFor="contactEmail">Email <span className="required">*</span></label>
                     <input
@@ -245,7 +265,7 @@ const PartnerRegistrationForm: React.FC = () => {
                     />
                   </div>
                 </div>
-                
+
                 <div className="form-group">
                   <label htmlFor="contactPosition">Chức vụ <span className="required">*</span></label>
                   <input
@@ -259,10 +279,10 @@ const PartnerRegistrationForm: React.FC = () => {
                   />
                 </div>
               </div>
-              
+
               <div className="form-section">
                 <h2>Thông Tin Dịch Vụ</h2>
-                
+
                 <div className="form-group">
                   <label htmlFor="serviceCategory">Danh mục dịch vụ <span className="required">*</span></label>
                   <select
@@ -278,7 +298,7 @@ const PartnerRegistrationForm: React.FC = () => {
                     ))}
                   </select>
                 </div>
-                
+
                 <div className="form-group">
                   <label htmlFor="serviceDescription">Mô tả dịch vụ <span className="required">*</span></label>
                   <textarea
@@ -291,7 +311,7 @@ const PartnerRegistrationForm: React.FC = () => {
                     rows={4}
                   ></textarea>
                 </div>
-                
+
                 <div className="form-group">
                   <label htmlFor="serviceArea">Khu vực cung cấp dịch vụ <span className="required">*</span></label>
                   <input
@@ -305,40 +325,10 @@ const PartnerRegistrationForm: React.FC = () => {
                   />
                 </div>
               </div>
-              
-              <div className="form-section">
-                <h2>Thông Tin Tài Khoản</h2>
-                
-                <div className="form-group">
-                  <label htmlFor="password">Mật khẩu <span className="required">*</span></label>
-                  <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                    placeholder="Tạo mật khẩu mới"
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label htmlFor="confirmPassword">Xác nhận mật khẩu <span className="required">*</span></label>
-                  <input
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    required
-                    placeholder="Nhập lại mật khẩu"
-                  />
-                </div>
-              </div>
-              
+
               <div className="form-section">
                 <h2>Gói Dịch Vụ</h2>
-                
+
                 <div className="plan-selection">
                   <div className={`plan-option ${formData.plan === 'basic' ? 'selected' : ''}`}>
                     <input
@@ -354,7 +344,7 @@ const PartnerRegistrationForm: React.FC = () => {
                       <div className="plan-price">1.990.000đ / năm</div>
                     </label>
                   </div>
-                  
+
                   <div className={`plan-option ${formData.plan === 'premium' ? 'selected' : ''}`}>
                     <input
                       type="radio"
@@ -370,7 +360,7 @@ const PartnerRegistrationForm: React.FC = () => {
                       <div className="plan-badge">Phổ biến nhất</div>
                     </label>
                   </div>
-                  
+
                   <div className={`plan-option ${formData.plan === 'enterprise' ? 'selected' : ''}`}>
                     <input
                       type="radio"
@@ -387,7 +377,7 @@ const PartnerRegistrationForm: React.FC = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="form-section">
                 <div className="form-checkbox">
                   <input
@@ -402,7 +392,7 @@ const PartnerRegistrationForm: React.FC = () => {
                     Tôi đồng ý với <Link to="/terms">Điều khoản sử dụng</Link> của Cuoidi.vn
                   </label>
                 </div>
-                
+
                 <div className="form-checkbox">
                   <input
                     type="checkbox"
@@ -417,17 +407,17 @@ const PartnerRegistrationForm: React.FC = () => {
                   </label>
                 </div>
               </div>
-              
-              <button 
-                type="submit" 
-                className="register-button" 
+
+              <button
+                type="submit"
+                className="register-button"
                 disabled={!formData.agreeTerms || !formData.agreePrivacy}
               >
                 Đăng Ký Đối Tác
               </button>
             </form>
           </div>
-          
+
           <div className="registration-sidebar">
             <div className="sidebar-content">
               <h2>Quy Trình Đăng Ký</h2>
@@ -468,7 +458,7 @@ const PartnerRegistrationForm: React.FC = () => {
                   </div>
                 </li>
               </ol>
-              
+
               <div className="sidebar-support">
                 <h3>Cần hỗ trợ?</h3>
                 <p>Liên hệ với đội ngũ hỗ trợ đối tác của chúng tôi</p>
@@ -481,7 +471,7 @@ const PartnerRegistrationForm: React.FC = () => {
           </div>
         </div>
       </div>
-      
+
       <Footer />
     </div>
   );

@@ -1,0 +1,180 @@
+
+.payment-result-page {
+  min-height: 100vh;
+  background: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.result-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 20px 60px;
+  text-align: center;
+}
+
+/* Success Message */
+.success-message {
+  margin-bottom: 40px;
+}
+
+.success-icon {
+  font-size: 4rem;
+  color: #4CAF50;
+  margin-bottom: 20px;
+  animation: bounce 1s ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 20%, 60%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-15px);
+  }
+  80% {
+    transform: translateY(-8px);
+  }
+}
+
+.success-message h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.success-message p {
+  font-size: 1.2rem;
+  color: #666;
+  margin: 0;
+}
+
+/* Compact Notes Container */
+.notes-container {
+  max-width: 600px;
+  width: 100%;
+  margin-bottom: 30px;
+  padding: 25px;
+  background: #fff9c4;
+  border-radius: 12px;
+  border-left: 4px solid #ffc107;
+}
+
+.note-content {
+  text-align: left;
+}
+
+.note-content p {
+  color: #2c3e50;
+  line-height: 1.6;
+  margin: 0 0 12px 0;
+  font-size: 1rem;
+}
+
+.note-content p:last-child {
+  margin-bottom: 0;
+}
+
+.note-content strong {
+  color: #e91e63;
+}
+
+/* Action Section */
+.action-section {
+  margin-top: 10px;
+  margin-bottom: 80px;
+}
+
+.btn-home {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 15px 35px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(0, 123, 255, 0.3);
+}
+
+.btn-home:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+}
+
+.btn-home:active {
+  transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .result-container {
+    padding: 100px 15px 50px;
+  }
+
+  .success-message h1 {
+    font-size: 2rem;
+  }
+
+  .success-message p {
+    font-size: 1.1rem;
+  }
+
+  .success-icon {
+    font-size: 3rem;
+  }
+
+  .notes-container {
+    padding: 20px;
+  }
+
+  .note-content {
+    text-align: center;
+  }
+
+  .action-section {
+    margin-bottom: 30px;
+  }
+
+  .btn-home {
+    padding: 12px 30px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .result-container {
+    padding: 80px 10px 40px;
+  }
+
+  .success-message h1 {
+    font-size: 1.8rem;
+  }
+
+  .success-message p {
+    font-size: 1rem;
+  }
+
+  .notes-container {
+    padding: 15px;
+  }
+
+  .note-content p {
+    font-size: 0.9rem;
+  }
+
+  .action-section {
+    margin-bottom: 25px;
+  }
+
+  .btn-home {
+    padding: 10px 25px;
+    font-size: 0.95rem;
+  }
+}

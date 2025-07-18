@@ -24,6 +24,8 @@ import MisaProPage from "./components/MisaProPage.tsx";
 import ProfilePage from "./components/ProfilePageClean.tsx";
 import PartnerRegistrationIntroPage from "./components/partner/PartnerRegistrationIntroPage";
 import PartnerRegistrationForm from "./components/partner/PartnerRegistrationForm";
+import PartnerRegistrationCheckout from "./components/partner/PartnerRegistrationCheckout";
+import PartnerRegistrationPaymentResult from "./components/partner/PartnerRegistrationPaymentResult.tsx";
 
 function AppContent() {
     const location = useLocation();
@@ -103,6 +105,12 @@ function AppContent() {
                     } />
                     <Route path="/partner-registration/register" element={
                         <PartnerRegistrationForm />
+                    } />
+                    <Route path="/partner-registration/checkout" element={
+                        <PartnerRegistrationCheckout />
+                    } />
+                    <Route path="/partner/payment-result" element={
+                        <PartnerRegistrationPaymentResult />
                     } />
                     <Route path="/profile" element={
                         <ProfilePage />
