@@ -5,11 +5,11 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
-    exclude: ['vietqr'] // Loại trừ vietqr khỏi quá trình pre-bundle
+    exclude: [] // Loại trừ vietqr khỏi quá trình pre-bundle
   },
   build: {
     commonjsOptions: {
-      include: [/vietqr/, /node_modules/]
+      include: [/node_modules/]
     }
   }
 })
