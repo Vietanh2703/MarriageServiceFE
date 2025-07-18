@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
-import { API_CONFIG, buildApiUrl } from '../utils/apiConfig';
+import { buildApiUrl } from '../utils/apiConfig';
 import HomeNavbar from './HomeNavbar';
 import Footer from './Footer';
 import Notification from './Notification';
@@ -42,7 +43,6 @@ interface DecodedToken {
 
 const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
-
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [editedProfile, setEditedProfile] = useState<Partial<UserProfile>>({});
   const [isEditing, setIsEditing] = useState(false);
@@ -65,9 +65,9 @@ const ProfilePage: React.FC = () => {
     try {
       const decodedToken = jwtDecode<DecodedToken>(accessToken);
       return decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ||
-             decodedToken.nameid ||
-             decodedToken.sub ||
-             null;
+          decodedToken.nameid ||
+          decodedToken.sub ||
+          null;
     } catch {
       return null;
     }
@@ -123,97 +123,35 @@ const ProfilePage: React.FC = () => {
 
     try {
       setIsSaving(true);
-
       const updateData = {
         userId: profile.userId,
         firebaseId: profile.firebaseId,
-        avatar: editedProfile.avatar !== undefined ? editedProfile.avatar : profile.avatar,
+        avatar: editedProfile.avatar ?? profile.avatar,
         userName: profile.userName,
-        email: editedProfile.email !== undefined ? editedProfile.email : profile.email,
-        firstName: editedProfile.firstName !== undefined ? editedProfile.firstName : profile.firstName,
-        lastName: editedProfile.lastName !== undefined ? editedProfile.lastName : profile.lastName,
-        birthday: editedProfile.birthday !== undefined ? editedProfile.birthday : profile.birthday,
-        address: editedProfile.address !== undefined ? editedProfile.address : profile.address,
-        phoneNumber: editedProfile.phoneNumber !== undefined ? editedProfile.phoneNumber : profile.phoneNumber,
+        email: editedProfile.email ?? profile.email,
+        firstName: editedProfile.firstName ?? profile.firstName,
+        lastName: editedProfile.lastName ?? profile.lastName,
+        birthday: editedProfile.birthday ?? profile.birthday,
+        address: editedProfile.address ?? profile.address,
+        phoneNumber: editedProfile.phoneNumber ?? profile.phoneNumber,
         roleId: profile.roleId
       };
 
-      try {
-        const response = await axios.put(buildApiUrl(`/user/${userId}`), updateData, {
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (response.data.isSuccess) {
-          setProfile({ ...profile, ...updateData });
-          setIsEditing(false);
-          showNotification('Cập nhật thông tin thành công!', 'success');
-          localStorage.setItem('userInfo', JSON.stringify({ ...profile, ...updateData }));
-          window.dispatchEvent(new Event('userInfoUpdated'));
-        } else {
-          showNotification('Không thể cập nhật thông tin', 'error');
+      const response = await axios.put(buildApiUrl(`/user/${userId}`), updateData, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
         }
-      } catch (apiError) {
-        const error = apiError as { response?: { status: number; data?: { message?: string } }; message?: string };
+      });
 
-        if (error.response?.status === 401) {
-          const refreshToken = localStorage.getItem('refreshToken');
-
-          if (refreshToken) {
-            try {
-              const refreshResponse = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.REFRESH_TOKEN), {
-                refreshToken: refreshToken
-              });
-
-              if (refreshResponse.data.isSuccess) {
-                const newAccessToken = refreshResponse.data.result.accessToken;
-                const newRefreshToken = refreshResponse.data.result.refreshToken;
-
-                localStorage.setItem('accessToken', newAccessToken);
-                localStorage.setItem('refreshToken', newRefreshToken);
-
-                const retryResponse = await axios.put(buildApiUrl(`/user/${userId}`), updateData, {
-                  headers: {
-                    'Authorization': `Bearer ${newAccessToken}`,
-                    'Content-Type': 'application/json'
-                  }
-                });
-
-                if (retryResponse.data.isSuccess) {
-                  setProfile({ ...profile, ...updateData });
-                  setIsEditing(false);
-                  showNotification('Cập nhật thông tin thành công!', 'success');
-                  localStorage.setItem('userInfo', JSON.stringify({ ...profile, ...updateData }));
-                  window.dispatchEvent(new Event('userInfoUpdated'));
-                } else {
-                  showNotification('Không thể cập nhật thông tin', 'error');
-                }
-              } else {
-                localStorage.removeItem('accessToken');
-                localStorage.removeItem('refreshToken');
-                localStorage.removeItem('userInfo');
-                showNotification('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.', 'error');
-                setTimeout(() => navigate('/login'), 2000);
-              }
-            } catch {
-              localStorage.removeItem('accessToken');
-              localStorage.removeItem('refreshToken');
-              localStorage.removeItem('userInfo');
-              showNotification('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.', 'error');
-              setTimeout(() => navigate('/login'), 2000);
-            }
-          } else {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-            localStorage.removeItem('userInfo');
-            showNotification('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.', 'error');
-            setTimeout(() => navigate('/login'), 2000);
-          }
-        } else {
-          showNotification(`Lỗi cập nhật thông tin: ${error.response?.data?.message || error.message || 'Unknown error'}`, 'error');
-        }
+      if (response.data.isSuccess) {
+        setProfile({ ...profile, ...updateData });
+        setIsEditing(false);
+        showNotification('Cập nhật thông tin thành công!', 'success');
+        localStorage.setItem('userInfo', JSON.stringify({ ...profile, ...updateData }));
+        window.dispatchEvent(new Event('userInfoUpdated'));
+      } else {
+        showNotification('Không thể cập nhật thông tin', 'error');
       }
     } catch {
       showNotification('Lỗi khi cập nhật thông tin', 'error');
@@ -239,8 +177,8 @@ const ProfilePage: React.FC = () => {
 
   const getDisplayValue = (field: keyof UserProfile): string => {
     const value = isEditing
-      ? (editedProfile[field] !== undefined ? editedProfile[field] : profile?.[field])
-      : profile?.[field];
+        ? (editedProfile[field] !== undefined ? editedProfile[field] : profile?.[field])
+        : profile?.[field];
 
     if (value === null || value === undefined) return '';
     if (typeof value === 'string') return value;
@@ -250,77 +188,59 @@ const ProfilePage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="profile-page">
-        <HomeNavbar />
-        <div className="profile-loading">
-          <div className="loading-spinner"></div>
-          <p>Đang tải thông tin cá nhân...</p>
+        <div className="profile-page">
+          <HomeNavbar />
+          <div className="profile-loading">
+            <div className="loading-spinner"></div>
+            <p>Đang tải thông tin cá nhân...</p>
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
     );
   }
 
   if (!profile) {
     return (
-      <div className="profile-page">
-        <HomeNavbar />
-        <div className="profile-error">
-          <h2>Không tìm thấy thông tin cá nhân</h2>
-          <button onClick={() => navigate('/home')} className="back-btn">
-            Quay lại trang chủ
-          </button>
+        <div className="profile-page">
+          <HomeNavbar />
+          <div className="profile-error">
+            <h2>Không tìm thấy thông tin cá nhân</h2>
+            <button onClick={() => navigate('/home')} className="back-btn">
+              Quay lại trang chủ
+            </button>
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
     );
   }
 
   return (
-    <div className="profile-page">
-      <HomeNavbar />
-      <div className="profile-container">
-        <div className="profile-header">
-          <div className="header-content">
+      <div className="profile-page">
+        <HomeNavbar />
+        <div className="profile-container">
+          <div className="profile-header">
             <div className="avatar-section">
-              <div className="avatar-container">
-                <img
+              <img
                   src={profile.avatar || '/public/logo.png'}
                   alt="Avatar"
                   className="profile-avatar"
-                />
-                <div className="avatar-edit-btn" onClick={() => setIsEditing(true)}>
-                  <span>📷</span>
-                </div>
-              </div>
-              <div className="profile-name">
+              />
+              <div className="profile-info">
                 <h1>{profile.firstName} {profile.lastName}</h1>
                 <p className="profile-email">{profile.email}</p>
               </div>
             </div>
-            <button className="edit-profile-btn" onClick={() => setIsEditing(true)}>
-              <span>✏️</span> Chỉnh sửa thông tin
+            <button className="edit-btn" onClick={() => setIsEditing(true)}>
+              ✏️ Chỉnh sửa
             </button>
           </div>
-        </div>
 
-        <div className="profile-content">
-          <div className="column">
-            <div className="info-section">
-              <h3>Thông tin cá nhân</h3>
+          <div className="profile-content">
+            <div className="info-grid">
               <div className="info-item">
-                <label>Họ</label>
-                <p>{profile.firstName || 'Chưa cập nhật'}</p>
+                <label>Họ và tên</label>
+                <p>{profile.firstName} {profile.lastName}</p>
               </div>
-              <div className="info-item">
-                <label>Tên</label>
-                <p>{profile.lastName || 'Chưa cập nhật'}</p>
-              </div>
-            </div>
-          </div>
-          <div className="column">
-            <div className="info-section">
-              <h3>Thông tin liên hệ</h3>
               <div className="info-item">
                 <label>Email</label>
                 <p>{profile.email}</p>
@@ -329,130 +249,121 @@ const ProfilePage: React.FC = () => {
                 <label>Số điện thoại</label>
                 <p>{profile.phoneNumber || 'Chưa cập nhật'}</p>
               </div>
-            </div>
-          </div>
-          <div className="column">
-            <div className="info-section">
-              <h3>Thông tin khác</h3>
               <div className="info-item">
                 <label>Ngày sinh</label>
                 <p>{profile.birthday ? new Date(profile.birthday).toLocaleDateString('vi-VN') : 'Chưa cập nhật'}</p>
               </div>
-              <div className="info-item">
+              <div className="info-item full-width">
                 <label>Địa chỉ</label>
                 <p>{profile.address || 'Chưa cập nhật'}</p>
               </div>
             </div>
           </div>
         </div>
+
+        {isEditing && (
+            <div className="edit-overlay">
+              <div className="edit-modal">
+                <div className="edit-header">
+                  <h2>Chỉnh sửa thông tin</h2>
+                  <button className="close-btn" onClick={handleCancel}>✕</button>
+                </div>
+                <div className="edit-content">
+                  <div className="edit-avatar">
+                    <img
+                        src={getDisplayValue('avatar') || '/public/logo.png'}
+                        alt="Avatar"
+                        className="edit-avatar-img"
+                    />
+                    <input
+                        type="url"
+                        placeholder="URL ảnh đại diện"
+                        value={getDisplayValue('avatar')}
+                        onChange={(e) => handleInputChange('avatar', e.target.value)}
+                    />
+                  </div>
+                  <div className="edit-form">
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label>Họ *</label>
+                        <input
+                            type="text"
+                            value={getDisplayValue('firstName')}
+                            onChange={(e) => handleInputChange('firstName', e.target.value)}
+                            placeholder="Nhập họ"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Tên *</label>
+                        <input
+                            type="text"
+                            value={getDisplayValue('lastName')}
+                            onChange={(e) => handleInputChange('lastName', e.target.value)}
+                            placeholder="Nhập tên"
+                        />
+                      </div>
+                    </div>
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label>Email *</label>
+                        <input
+                            type="email"
+                            value={getDisplayValue('email')}
+                            onChange={(e) => handleInputChange('email', e.target.value)}
+                            placeholder="Nhập email"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Số điện thoại</label>
+                        <input
+                            type="tel"
+                            value={getDisplayValue('phoneNumber')}
+                            onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
+                            placeholder="Nhập số điện thoại"
+                        />
+                      </div>
+                    </div>
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label>Ngày sinh</label>
+                        <input
+                            type="date"
+                            value={formatDate(getDisplayValue('birthday'))}
+                            onChange={(e) => handleInputChange('birthday', e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="form-group full-width">
+                      <label>Địa chỉ</label>
+                      <textarea
+                          value={getDisplayValue('address')}
+                          onChange={(e) => handleInputChange('address', e.target.value)}
+                          placeholder="Nhập địa chỉ"
+                          rows={3}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="edit-actions">
+                  <button className="cancel-btn" onClick={handleCancel} disabled={isSaving}>
+                    Hủy
+                  </button>
+                  <button className="save-btn" onClick={updateProfile} disabled={isSaving}>
+                    {isSaving ? 'Đang lưu...' : 'Lưu'}
+                  </button>
+                </div>
+              </div>
+            </div>
+        )}
+
+        <Footer />
+        <Notification
+            message={notification.message}
+            type={notification.type}
+            isVisible={notification.isVisible}
+            onClose={() => setNotification(prev => ({ ...prev, isVisible: false }))}
+        />
       </div>
-
-      {isEditing && (
-        <div className="edit-overlay">
-          <div className="edit-modal">
-            <div className="edit-header">
-              <h2>Chỉnh sửa thông tin cá nhân</h2>
-              <button className="close-btn" onClick={handleCancel}>✕</button>
-            </div>
-            <div className="edit-content">
-              <div className="edit-avatar-section">
-                <div className="edit-avatar-container">
-                  <img
-                    src={getDisplayValue('avatar') || '/public/logo.png'}
-                    alt="Avatar"
-                    className="edit-avatar"
-                  />
-                  <input
-                    type="url"
-                    placeholder="URL ảnh đại diện"
-                    value={getDisplayValue('avatar')}
-                    onChange={(e) => handleInputChange('avatar', e.target.value)}
-                    className="avatar-input"
-                  />
-                </div>
-              </div>
-              <div className="edit-form">
-                <div className="form-row">
-                  <div className="form-group">
-                    <label>Họ *</label>
-                    <input
-                      type="text"
-                      value={getDisplayValue('firstName')}
-                      onChange={(e) => handleInputChange('firstName', e.target.value)}
-                      placeholder="Nhập họ"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Tên *</label>
-                    <input
-                      type="text"
-                      value={getDisplayValue('lastName')}
-                      onChange={(e) => handleInputChange('lastName', e.target.value)}
-                      placeholder="Nhập tên"
-                    />
-                  </div>
-                </div>
-                <div className="form-row">
-                  <div className="form-group">
-                    <label>Email *</label>
-                    <input
-                      type="email"
-                      value={getDisplayValue('email')}
-                      onChange={(e) => handleInputChange('email', e.target.value)}
-                      placeholder="Nhập email"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Số điện thoại</label>
-                    <input
-                      type="tel"
-                      value={getDisplayValue('phoneNumber')}
-                      onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
-                      placeholder="Nhập số điện thoại"
-                    />
-                  </div>
-                </div>
-                <div className="form-row">
-                  <div className="form-group">
-                    <label>Ngày sinh</label>
-                    <input
-                      type="date"
-                      value={formatDate(getDisplayValue('birthday'))}
-                      onChange={(e) => handleInputChange('birthday', e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="form-group full-width">
-                  <label>Địa chỉ</label>
-                  <textarea
-                    value={getDisplayValue('address')}
-                    onChange={(e) => handleInputChange('address', e.target.value)}
-                    placeholder="Nhập địa chỉ"
-                    rows={3}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="edit-actions">
-              <button className="cancel-btn" onClick={handleCancel} disabled={isSaving}>
-                Hủy
-              </button>
-              <button className="save-btn" onClick={updateProfile} disabled={isSaving}>
-                {isSaving ? 'Đang lưu...' : 'Lưu thông tin'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <Footer />
-      <Notification
-        message={notification.message}
-        type={notification.type}
-        isVisible={notification.isVisible}
-        onClose={() => setNotification(prev => ({ ...prev, isVisible: false }))}
-      />
-    </div>
   );
 };
 

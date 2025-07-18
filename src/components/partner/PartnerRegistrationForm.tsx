@@ -31,10 +31,6 @@ const PartnerRegistrationForm: React.FC = () => {
     serviceDescription: '',
     serviceArea: '',
     
-    // Account Information
-    password: '',
-    confirmPassword: '',
-    
     // Plan Selection
     plan: selectedPlan,
     
@@ -70,16 +66,12 @@ const PartnerRegistrationForm: React.FC = () => {
     if (!formData.businessName || !formData.businessType || !formData.businessAddress ||
         !formData.businessPhone || !formData.businessEmail || !formData.contactName ||
         !formData.contactPhone || !formData.contactEmail || !formData.contactPosition ||
-        !formData.serviceCategory || !formData.serviceDescription || !formData.serviceArea ||
-        !formData.password || !formData.confirmPassword || !formData.agreeTerms || !formData.agreePrivacy) {
+        !formData.serviceCategory || !formData.serviceDescription || !formData.serviceArea
+        || !formData.agreeTerms || !formData.agreePrivacy) {
       alert('Vui lòng điền đầy đủ thông tin bắt buộc và đồng ý với điều khoản');
       return;
     }
 
-    if (formData.password !== formData.confirmPassword) {
-      alert('Mật khẩu xác nhận không khớp');
-      return;
-    }
 
     // Navigate to checkout with form data
     navigate('/partner-registration/checkout', {
