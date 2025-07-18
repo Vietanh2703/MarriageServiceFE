@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
-import { useTheme } from '../../context/ThemeContext';
 import './PartnerRegistrationForm.css';
 
 const PartnerRegistrationForm: React.FC = () => {
-  const { isDarkMode } = useTheme();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const selectedPlan = queryParams.get('plan') || 'basic';
@@ -47,18 +45,10 @@ const PartnerRegistrationForm: React.FC = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    // Force update body class for dark mode synchronization
-    const body = document.body;
-    if (isDarkMode) {
-      body.classList.add('dark-theme');
-    } else {
-      body.classList.remove('dark-theme');
-    }
-
     return () => {
-      body.classList.remove('dark-theme');
+      // Cleanup if necessary
     };
-  }, [isDarkMode]);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
@@ -100,7 +90,7 @@ const PartnerRegistrationForm: React.FC = () => {
   ];
 
   return (
-    <div className={`partner-registration-form-page ${isDarkMode ? 'dark-theme' : 'light-theme'}`}>
+    <div className="partner-registration-form-page">
       <Navbar />
       
       <div className="registration-container">

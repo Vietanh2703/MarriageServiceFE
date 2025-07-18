@@ -299,41 +299,50 @@
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-.dark-theme .home-dropdown-menu a {
-  color: #f5f5f5;
+/* Button Styles for Partner Registration */
+.btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
 }
 
-.dark-theme .home-dropdown-menu a:hover {
-  background-color: rgba(255, 107, 107, 0.2);
+.btn-partner {
+  background-color: #ff6b6b;
+  color: white !important;
+  border: 2px solid #ff6b6b;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
 }
 
-.dark-theme .home-user-menu-toggle {
-  color: #f5f5f5;
-  border-color: rgba(255, 107, 107, 0.4);
+.btn-partner:hover {
+  background-color: #ff5252;
+  border-color: #ff5252;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
 }
 
-.dark-theme .home-user-menu-toggle:hover {
-  color: #ff6b6b;
-  background-color: rgba(255, 107, 107, 0.1);
+.btn-partner:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+}
+
+/* Dark theme button styles */
+.dark-theme .btn-partner {
+  background-color: #ff6b6b;
   border-color: #ff6b6b;
+  color: white !important;
 }
 
-.dark-theme .home-user-menu-dropdown {
-  background-color: #34495e;
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-.dark-theme .home-user-menu-item {
-  color: #f5f5f5;
-}
-
-.dark-theme .home-user-menu-item:hover {
-  background-color: rgba(255, 107, 107, 0.2);
-  color: #ff6b6b;
-}
-
-.dark-theme .home-menu-divider {
-  background-color: rgba(255, 255, 255, 0.2);
+.dark-theme .btn-partner:hover {
+  background-color: #ff5252;
+  border-color: #ff5252;
 }
 
 /* Responsive Design */

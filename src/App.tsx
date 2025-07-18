@@ -21,43 +21,13 @@ import WeddingCeremonyPage from "./components/services/WeddingCeremonyPage.tsx";
 import HomeLoggedPage from "./components/HomeLoggedPage.tsx";
 import ChatbotPage from "./components/ChatbotPage.tsx";
 import MisaProPage from "./components/MisaProPage.tsx";
-import ProfilePage from "./components/ProfilePage.tsx";
+import ProfilePage from "./components/ProfilePageClean.tsx";
 import PartnerRegistrationIntroPage from "./components/partner/PartnerRegistrationIntroPage";
 import PartnerRegistrationForm from "./components/partner/PartnerRegistrationForm";
-import { ThemeProvider } from './context/ThemeContext';
 
 function AppContent() {
     const location = useLocation();
     const [isLoading, setIsLoading] = useState(false);
-
-    // Quản lý dark mode
-    const [darkMode, setDarkMode] = useState(() => {
-        return localStorage.getItem('theme') === 'dark';
-    });
-
-    // Lắng nghe sự thay đổi theme
-    useEffect(() => {
-        const handleThemeChange = (e: CustomEvent<{ theme: string }>) => {
-            setDarkMode(e.detail.theme === 'dark');
-        };
-
-        window.addEventListener('themeChanged', handleThemeChange as EventListener);
-
-        return () => {
-            window.removeEventListener('themeChanged', handleThemeChange as EventListener);
-        };
-    }, []);
-
-    const toggleDarkMode = () => {
-        const newDarkMode = !darkMode;
-        setDarkMode(newDarkMode);
-        localStorage.setItem('theme', newDarkMode ? 'dark' : 'light');
-
-        const themeChangeEvent = new CustomEvent('themeChanged', {
-            detail: { theme: newDarkMode ? 'dark' : 'light' }
-        });
-        window.dispatchEvent(themeChangeEvent);
-    };
 
     // Xử lý loading khi chuyển trang
     useEffect(() => {
@@ -69,11 +39,9 @@ function AppContent() {
         return () => clearTimeout(timer);
     }, [location.pathname]);
 
-    // Kiểm tra hiển thị BackToTop
-
     return (
-        <div className={`app ${darkMode ? 'dark-theme' : 'light-theme'}`}>
-            {isLoading && <LoadingScreen onLoadingComplete={() => setIsLoading(false)} darkMode={darkMode} />}
+        <div className="app light-theme">
+            {isLoading && <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />}
             <div className="content">
                 <Routes>
                     <Route path="/" element={
@@ -95,7 +63,7 @@ function AppContent() {
                         <OTPVerificationPage />
                     } />
                     <Route path="/about" element={
-                        <AboutUsPage toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
+                        <AboutUsPage />
                     } />
                     <Route path="/services/catering" element={
                         <CateringPage />
@@ -154,12 +122,10 @@ function AppContent() {
 
 function App() {
     return (
-        <ThemeProvider>
             <Router>
                 <ScrollToTop />
                 <AppContent />
             </Router>
-        </ThemeProvider>
     );
 }
 

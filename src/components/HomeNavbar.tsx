@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaChevronDown, FaBell } from 'react-icons/fa';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import { buildApiUrl } from '../utils/apiConfig';
 import './HomeNavbar.css';
 
 // TypeScript interfaces
@@ -55,7 +56,7 @@ const HomeNavbar: React.FC = () => {
   const fetchUserData = useCallback(async (email: string, accessToken: string): Promise<UserInfo | null> => {
     try {
       const encodedEmail = encodeURIComponent(email);
-      const response = await axios.get(`https://localhost:7121/user/email/${encodedEmail}`, {
+      const response = await axios.get(buildApiUrl(`/user/email/${encodedEmail}`), {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`
@@ -149,7 +150,7 @@ const HomeNavbar: React.FC = () => {
 
       // Call logout API if userId exists
       if (userId) {
-        const response = await fetch(`https://localhost:7121/api/Auth/logout/${userId}`, {
+        const response = await fetch(buildApiUrl(`/api/Auth/logout/${userId}`), {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -215,6 +216,9 @@ const HomeNavbar: React.FC = () => {
               <FaBell />
               <span>Thông Báo</span>
             </Link>
+          </li>
+          <li className="home-nav-item">
+            <Link to="/partner-registration" className="btn btn-partner">Trở Thành Đối Tác</Link>
           </li>
           <li className="home-nav-item">
             <div className="home-user-menu">

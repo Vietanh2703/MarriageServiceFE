@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import './ChatbotPage.css';
 import HomeNavbar from './HomeNavbar';
 import Footer from './Footer';
-import { useTheme } from '../context/ThemeContext';
 
 interface Message {
     id: number;
@@ -20,7 +19,6 @@ interface ChatHistory {
 }
 
 const ChatbotPage: React.FC = () => {
-    const { isDarkMode } = useTheme();
     const navigate = useNavigate();
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputMessage, setInputMessage] = useState('');
@@ -208,7 +206,7 @@ const ChatbotPage: React.FC = () => {
     };
 
     return (
-        <div className={`chatbot-page ${isDarkMode ? 'dark' : ''}`}>
+        <div className="chatbot-page">
             <HomeNavbar />
             <div className="chatbot-layout">
                 <aside className="chatbot-sidebar">

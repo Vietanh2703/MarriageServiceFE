@@ -4,11 +4,9 @@ import { useInView } from 'react-intersection-observer';
 import { motion } from 'framer-motion';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
-import { useTheme } from '../../context/ThemeContext';
 import './PartnerRegistrationIntroPage.css';
 
 const PartnerRegistrationIntroPage: React.FC = () => {
-  const { isDarkMode } = useTheme();
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -25,7 +23,7 @@ const PartnerRegistrationIntroPage: React.FC = () => {
   });
 
   return (
-    <div className={`partner-registration-intro-page ${isDarkMode ? 'dark-theme' : 'light-theme'}`}>
+    <div className={`partner-registration-intro-page`}>
       <Navbar />
 
       {/* Hero Section */}

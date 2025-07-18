@@ -175,12 +175,6 @@
   box-shadow: 0 4px 15px rgba(255, 107, 107, 0.1);
 }
 
-.dark-theme .hero-button {
-  background: #1e293b;
-  color: #ff8e8e;
-  border-color: #ff8e8e;
-  box-shadow: 0 4px 15px rgba(255, 142, 142, 0.1);
-}
 
 .hero-button::before {
   content: '';
@@ -207,10 +201,6 @@
   box-shadow: 0 8px 25px rgba(255, 142, 142, 0.2);
 }
 
-.hero-button:hover::before {
-  left: 100%;
-}
-
 .hero-button.primary {
   background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
   color: white;
@@ -223,24 +213,12 @@
   border: 2px solid #ff6b6b;
 }
 
-.dark-theme .hero-button.primary {
-  background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
-  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
-}
-
-.dark-theme .hero-button.secondary {
-  color: #3498db;
-  border-color: #3498db;
-}
 
 .hero-button:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
 }
 
-.dark-theme .hero-button:hover {
-  box-shadow: 0 8px 25px rgba(52, 152, 219, 0.5);
-}
 
 .services-page-title {
   font-size: 3.5rem;
@@ -249,10 +227,6 @@
   text-align: center;
   animation: fadeInDown 0.8s ease;
   color: white;
-}
-
-.dark-theme .services-page-title {
-  color: #ff8e8e;
 }
 
 .services-page-subtitle {
@@ -264,9 +238,6 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
-.dark-theme .services-page-subtitle {
-    color: #ff8e8e;
-}
 
 /* Benefits Section */
 .benefits-section {
@@ -274,10 +245,6 @@
   background: white;
   position: relative;
   overflow: hidden;
-}
-
-.dark-theme .benefits-section {
-  background: linear-gradient(135deg, rgb(26, 26, 26) 0%, rgb(26, 26, 26) 100%);
 }
 
 .benefits-container {

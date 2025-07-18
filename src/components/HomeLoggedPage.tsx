@@ -1,9 +1,9 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import Slideshow from './AdvertisingSlideshow';
-import { ThemeContext } from '../context/ThemeContext';
+import { buildApiUrl } from '../utils/apiConfig';
 import './HomeLoggedPage.css';
 import HomeNavbar from "./HomeNavbar";
 import Footer from "./Footer";
@@ -74,8 +74,6 @@ const serviceNavItems = [
 
 
 const HomeLoggedPage = () => {
-	const theme = useContext(ThemeContext);
-	const isDarkMode = theme?.isDarkMode || false;
 	const navigate = useNavigate();
 
 	// State management
@@ -99,7 +97,7 @@ const HomeLoggedPage = () => {
 		{
 			id: 2,
 			name: "Floral Elegance",
-			logo: "/public/decor.jpg",
+			logo: "/decor.jpg",
 			rating: 4.7,
 			reviews: 120,
 			description: "Trang trí hoa tươi và backdrop chuyên nghiệp"
@@ -107,7 +105,7 @@ const HomeLoggedPage = () => {
 		{
 			id: 3,
 			name: "Gourmet Catering",
-			logo: "/public/nau-an.jpg",
+			logo: "/nau-an.jpg",
 			rating: 4.9,
 			reviews: 98,
 			description: "Ẩm thực Âu - Á phong phú, đa dạng"
@@ -115,7 +113,7 @@ const HomeLoggedPage = () => {
 		{
 			id: 4,
 			name: "Luxury Cars",
-			logo: "/public/xe-cuoi.jpg",
+			logo: "/xe-cuoi.jpg",
 			rating: 4.6,
 			reviews: 75,
 			description: "Dịch vụ cho thuê xe cưới hạng sang"
@@ -123,7 +121,7 @@ const HomeLoggedPage = () => {
 		{
 			id: 5,
 			name: "Dream Weddings",
-			logo: "/public/logo.png",
+			logo: "/logo.png",
 			rating: 4.8,
 			reviews: 156,
 			description: "Dịch vụ tổ chức tiệc cưới trọn gói"
@@ -131,7 +129,7 @@ const HomeLoggedPage = () => {
 		{
 			id: 6,
 			name: "Elegant Bride",
-			logo: "/public/vay-cuoi.jpg",
+			logo: "/vay-cuoi.jpg",
 			rating: 4.7,
 			reviews: 130,
 			description: "Thiết kế và may đo váy cưới cao cấp"
@@ -139,7 +137,7 @@ const HomeLoggedPage = () => {
 		{
 			id: 7,
 			name: "Perfect Moments",
-			logo: "/public/photo-service.jpg",
+			logo: "/photo-service.jpg",
 			rating: 4.9,
 			reviews: 200,
 			description: "Gói chụp ảnh cưới chuyên nghiệp"
@@ -147,7 +145,7 @@ const HomeLoggedPage = () => {
 		{
 			id: 8,
 			name: "Gourmet Catering",
-			logo: "/public/nau-an.jpg",
+			logo: "/nau-an.jpg",
 			rating: 4.9,
 			reviews: 180,
 			description: "Dịch vụ ẩm thực tiệc cưới đẳng cấp"
@@ -158,7 +156,7 @@ const HomeLoggedPage = () => {
 		{
 			id: 1,
 			name: "Gói chụp ảnh cưới cao cấp",
-			image: "/public/photo-service.jpg",
+			image: "/photo-service.jpg",
 			provider: "Studio Love",
 			rating: 4.9,
 			price: "15,000,000đ",
@@ -167,7 +165,7 @@ const HomeLoggedPage = () => {
 		{
 			id: 2,
 			name: "Trang trí tiệc cưới cơ bản",
-			image: "/public/decor.jpg",
+			image: "/decor.jpg",
 			provider: "Paradise Decor",
 			rating: 4.8,
 			price: "10,000,000đ",
@@ -176,7 +174,7 @@ const HomeLoggedPage = () => {
 		{
 			id: 3,
 			name: "Xe cưới hạng sang",
-			image: "/public/xe-cuoi.jpg",
+			image: "/xe-cuoi.jpg",
 			provider: "Luxury Cars",
 			rating: 4.7,
 			price: "20,000,000đ",
@@ -185,7 +183,7 @@ const HomeLoggedPage = () => {
 		{
 			id: 4,
 			name: "Trang điểm cô dâu",
-			image: "/public/trang-diem.jpeg",
+			image: "/trang-diem.jpeg",
 			provider: "Beauty Studio",
 			rating: 4.9,
 			price: "5,000,000đ",
@@ -194,7 +192,7 @@ const HomeLoggedPage = () => {
 		{
 			id: 5,
 			name: "Thiệp cưới cao cấp",
-			image: "/public/thiep-cuoi.jpg",
+			image: "/thiep-cuoi.jpg",
 			provider: "Cardinal",
 			rating: 4.8,
 			price: "2,000,000đ",
@@ -203,7 +201,7 @@ const HomeLoggedPage = () => {
 		{
 			id: 6,
 			name: "Bánh cưới đa dạng",
-			image: "/public/nau-an.jpg",
+			image: "/nau-an.jpg",
 			provider: "Gourmet Bakery",
 			rating: 4.9,
 			price: "3,000,000đ",
@@ -214,7 +212,7 @@ const HomeLoggedPage = () => {
 		{
 			id: 1,
 			title: "Top 10 xu hướng trang trí tiệc cưới 2025",
-			image: "/public/decor.jpg",
+			image: "/decor.jpg",
 			date: "18/06/2025",
 			author: "Wedding Expert",
 			excerpt: "Khám phá những xu hướng trang trí tiệc cưới mới nhất..."
@@ -222,7 +220,7 @@ const HomeLoggedPage = () => {
 		{
 			id: 2,
 			title: "Kinh nghiệm chọn váy cưới cho cô dâu",
-			image: "/public/vay-cuoi.jpg",
+			image: "/vay-cuoi.jpg",
 			date: "12/06/2025",
 			author: "Fashion Guru",
 			excerpt: "Những điều cần lưu ý khi chọn váy cưới..."
@@ -230,7 +228,7 @@ const HomeLoggedPage = () => {
 		{
 			id: 3,
 			title: "Những địa điểm chụp ảnh cưới lý tưởng",
-			image: "/public/photo-service.jpg",
+			image: "/photo-service.jpg",
 			date: "05/06/2025",
 			author: "Photo Master",
 			excerpt: "Gợi ý những địa điểm chụp ảnh cưới đẹp và lãng mạn..."
@@ -241,15 +239,15 @@ const HomeLoggedPage = () => {
 		{
 			id: 1,
 			title: "Triển lãm cưới Wedding Fair 2025",
-			image: "/public/welcome.png",
+			image: "/welcome.png",
 			date: "25/07/2025",
 			location: "Trung tâm Hội nghị Quốc gia, Hà Nội",
-			description: "Tri����n lãm cưới lớn nhất năm với nhiều ưu đãi hấp dẫn"
+			description: "Triển lãm cưới lớn nhất năm với nhiều ưu đãi hấp dẫn"
 		},
 		{
 			id: 2,
 			title: "Hội thảo lập kế hoạch cưới",
-			image: "/public/decor.jpg",
+			image: "/decor.jpg",
 			date: "20/07/2025",
 			location: "Khách sạn Rex, TP.HCM",
 			description: "Hội thảo chia sẻ kinh nghiệm lập kế hoạch cưới hoàn hảo"
@@ -257,7 +255,7 @@ const HomeLoggedPage = () => {
 		{
 			id: 3,
 			title: "Triển lãm váy cưới 2025",
-			image: "/public/decor.jpg",
+			image: "/decor.jpg",
 			date: "15/07/2025",
 			location: "Saigon Exhibition and Convention Center, TP.HCM",
 			description: "Triển lãm giới thiệu bộ sưu tập váy cưới mới nhất"
@@ -268,35 +266,35 @@ const HomeLoggedPage = () => {
 		{
 			id: 1,
 			title: "Xu hướng trang trí tiệc cưới mùa thu 2025",
-			image: "/public/decor.jpg",
+			image: "/decor.jpg",
 			date: "19/06/2025",
 			category: "Xu hướng"
 		},
 		{
 			id: 2,
 			title: "Top 5 địa điểm chụp ảnh cưới đẹp tại Hà Nội",
-			image: "/public/photo-service.jpg",
+			image: "/photo-service.jpg",
 			date: "18/06/2025",
 			category: "Địa điểm"
 		},
 		{
 			id: 3,
 			title: "Cách chọn váy cưới phù hợp với dáng người",
-			image: "/public/vay-cuoi.jpg",
+			image: "/vay-cuoi.jpg",
 			date: "17/06/2025",
 			category: "Tư vấn"
 		},
 		{
 			id: 4,
 			title: "Những món ăn không thể thiếu trong tiệc cưới",
-			image: "/public/nau-an.jpg",
+			image: "/nau-an.jpg",
 			date: "16/06/2025",
 			category: "Ẩm thực"
 		}
 	];
 
 	const adBanner = {
-		image: "/public/ads.jpg",
+		image: "/ads.jpg",
 		title: "Wedding Fair 2025",
 		description: "Triển lãm cưới lớn nhất năm - Ưu đãi lên đến 50%"
 	};
@@ -352,7 +350,7 @@ const HomeLoggedPage = () => {
 	const fetchUserData = async (email: string, accessToken: string): Promise<UserInfo | null> => {
 		try {
 			const encodedEmail = encodeURIComponent(email);
-			const response = await axios.get(`https://localhost:7121/user/email/${encodedEmail}`, {
+			const response = await axios.get(buildApiUrl(`/user/email/${encodedEmail}`), {
 				headers: {
 					'Content-Type': 'application/json',
 					'Authorization': `Bearer ${accessToken}`
@@ -444,7 +442,7 @@ const HomeLoggedPage = () => {
 	}
 
 	return (
-		<div className={`home-logged-page ${isDarkMode ? 'dark-mode' : ''}`}>
+		<div className={`home-logged-page`}>
 			<HomeNavbar />
 			<Slideshow />
 

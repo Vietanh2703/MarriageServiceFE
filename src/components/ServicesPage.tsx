@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useTheme } from '../context/ThemeContext';
 import AuthPromptModal from './AuthPromptModal';
 import './ServicesPage.css';
 import Navbar from "./Navbar";
@@ -66,7 +65,6 @@ const services: Service[] = [
 const ServicesPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-  const { isDarkMode } = useTheme();
 
   const filteredServices = services.filter(service =>
     service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -74,7 +72,7 @@ const ServicesPage: React.FC = () => {
   );
 
   return (
-    <div className={`services-container ${isDarkMode ? 'dark-theme' : ''}`}>
+    <div className="services-container">
       <Navbar />
       <section className="services-page-hero">
         <h1 className="services-page-title">Dịch Vụ Đối Tác</h1>
@@ -162,4 +160,3 @@ const ServicesPage: React.FC = () => {
 };
 
 export default ServicesPage;
-

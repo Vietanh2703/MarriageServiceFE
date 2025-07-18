@@ -4,7 +4,6 @@ import './LoadingScreen.css';
 
 interface LoadingScreenProps {
   onLoadingComplete: () => void;
-  darkMode: boolean;
 }
 
 function LoadingScreen({ onLoadingComplete}: LoadingScreenProps) {
@@ -15,26 +14,10 @@ function LoadingScreen({ onLoadingComplete}: LoadingScreenProps) {
   const flowersRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Get the most current theme from localStorage directly
-    const currentTheme = localStorage.getItem('theme') === 'dark';
-
+    // Always use light mode
     if (containerRef.current) {
-      containerRef.current.className = `loading-screen ${currentTheme ? 'dark-mode' : 'light-mode'}`;
+      containerRef.current.className = 'loading-screen light-mode';
     }
-
-    // Listen for theme changes
-    const handleThemeChange = (e: CustomEvent) => {
-      if (containerRef.current) {
-        const newTheme = e.detail.theme === 'dark';
-        containerRef.current.className = `loading-screen ${newTheme ? 'dark-mode' : 'light-mode'}`;
-      }
-    };
-
-    window.addEventListener('themeChanged', handleThemeChange as EventListener);
-
-    return () => {
-      window.removeEventListener('themeChanged', handleThemeChange as EventListener);
-    };
   }, []);
 
   useEffect(() => {
@@ -110,11 +93,8 @@ function LoadingScreen({ onLoadingComplete}: LoadingScreenProps) {
     };
   }, [onLoadingComplete]);
 
-  // Get the most current theme from localStorage directly for initial render
-  const currentTheme = localStorage.getItem('theme') === 'dark';
-
   return (
-      <div className={`loading-screen ${currentTheme ? 'dark-mode' : 'light-mode'}`} ref={containerRef}>
+      <div className="loading-screen light-mode" ref={containerRef}>
         <div className="loading-container">
           <div className="wedding-ring ring1" ref={ring1Ref}></div>
           <div className="wedding-ring ring2" ref={ring2Ref}></div>

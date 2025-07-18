@@ -4,7 +4,6 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import Notification from './Notification';
 import './RegisterPage.css';
-import { useTheme } from '../context/ThemeContext';
 import { apiRequest, API_CONFIG } from '../utils/apiConfig';
 
 const RegisterPage: React.FC = () => {
@@ -22,7 +21,6 @@ const RegisterPage: React.FC = () => {
     type: 'success' as 'success' | 'error',
     isVisible: false
   });
-  const { isDarkMode } = useTheme();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -104,7 +102,7 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className={`register-page ${isDarkMode ? 'dark-theme' : 'light-theme'}`}>
+    <div className={`register-page`}>
       <Navbar />
       <div className="register-container">
         <div className="register-form-container">

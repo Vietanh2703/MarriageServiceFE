@@ -6,13 +6,7 @@ import { useInView } from 'react-intersection-observer';
 import CountUp from 'react-countup';
 import { motion } from 'framer-motion';
 
-// Thêm interface ở đầu file
-interface AboutUsPageProps {
-  darkMode: boolean;
-  toggleDarkMode: () => void;
-}
-
-const AboutUsPage: React.FC<AboutUsPageProps> = () => {
+const AboutUsPage: React.FC = () => {
 
   const { ref: historyRef, inView: historyVisible } = useInView({
     threshold: 0.2,
