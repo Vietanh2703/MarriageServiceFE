@@ -66,15 +66,19 @@ const PartnerRegistrationCheckout: React.FC = () => {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [registrationData, setRegistrationData] = useState<FormDataType | null>(null);
-  const [notification, setNotification] = useState<{
-    show: boolean;
-    message: string;
-    type: 'success' | 'error';
-  }>({
-    show: false,
+  const [notification, setNotification] = useState({
+    isVisible: false,
     message: '',
-    type: 'success'
+    type: 'success' as 'success' | 'error'
   });
+
+  const showNotification = (message: string, type: 'success' | 'error') => {
+    setNotification({
+      isVisible: true,
+      message,
+      type
+    });
+  };
 
   // Get registration data from location state
   useEffect(() => {
@@ -111,7 +115,7 @@ const PartnerRegistrationCheckout: React.FC = () => {
       const accessToken = localStorage.getItem('accessToken');
 
       if (!accessToken) {
-        throw new Error('Access token not found. Please login first.');
+        showNotification("Access token not found. Please log in again.", 'error');
       }
 
       // Get plan name for the plan field
@@ -215,11 +219,7 @@ const PartnerRegistrationCheckout: React.FC = () => {
     e.preventDefault();
 
     if (!registrationData) {
-      setNotification({
-        show: true,
-        message: 'Không tìm thấy thông tin đăng ký. Vui lòng thử lại.',
-        type: 'error'
-      });
+      showNotification("Không có dữ liệu đăng ký để xử lý.", 'error');
       return;
     }
 
@@ -229,12 +229,9 @@ const PartnerRegistrationCheckout: React.FC = () => {
       // Check if user is logged in
       const accessToken = localStorage.getItem('accessToken');
       if (!accessToken) {
-        setNotification({
-          show: true,
-          message: 'Vui lòng đăng nhập để tiếp tục đăng ký đối tác.',
-          type: 'error'
-        });
+        showNotification("Hết phiên đăng nhập. Chuyển đến trang đăng nhập lại", 'error');
         setIsLoading(false);
+        navigate('/login');
         return;
       }
 
@@ -242,11 +239,7 @@ const PartnerRegistrationCheckout: React.FC = () => {
       const result = await sendBusinessRegistrationToAPI(registrationData);
 
       // Show success notification
-      setNotification({
-        show: true,
-        message: 'Đăng ký đối tác thành công! Vui lòng chờ xét duyệt.',
-        type: 'success'
-      });
+      showNotification("Đăng ký đối tác thành công! Vui lòng thực hiện thanh toán để kích hoạt tài khoản.", 'success');
 
       // Wait for notification to show, then navigate to success page
       setTimeout(() => {
@@ -276,18 +269,14 @@ const PartnerRegistrationCheckout: React.FC = () => {
         errorMessage = error.message;
       }
 
-      setNotification({
-        show: true,
-        message: errorMessage,
-        type: 'error'
-      });
+      showNotification(errorMessage, 'error');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleCloseNotification = () => {
-    setNotification({ ...notification, show: false });
+  const hideNotification = () => {
+    setNotification(prev => ({ ...prev, isVisible: false }));
   };
 
   const formatPrice = (price: number) => {
@@ -310,15 +299,13 @@ const PartnerRegistrationCheckout: React.FC = () => {
 
   return (
       <div className="partner-checkout-page">
+        <Notification
+            message={notification.message}
+            type={notification.type}
+            isVisible={notification.isVisible}
+            onClose={hideNotification}
+        />
         <Navbar />
-
-        {/* Notification Component */}
-        {notification.show && (
-            <Notification
-                message={notification.message}
-                type={notification.type}
-                onClose={handleCloseNotification} isVisible={false}            />
-        )}
 
         <div className="checkout-container">
           <div className="checkout-header">
