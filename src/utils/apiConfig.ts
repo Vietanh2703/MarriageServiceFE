@@ -7,6 +7,7 @@ export const API_CONFIG = {
     AUTH: {
       REGISTER: '/Auth/register',
       LOGIN: '/Auth/login',
+      FIREBASE_LOGIN: '/Auth/firebase-login',
       VERIFY_OTP: '/Auth/verify-otp',
       RESEND_OTP: '/Auth/resend-otp',
       REFRESH_TOKEN: '/Auth/refresh-token',

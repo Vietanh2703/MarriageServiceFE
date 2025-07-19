@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { auth } from '../firebase.ts';
+import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'firebase/auth';
 import Navbar from './Navbar';
 import './LoginPage.css';
 import Footer from "./Footer";
@@ -101,6 +103,56 @@ const LoginPage: React.FC = () => {
         success: false,
         message: 'Có lỗi xảy ra. Vui lòng kiểm tra kết nối mạng và thử lại.',
       };
+    }
+  };
+
+  const getDeviceId = () => {
+    // Simple deviceId generator (customize as needed)
+    let deviceId = localStorage.getItem('deviceId');
+    if (!deviceId) {
+      deviceId = Math.random().toString(36).substring(2) + Date.now();
+      localStorage.setItem('deviceId', deviceId);
+    }
+    return deviceId;
+  };
+
+  const handleSocialLogin = async (providerType: 'google' | 'facebook') => {
+    setIsLoading(true);
+    try {
+      const provider =
+          providerType === 'google'
+              ? new GoogleAuthProvider()
+              : new FacebookAuthProvider();
+
+      const result = await signInWithPopup(auth, provider);
+      const idToken = await result.user.getIdToken();
+      const deviceId = getDeviceId();
+
+      // Send to your API
+      const response = await apiRequest(API_CONFIG.ENDPOINTS.AUTH.FIREBASE_LOGIN, {
+        method: 'POST',
+        body: JSON.stringify({ idToken, deviceId }),
+      });
+      const data = await response.json();
+
+      if (response.ok && (data.accessToken || data.result?.accessToken)) {
+        // Save tokens and user info as before
+        const accessToken = data.accessToken || data.result?.accessToken;
+        const refreshToken = data.refreshToken || data.result?.refreshToken;
+        const user = data.user || data.result?.user;
+        if (accessToken && refreshToken) saveTokens(accessToken, refreshToken);
+        if (user) saveUser(user);
+        showNotification('Đăng nhập thành công!', 'success');
+        window.dispatchEvent(new Event('userInfoUpdated'));
+        setTimeout(() => navigate('/home'), 1500);
+      } else {
+        showNotification(data.message || 'Đăng nhập thất bại.', 'error');
+      }
+    } catch (error) {
+      console.error('Social login error:', error);
+      showNotification('Lỗi đăng nhập mạng xã hội.', 'error');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -222,11 +274,21 @@ const LoginPage: React.FC = () => {
 
             {/* Social login buttons */}
             <div className="social-login-buttons">
-              <button type="button" className="social-button google-button" disabled={isLoading}>
+              <button
+                  type="button"
+                  className="social-button google-button"
+                  disabled={isLoading}
+                  onClick={() => handleSocialLogin('google')}
+              >
                 <img src="/icons8-google-240.svg" alt="Google" />
                 Đăng nhập với Google
               </button>
-              <button type="button" className="social-button facebook-button" disabled={isLoading}>
+              <button
+                  type="button"
+                  className="social-button facebook-button"
+                  disabled={isLoading}
+                  onClick={() => handleSocialLogin('facebook')}
+              >
                 <img src="/icons8-facebook-144.svg" alt="Facebook" />
                 Đăng nhập với Facebook
               </button>
