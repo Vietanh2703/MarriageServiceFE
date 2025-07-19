@@ -19,6 +19,11 @@ export const API_CONFIG = {
     SERVICES: {
       GET_ALL: '/Services',
       GET_BY_ID: '/Services'
+    },
+    BUSINESS_REGISTER: {
+      GET_ALL: '/business-requests',
+      GET_BY_ID: '/business-request',
+      CREATE: '/business-request',
     }
   }
 };

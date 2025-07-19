@@ -1,9 +1,10 @@
-
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaUser, FaBuilding, FaInfoCircle, FaMoneyBillWave } from 'react-icons/fa';
 import Navbar from '../HomeNavbar';
 import Footer from '../Footer';
+import Notification from '../Notification';
+import { API_CONFIG, buildApiUrl } from '../../utils/apiConfig';
 import './PartnerRegistrationCheckout.css';
 
 interface CheckoutItem {
@@ -50,7 +51,7 @@ interface FormDataType {
 const QR_CODES = {
   basic: "https://api.vietqr.io/image/970432-0388733989-d9jPf9B.jpg?accountName=NGUYEN%20T%20V%20ANH&amount=10000&addInfo=StandardCuoidiPartnerRegistration",
   premium: "https://api.vietqr.io/image/970432-0388733989-d9jPf9B.jpg?accountName=NGUYEN%20T%20V%20ANH&amount=30000&addInfo=PremiumCuoidiPartnerRegistration",
-  enterprise: "https://api.vietqr.io/image/970432-0388733989-d9jPf9B.jpg?accountName=NGUYEN%20T%20V%20ANH&amount=30000&addInfo=BusinessCuoidiPartnerRegistration"
+  enterprise: "https://api.vietqr.io/image/970432-0388733989-d9jPf9B.jpg?accountName=NGUYEN%20T%20V%20ANH&amount=30000&addInfo=EnterpriseCuoidiPartnerRegistration"
 };
 
 // Package pricing
@@ -65,6 +66,15 @@ const PartnerRegistrationCheckout: React.FC = () => {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [registrationData, setRegistrationData] = useState<FormDataType | null>(null);
+  const [notification, setNotification] = useState<{
+    show: boolean;
+    message: string;
+    type: 'success' | 'error';
+  }>({
+    show: false,
+    message: '',
+    type: 'success'
+  });
 
   // Get registration data from location state
   useEffect(() => {
@@ -91,6 +101,75 @@ const PartnerRegistrationCheckout: React.FC = () => {
     } else {
       // Fallback to regular navigation
       navigate('/partner-registration/register');
+    }
+  };
+
+  // Function to send business registration data to API
+  const sendBusinessRegistrationToAPI = async (formData: FormDataType) => {
+    try {
+      // Get access token from localStorage
+      const accessToken = localStorage.getItem('accessToken');
+
+      if (!accessToken) {
+        throw new Error('Access token not found. Please login first.');
+      }
+
+      // Get plan name for the plan field
+      const getPlanName = (plan: string) => {
+        switch(plan) {
+          case 'basic':
+            return 'Gói thường - Standard - 1.990.000.00đ';
+          case 'premium':
+            return 'Gói cao cấp - Premium - 3.990.000.00đ';
+          case 'enterprise':
+            return 'Gói doanh nghiệp - Enterprise - 7.990.000.00đ';
+          default:
+            return 'Standard - 1.990.000.00đ';
+        }
+      };
+
+      // Prepare data according to the API format
+      const apiData = {
+        businessName: formData.businessName,
+        businessType: formData.businessType,
+        businessAddress: formData.businessAddress,
+        businessPhone: formData.businessPhone,
+        businessEmail: formData.businessEmail,
+        website: formData.website || "",
+        taxId: formData.taxId || "",
+        contactName: formData.contactName,
+        contactPhone: formData.contactPhone,
+        contactEmail: formData.contactEmail,
+        contactPosition: formData.contactPosition,
+        serviceCategory: formData.serviceCategory,
+        serviceDescription: formData.serviceDescription,
+        serviceArea: formData.serviceArea,
+        plan: getPlanName(formData.plan)
+      };
+
+      console.log('Sending business registration data:', apiData);
+
+      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.BUSINESS_REGISTER.CREATE), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        body: JSON.stringify(apiData)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('Business registration successful:', result);
+      return result;
+
+    } catch (error) {
+      console.error('Business registration API error:', error);
+      throw error;
     }
   };
 
@@ -134,29 +213,81 @@ const PartnerRegistrationCheckout: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!registrationData) {
+      setNotification({
+        show: true,
+        message: 'Không tìm thấy thông tin đăng ký. Vui lòng thử lại.',
+        type: 'error'
+      });
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      // Simulate API call for successful payment
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Check if user is logged in
+      const accessToken = localStorage.getItem('accessToken');
+      if (!accessToken) {
+        setNotification({
+          show: true,
+          message: 'Vui lòng đăng nhập để tiếp tục đăng ký đối tác.',
+          type: 'error'
+        });
+        setIsLoading(false);
+        return;
+      }
 
-      // Navigate to success page
-      navigate('/partner/payment-result', {
-        state: {
-          success: true,
-          orderData: {
-            registrationData,
-            checkoutItem,
-            total
-          }
-        }
+      // Send registration data to API
+      const result = await sendBusinessRegistrationToAPI(registrationData);
+
+      // Show success notification
+      setNotification({
+        show: true,
+        message: 'Đăng ký đối tác thành công! Vui lòng chờ xét duyệt.',
+        type: 'success'
       });
-    } catch (error) {
-      console.error('Checkout failed:', error);
-      // Handle error
+
+      // Wait for notification to show, then navigate to success page
+      setTimeout(() => {
+        navigate('/partner/payment-result', {
+          state: {
+            success: true,
+            orderData: {
+              registrationData,
+              checkoutItem,
+              total,
+              apiResult: result
+            }
+          }
+        });
+      }, 2000);
+
+    } catch (error: any) {
+      console.error('Registration submission failed:', error);
+
+      let errorMessage = 'Có lỗi xảy ra khi đăng ký đối tác. Vui lòng thử lại.';
+
+      if (error.message.includes('Access token not found')) {
+        errorMessage = 'Vui lòng đăng nhập để tiếp tục đăng ký.';
+      } else if (error.message.includes('HTTP error')) {
+        errorMessage = 'Lỗi kết nối đến server. Vui lòng kiểm tra kết nối và thử lại.';
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
+      setNotification({
+        show: true,
+        message: errorMessage,
+        type: 'error'
+      });
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleCloseNotification = () => {
+    setNotification({ ...notification, show: false });
   };
 
   const formatPrice = (price: number) => {
@@ -180,6 +311,14 @@ const PartnerRegistrationCheckout: React.FC = () => {
   return (
       <div className="partner-checkout-page">
         <Navbar />
+
+        {/* Notification Component */}
+        {notification.show && (
+            <Notification
+                message={notification.message}
+                type={notification.type}
+                onClose={handleCloseNotification} isVisible={false}            />
+        )}
 
         <div className="checkout-container">
           <div className="checkout-header">
@@ -337,7 +476,7 @@ const PartnerRegistrationCheckout: React.FC = () => {
                     <li><strong>Số tài khoản:</strong> 0388733989</li>
                     <li><strong>Chủ tài khoản:</strong> NGUYEN TRUNG VIỆT ANH</li>
                     <li><strong>Số tiền:</strong> {formatPrice(total)}</li>
-                    <li><strong>Nội dung chuyển khoản:</strong> {registrationData.plan === 'basic' ? 'StandardCuoidiPartnerRegistration' : registrationData.plan === 'premium' ? 'PremiumCuoidiPartnerRegistration' : 'BusinessCuoidiPartnerRegistration'}</li>
+                    <li><strong>Nội dung chuyển khoản:</strong> {registrationData.plan === 'basic' ? 'StandardCuoidiPartnerRegistration' : registrationData.plan === 'premium' ? 'PremiumCuoidiPartnerRegistration' : 'EnterpriseCuoidiPartnerRegistration'}</li>
                   </ul>
                 </div>
 
@@ -345,6 +484,7 @@ const PartnerRegistrationCheckout: React.FC = () => {
                   <h4>Lưu ý:</h4>
                   <ul>
                     <li>Sau khi chuyển khoản thành công, vui lòng nhấn nút "Xác nhận đã thanh toán" bên dưới.</li>
+                    <li>Hệ thống sẽ tự động gửi thông tin đăng ký đối tác của bạn đến backend để xử lý.</li>
                     <li>Tài khoản của bạn sẽ được kích hoạt trong vòng 24 giờ làm việc sau khi xác nhận thanh toán.</li>
                     <li>Nếu cần hỗ trợ, vui lòng liên hệ hotline: <strong>1900 1234</strong></li>
                   </ul>
@@ -356,6 +496,7 @@ const PartnerRegistrationCheckout: React.FC = () => {
                     type="button"
                     className="btn-secondary"
                     onClick={handleGoBack}
+                    disabled={isLoading}
                 >
                   Quay lại
                 </button>
