@@ -137,7 +137,7 @@ const LoginPage: React.FC = () => {
         }
 
         // Show success notification
-        showNotification(response.message || 'Đăng nhập thành công!', 'success');
+        showNotification('Đăng nhập thành công!', 'success');
 
         // Dispatch custom event to notify other components
         window.dispatchEvent(new Event('userInfoUpdated'));

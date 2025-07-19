@@ -239,7 +239,7 @@ const PartnerRegistrationCheckout: React.FC = () => {
       const result = await sendBusinessRegistrationToAPI(registrationData);
 
       // Show success notification
-      showNotification("Đăng ký đối tác thành công! Vui lòng thực hiện thanh toán để kích hoạt tài khoản.", 'success');
+      showNotification("Đăng ký đối tác thành công!", 'success');
 
       // Wait for notification to show, then navigate to success page
       setTimeout(() => {
