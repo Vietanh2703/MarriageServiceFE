@@ -1,5 +1,4 @@
-
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaCheckCircle } from 'react-icons/fa';
 import Navbar from '../HomeNavbar';
@@ -11,14 +10,30 @@ const PartnerRegistrationPaymentResult: React.FC = () => {
   const navigate = useNavigate();
 
   const { success, orderData } = location.state || {};
+  const [countdown, setCountdown] = useState(5);
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    // If no order data, redirect to home
+    // If no order data, redirect to home immediately
     if (!orderData) {
       navigate('/home');
+      return;
     }
+
+    // Redirect after 5 seconds
+    const timer = setTimeout(() => {
+      navigate('/home');
+    }, 5000);
+
+    const interval = setInterval(() => {
+      setCountdown((prev) => prev > 1 ? prev - 1 : prev);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };
   }, [orderData, navigate]);
 
   if (!success || !orderData) {
@@ -48,12 +63,9 @@ const PartnerRegistrationPaymentResult: React.FC = () => {
 
           {/* Back to Home Button */}
           <div className="action-section">
-            <button
-                className="btn-home"
-                onClick={() => navigate('/home')}
-            >
-              Quay về trang chủ
-            </button>
+          <span className="countdown-text">
+            Quay về trang chủ ({countdown}s)
+          </span>
           </div>
         </div>
 
