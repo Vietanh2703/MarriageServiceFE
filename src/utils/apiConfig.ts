@@ -1,5 +1,5 @@
 // API Configuration utility
-// Last updated: July 17, 2025 - Force redeploy v2
+// Last updated: July 23, 2025 - Added Admin endpoints
 // Connected to: https://marriageapi-be.onrender.com/api
 export const API_CONFIG = {
   BASE_URL: import.meta.env.VITE_API_BASE_URL || 'https://marriageapi-be.onrender.com/api',
@@ -25,6 +25,39 @@ export const API_CONFIG = {
       GET_ALL: '/business-requests',
       GET_BY_ID: '/business-request',
       CREATE: '/business-request',
+    },
+    // Admin-specific endpoints
+    ADMIN: {
+      // Dashboard statistics
+      DASHBOARD_STATS: '/Admin/dashboard/stats',
+      USER_GROWTH: '/Admin/dashboard/user-growth',
+      USER_TYPES: '/Admin/dashboard/user-types',
+      RECENT_ACTIVITY: '/Admin/dashboard/recent-activity',
+      FEEDBACK_RATINGS: '/Admin/dashboard/feedback-ratings',
+      
+      // User management
+      USERS: {
+        GET_ALL: '/Admin/users',
+        GET_BY_ID: '/Admin/users',
+        UPDATE: '/Admin/users',
+        DELETE: '/Admin/users',
+        TOGGLE_STATUS: '/Admin/users/toggle-status'
+      },
+      
+      // Partner request management
+      PARTNER_REQUESTS: {
+        GET_ALL: '/Admin/partner-requests',
+        GET_BY_ID: '/Admin/partner-requests',
+        APPROVE: '/Admin/partner-requests/approve',
+        REJECT: '/Admin/partner-requests/reject'
+      },
+      
+      // Feedback management
+      FEEDBACK: {
+        GET_ALL: '/Admin/feedback',
+        GET_BY_ID: '/Admin/feedback',
+        RESPOND: '/Admin/feedback/respond'
+      }
     }
   }
 };

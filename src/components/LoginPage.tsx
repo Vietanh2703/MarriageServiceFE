@@ -196,7 +196,11 @@ const LoginPage: React.FC = () => {
 
         // Navigate to HomeLoggedPage after a short delay
         setTimeout(() => {
-          navigate('/home');
+          if (response.user?.name === 'admin') {
+            navigate('/admin');
+          } else {
+            navigate('/home');
+          }
         }, 1500);
       } else {
         console.log('Login failed:', response.message);

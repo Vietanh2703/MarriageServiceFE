@@ -27,6 +27,13 @@ import PartnerRegistrationForm from "./components/partner/PartnerRegistrationFor
 import PartnerRegistrationCheckout from "./components/partner/PartnerRegistrationCheckout";
 import PartnerRegistrationPaymentResult from "./components/partner/PartnerRegistrationPaymentResult.tsx";
 
+// Admin components
+import AdminLayout from "./components/admin/AdminLayout";
+import AdminDashboard from "./components/admin/AdminDashboard";
+import UserList from "./components/admin/UserList";
+import PartnerRequests from "./components/admin/PartnerRequests";
+import Feedback from "./components/admin/Feedback";
+
 function AppContent() {
     const location = useLocation();
     const [isLoading, setIsLoading] = useState(false);
@@ -115,6 +122,13 @@ function AppContent() {
                     <Route path="/profile" element={
                         <ProfilePage />
                     } />
+                    
+                    {/* Admin Routes */}
+                    <Route path="/admin" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
+                    <Route path="/admin/users" element={<AdminLayout><UserList /></AdminLayout>} />
+                    <Route path="/admin/partner-requests" element={<AdminLayout><PartnerRequests /></AdminLayout>} />
+                    <Route path="/admin/feedback" element={<AdminLayout><Feedback /></AdminLayout>} />
+                    
                     {/* Thêm các route khác nếu cần */}
                     <Route path="*" element={
                         <div className="not-found">
