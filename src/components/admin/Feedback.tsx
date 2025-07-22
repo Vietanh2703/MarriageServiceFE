@@ -498,49 +498,42 @@ const Feedback: React.FC = () => {
           </div>
         </div>
       )}
-      
-      {/* Additional CSS for star ratings */}
-      <style jsx>{`
-        .star-rating {
-          display: flex;
-          align-items: center;
-        }
-        
-        .star-filled {
-          color: #ffc107;
-        }
-        
-        .star-empty {
-          color: #e0e0e0;
-        }
-        
-        .content-cell {
-          max-width: 300px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        
-        .content-box, .response-box {
-          background-color: #f9f9f9;
-          padding: 1rem;
-          border-radius: 4px;
-          margin-top: 0.5rem;
-          white-space: pre-wrap;
-        }
-        
-        .response-box {
-          background-color: #f0f7ff;
-          position: relative;
-        }
-        
-        .response-date {
-          font-size: 0.75rem;
-          color: #6c757d;
-          margin-top: 0.5rem;
-          text-align: right;
-        }
-      `}</style>
+
+      <style>{`
+  .star-rating {
+    display: flex;
+    align-items: center;
+  }
+  .star-filled {
+    color: #ffc107;
+  }
+  .star-empty {
+    color: #e0e0e0;
+  }
+  .content-cell {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .content-box, .response-box {
+    background-color: #f9f9f9;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    white-space: pre-wrap;
+  }
+  .response-box {
+    background-color: #f0f7ff;
+    position: relative;
+  }
+  .response-date {
+    font-size: 0.75rem;
+    color: #6c757d;
+    margin-top: 0.5rem;
+    text-align: right;
+  }
+`}</style>
     </div>
   );
 };
