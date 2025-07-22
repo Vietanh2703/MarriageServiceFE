@@ -59,6 +59,10 @@ const mockData = {
   feedbackRatings: {
     labels: ['5 Stars', '4 Stars', '3 Stars', '2 Stars', '1 Star'],
     data: [78, 42, 20, 10, 6]
+  },
+  revenue: {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    data: [15000000, 18500000, 22000000, 25500000, 30000000, 35000000, 42000000, 48000000, 52000000, 58000000, 65000000, 75000000]
   }
 };
 
@@ -191,6 +195,59 @@ const AdminDashboard: React.FC = () => {
     ]
   };
   
+  const revenueOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: true,
+        text: 'Monthly Revenue (2025)',
+        font: {
+          size: 16
+        }
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Revenue (VND)'
+        },
+        ticks: {
+          callback: function(value: any) {
+            if (value >= 1000000) {
+              return (value / 1000000) + 'M';
+            }
+            return value;
+          }
+        }
+      },
+      x: {
+        title: {
+          display: true,
+          text: 'Month'
+        }
+      }
+    }
+  };
+  
+  const revenueData = {
+    labels: data.revenue.labels,
+    datasets: [
+      {
+        label: 'Revenue (VND)',
+        data: data.revenue.data,
+        borderColor: '#28a745',
+        backgroundColor: 'rgba(40, 167, 69, 0.1)',
+        tension: 0.3,
+        fill: true
+      }
+    ]
+  };
+  
   return (
     <div className="admin-dashboard">
       {/* Stats Cards */}
@@ -266,6 +323,15 @@ const AdminDashboard: React.FC = () => {
       </div>
       
       <div className="admin-grid">
+        <div className="admin-card admin-grid-col-2">
+          <div className="admin-card-header">
+            <h2 className="admin-card-title">Revenue Chart</h2>
+          </div>
+          <div className="admin-card-body" style={{ height: '300px' }}>
+            <Line options={revenueOptions} data={revenueData} />
+          </div>
+        </div>
+        
         <div className="admin-card">
           <div className="admin-card-header">
             <h2 className="admin-card-title">Feedback Ratings</h2>
@@ -274,8 +340,10 @@ const AdminDashboard: React.FC = () => {
             <Bar options={feedbackOptions} data={feedbackData} />
           </div>
         </div>
-        
-        <div className="admin-card admin-grid-col-2">
+      </div>
+      
+      <div className="admin-grid">
+        <div className="admin-card admin-grid-col-3">
           <div className="admin-card-header">
             <h2 className="admin-card-title">Recent Activity</h2>
           </div>

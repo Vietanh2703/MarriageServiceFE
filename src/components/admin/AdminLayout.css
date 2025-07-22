@@ -180,6 +180,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
+  justify-content: space-between;
 }
 
 .admin-header h1 {
@@ -238,6 +239,30 @@
   
   .logout-button span {
     display: inline;
+  }
+  
+  /* Adjust dropdown menu position for sidebar in mobile */
+  .admin-sidebar .dropdown-menu {
+    right: 0;
+    left: 100%; /* Position to the right of the sidebar */
+    top: 0;
+    width: 200px;
+  }
+  
+  /* Adjust navbar avatar for mobile */
+  .navbar-avatar .avatar-container {
+    padding: 0.5rem;
+  }
+  
+  .navbar-avatar .avatar-container span {
+    display: none; /* Hide "Admin" text on mobile */
+  }
+  
+  /* Ensure navbar dropdown stays within viewport */
+  .navbar-avatar .dropdown-menu {
+    right: 0;
+    max-width: 200px;
+    width: auto;
   }
 }
 
@@ -502,4 +527,383 @@
 .admin-pagination button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Modal Styles */
+.admin-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 1rem;
+}
+
+.admin-modal-content {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.admin-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.admin-modal-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--admin-secondary);
+  transition: var(--admin-transition);
+}
+
+.modal-close:hover {
+  color: var(--admin-danger);
+}
+
+.admin-modal-body {
+  padding: 1.5rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.admin-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Admin Avatar Dropdown Styles */
+.admin-avatar-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+/* Navbar Avatar Styles */
+.navbar-avatar {
+  width: auto;
+  margin-left: auto;
+}
+
+.avatar-container {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.05);
+  transition: var(--admin-transition);
+}
+
+.avatar-container:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.admin-avatar {
+  font-size: 1.5rem;
+  margin-right: 0.75rem;
+  color: var(--admin-primary);
+}
+
+.dropdown-icon {
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: var(--admin-secondary);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 0;
+  right: -220px; /* Positioned to the right for sidebar avatar */
+  width: 200px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1001; /* Increased z-index to ensure it appears above other elements */
+  overflow: hidden;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+/* Navbar avatar dropdown positioning and animation */
+.navbar-avatar .dropdown-menu {
+  top: 100%; /* Position below the avatar */
+  right: 0; /* Align with the right edge of the avatar container */
+  left: auto; /* Reset any left positioning */
+  margin-top: 5px; /* Add a small gap between avatar and dropdown */
+  animation: fadeDown 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(0); } /* For sidebar dropdown */
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  color: var(--admin-secondary);
+  text-decoration: none;
+  transition: var(--admin-transition);
+}
+
+.dropdown-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--admin-primary);
+}
+
+.dropdown-item svg {
+  margin-right: 0.75rem;
+  font-size: 1rem;
+}
+
+.admin-sidebar.closed .avatar-container span,
+.admin-sidebar.closed .dropdown-icon {
+  display: none;
+}
+
+.admin-sidebar.closed .admin-avatar {
+  margin-right: 0;
+}
+
+/* Profile Modal Styles */
+.profile-modal {
+  max-width: 700px;
+  width: 90%;
+}
+
+.profile-view {
+  padding: 1rem 0;
+}
+
+.profile-view .profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.profile-view .avatar-section {
+  display: flex;
+  align-items: center;
+}
+
+.profile-view .profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
+  border: 3px solid var(--admin-primary);
+}
+
+.profile-view .profile-info h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  color: var(--admin-dark);
+}
+
+.profile-view .profile-email {
+  margin: 0;
+  color: var(--admin-secondary);
+  font-size: 0.875rem;
+}
+
+.profile-content .info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.profile-content .info-item {
+  margin-bottom: 1rem;
+}
+
+.profile-content .info-item.full-width {
+  grid-column: span 2;
+}
+
+.profile-content .info-item label {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--admin-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.profile-content .info-item p {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--admin-dark);
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Profile Edit Styles */
+.profile-edit {
+  padding: 1rem 0;
+}
+
+.profile-edit .edit-avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.profile-edit .edit-avatar-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  border: 3px solid var(--admin-primary);
+}
+
+.profile-edit .edit-form {
+  margin-top: 1.5rem;
+}
+
+.profile-edit .form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.profile-edit .form-group {
+  flex: 1;
+}
+
+.profile-edit .form-group.full-width {
+  width: 100%;
+}
+
+.profile-edit .form-group label {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--admin-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.profile-edit .form-group input,
+.profile-edit .form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.profile-edit .form-group textarea {
+  resize: vertical;
+}
+
+/* Admin Button Styles */
+.admin-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--admin-transition);
+}
+
+.admin-btn.primary {
+  background-color: var(--admin-primary);
+  color: #fff;
+}
+
+.admin-btn.primary:hover {
+  background-color: var(--admin-primary-dark);
+}
+
+.admin-btn.secondary {
+  background-color: #f5f5f5;
+  color: var(--admin-secondary);
+}
+
+.admin-btn.secondary:hover {
+  background-color: #e5e5e5;
+}
+
+.admin-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Notification Styles */
+.notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 1rem 1.5rem;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 0.875rem;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.notification.success {
+  background-color: var(--admin-success);
+}
+
+.notification.error {
+  background-color: var(--admin-danger);
+}
+
+/* Responsive Styles for Profile Modal */
+@media (max-width: 768px) {
+  .profile-content .info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .profile-content .info-item.full-width {
+    grid-column: span 1;
+  }
+  
+  .profile-edit .form-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .profile-view .avatar-section {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .profile-view .profile-avatar {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
 }

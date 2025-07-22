@@ -7,6 +7,7 @@ import './LoginPage.css';
 import Footer from "./Footer";
 import Notification from './Notification';
 import { apiRequest, API_CONFIG } from '../utils/apiConfig';
+import { jwtDecode } from 'jwt-decode'; // Thêm import này
 
 interface LoginRequest {
   email: string;
@@ -25,6 +26,23 @@ interface LoginResponse {
     role: string;
   };
 }
+
+// Thêm interface cho JWT payload
+interface JWTPayload {
+  sub?: string;
+  email?: string;
+  role?: string;
+  name?: string;
+  exp?: number;
+  iat?: number;
+  jti?: string;
+  // Microsoft Identity claims
+  'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'?: string;
+  'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'?: string;
+  'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'?: string;
+  [key: string]: any;
+}
+
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -58,6 +76,69 @@ const LoginPage: React.FC = () => {
   const saveUser = (user: any) => {
     localStorage.setItem('userInfo', JSON.stringify(user));
   };
+
+  // Thêm function để decode JWT token
+  const decodeToken = (token: string): JWTPayload | null => {
+    try {
+      const decoded = jwtDecode<JWTPayload>(token);
+
+      // Extract email from Microsoft claims
+      const email = decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ||
+          decoded.email;
+
+      // Extract role from Microsoft claims
+      const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] ||
+          decoded.role;
+
+      return {
+        ...decoded,
+        email: email,
+        role: role
+      };
+    } catch (error) {
+      return null;
+    }
+  };
+
+
+  // Thêm function để kiểm tra admin
+  const isAdminUser = (user: any, token?: string): boolean => {
+
+    // Kiểm tra từ user object trước
+    if (user?.role === 'admin' || user?.email === 'admin@cuoidi.dev') {
+      return true;
+    }
+
+    // Nếu có token, decode để kiểm tra
+    if (token) {
+      const decodedToken = decodeToken(token);
+      if (decodedToken) {
+        // Lấy email từ Microsoft claims
+        const tokenEmail = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ||
+            decodedToken.email;
+
+        // Lấy role từ Microsoft claims (có thể là GUID của role admin)
+        const tokenRole = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] ||
+            decodedToken.role;
+
+        // Kiểm tra email admin
+        const isAdminEmail = tokenEmail === 'admin@cuoidi.dev';
+
+        // Kiểm tra role (có thể cần thêm logic để map GUID role thành text)
+        const isAdminRole = tokenRole === 'admin' ||
+            tokenRole === 'ADMIN' ||
+            // Nếu bạn biết GUID của admin role, thêm vào đây
+            tokenRole === '960a814f-467c-4303-a951-3db74ea30aef'; // Ví dụ từ token của bạn
+
+
+        if (isAdminEmail || isAdminRole) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
+
 
   const loginAPI = async (credentials: LoginRequest): Promise<LoginResponse> => {
     try {
@@ -140,11 +221,23 @@ const LoginPage: React.FC = () => {
         const accessToken = data.accessToken || data.result?.accessToken;
         const refreshToken = data.refreshToken || data.result?.refreshToken;
         const user = data.user || data.result?.user;
+
         if (accessToken && refreshToken) saveTokens(accessToken, refreshToken);
         if (user) saveUser(user);
+
         showNotification('Đăng nhập thành công!', 'success');
         window.dispatchEvent(new Event('userInfoUpdated'));
-        setTimeout(() => navigate('/home'), 1500);
+
+        setTimeout(() => {
+          // Sử dụng function isAdminUser mới với token decode
+          if (isAdminUser(user, accessToken)) {
+            console.log('Navigating to admin page for social login user:', user);
+            navigate('/admin');
+          } else {
+            console.log('Navigating to home page for social login user:', user);
+            navigate('/home');
+          }
+        }, 1500);
       } else {
         showNotification(data.message || 'Đăng nhập thất bại.', 'error');
       }
@@ -170,7 +263,6 @@ const LoginPage: React.FC = () => {
       const credentials: LoginRequest = { email, password };
       const response = await loginAPI(credentials);
 
-
       if (response.success) {
         // Save tokens and user info
         if (response.accessToken && response.refreshToken) {
@@ -184,8 +276,6 @@ const LoginPage: React.FC = () => {
 
         if (response.user) {
           saveUser(response.user);
-        } else {
-          console.log('No user data in response');
         }
 
         // Show success notification
@@ -194,11 +284,17 @@ const LoginPage: React.FC = () => {
         // Dispatch custom event to notify other components
         window.dispatchEvent(new Event('userInfoUpdated'));
 
-        // Navigate to HomeLoggedPage after a short delay
+        // Navigate với logic kiểm tra admin mới
         setTimeout(() => {
-          if (response.user?.name === 'admin') {
+          // Decode token để kiểm tra role
+          console.log('Checking admin status for user:', response.user);
+          console.log('Access token available:', !!response.accessToken);
+
+          if (isAdminUser(response.user, response.accessToken)) {
+            console.log('✅ Admin user detected, navigating to /admin');
             navigate('/admin');
           } else {
+            console.log('👤 Regular user, navigating to /home');
             navigate('/home');
           }
         }, 1500);

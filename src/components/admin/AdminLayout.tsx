@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation, Navigate } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import './AdminLayout.css';
+import ProfileModal from './ProfileModal';
 
 // Icons for sidebar
 import { 
@@ -10,7 +11,10 @@ import {
   FaComments, 
   FaBars, 
   FaTimes,
-  FaSignOutAlt
+  FaSignOutAlt,
+  FaFileInvoiceDollar,
+  FaUserCircle,
+  FaUser
 } from 'react-icons/fa';
 
 interface AdminLayoutProps {
@@ -19,43 +23,47 @@ interface AdminLayoutProps {
 
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [optionsBoxOpen, setOptionsBoxOpen] = useState(false);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
   const location = useLocation();
-
-  useEffect(() => {
-    // Check if user is admin
-    const checkAdminStatus = () => {
-      const userInfo = localStorage.getItem('userInfo');
-      if (userInfo) {
-        try {
-          const user = JSON.parse(userInfo);
-          setIsAdmin(user.role === 'admin');
-        } catch (error) {
-          console.error('Error parsing user info:', error);
-          setIsAdmin(false);
-        }
-      } else {
-        setIsAdmin(false);
-      }
-    };
-
-    checkAdminStatus();
-    // Listen for user info updates
-    window.addEventListener('userInfoUpdated', checkAdminStatus);
-    
-    return () => {
-      window.removeEventListener('userInfoUpdated', checkAdminStatus);
-    };
-  }, []);
-
+  const optionsBoxRef = useRef<HTMLDivElement>(null);
+  const avatarRef = useRef<HTMLDivElement>(null);
+  
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
-
-  // If not admin, redirect to home
-  if (!isAdmin) {
-    return <Navigate to="/home" replace />;
-  }
+  
+  const toggleOptionsBox = () => {
+    setOptionsBoxOpen(!optionsBoxOpen);
+  };
+  
+  const openProfileModal = () => {
+    setOptionsBoxOpen(false); // Close dropdown menu
+    setProfileModalOpen(true);
+  };
+  
+  const closeProfileModal = () => {
+    setProfileModalOpen(false);
+  };
+  
+  // Close options box when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        optionsBoxRef.current && 
+        avatarRef.current && 
+        !optionsBoxRef.current.contains(event.target as Node) && 
+        !avatarRef.current.contains(event.target as Node)
+      ) {
+        setOptionsBoxOpen(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="admin-layout">
@@ -94,14 +102,17 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 <span>Feedback</span>
               </Link>
             </li>
+            <li className={location.pathname === '/admin/invoices' ? 'active' : ''}>
+              <Link to="/admin/invoices">
+                <FaFileInvoiceDollar />
+                <span>Invoices</span>
+              </Link>
+            </li>
           </ul>
         </nav>
         
         <div className="sidebar-footer">
-          <Link to="/home" className="logout-button">
-            <FaSignOutAlt />
-            <span>Back to Site</span>
-          </Link>
+          {/* Avatar moved to header */}
         </div>
       </div>
       
@@ -116,12 +127,34 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             {location.pathname === '/admin/users' && 'User Management'}
             {location.pathname === '/admin/partner-requests' && 'Partner Requests'}
             {location.pathname === '/admin/feedback' && 'Feedback Management'}
+            {location.pathname === '/admin/invoices' && 'Invoice Management'}
           </h1>
+          <div className="admin-avatar-dropdown navbar-avatar">
+            <div className="avatar-container" onClick={toggleOptionsBox} ref={avatarRef}>
+              <FaUserCircle className="admin-avatar" />
+              <span>Admin</span>
+            </div>
+            {optionsBoxOpen && (
+              <div className="dropdown-menu" ref={optionsBoxRef}>
+                <div className="dropdown-item" onClick={openProfileModal}>
+                  <FaUser />
+                  <span>View Profile</span>
+                </div>
+                <Link to="/" className="dropdown-item">
+                  <FaSignOutAlt />
+                  <span>Logout</span>
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
         <div className="admin-main">
           {children}
         </div>
       </div>
+      
+      {/* Profile Modal */}
+      <ProfileModal isOpen={profileModalOpen} onClose={closeProfileModal} />
     </div>
   );
 };

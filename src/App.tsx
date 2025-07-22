@@ -33,6 +33,7 @@ import AdminDashboard from "./components/admin/AdminDashboard";
 import UserList from "./components/admin/UserList";
 import PartnerRequests from "./components/admin/PartnerRequests";
 import Feedback from "./components/admin/Feedback";
+import Invoice from "./components/admin/Invoice";
 
 function AppContent() {
     const location = useLocation();
@@ -128,6 +129,7 @@ function AppContent() {
                     <Route path="/admin/users" element={<AdminLayout><UserList /></AdminLayout>} />
                     <Route path="/admin/partner-requests" element={<AdminLayout><PartnerRequests /></AdminLayout>} />
                     <Route path="/admin/feedback" element={<AdminLayout><Feedback /></AdminLayout>} />
+                    <Route path="/admin/invoices" element={<AdminLayout><Invoice /></AdminLayout>} />
                     
                     {/* Thêm các route khác nếu cần */}
                     <Route path="*" element={
