@@ -1,0 +1,331 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 0.8rem 0;
+  transition: all 0.3s ease;
+}
+
+.navbar-container {
+  max-width: 1200px;
+  display: flex;
+  margin: 0 auto;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4rem;
+}
+
+.logo a {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #ff6b6b;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.logo-image {
+  height: 50px;
+  width: auto;
+  display: block;
+}
+
+.logo a:hover {
+  color: #ff5252;
+}
+
+.nav-items {
+  display: flex;
+  list-style: none;
+  align-items: center;
+  margin-right: -8.5rem;
+}
+
+.nav-item {
+  margin-left: 1.5rem;
+  position: relative;
+}
+
+.nav-item a, .nav-item .dropdown-toggle {
+  font-size: 1.08rem;
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-item a:hover, .nav-item .dropdown-toggle:hover {
+  color: #ff6b6b;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  transition: color 0.3s ease;
+}
+
+.dropdown-toggle:hover {
+  color: #ff6b6b !important;
+}
+
+.dropdown-arrow {
+  font-size: 0.7rem;
+  margin-left: 0.3rem;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 30px;
+  background-color: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 1.0rem 0;
+  min-width: 240px;
+  list-style: none;
+  z-index: 1001;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-menu li {
+  padding: 0;
+}
+
+.dropdown-menu a {
+  padding: 0.5rem 1.5rem;
+  display: block;
+  color: #333;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f8f9fa;
+  color: #ff6b6b;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-partner {
+  background-color: #ff6b6b;
+  color: white !important;
+  border: 1px solid #ff6b6b;
+}
+
+.btn-partner:hover {
+  background-color: #ff5252;
+  border-color: #ff5252;
+}
+
+.btn-login {
+  background-color: transparent;
+  color: #ff6b6b !important;
+  border: 1px solid #ff6b6b;
+}
+
+.btn-login:hover {
+  background-color: #ff6b6b;
+  color: white !important;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .navbar-container {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .nav-items {
+    flex-direction: column;
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .nav-item {
+    margin: 0.5rem 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .dropdown-menu {
+    position: static;
+    box-shadow: none;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}
+
+.toggle-switch {
+  width: 80px;
+  height: 40px;
+  background-color: #f1c40f;
+  border-radius: 20px;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  transition: background-color 0.3s ease;
+}
+
+.toggle-switch .icon {
+  position: absolute;
+  left: 10px;
+  font-size: 1.5rem;
+  color: white;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.toggle-switch.dark {
+  background-color: #34495e;
+}
+
+.toggle-switch.dark .icon {
+  color: #f1c40f; /* Moon color */
+}
+
+.toggle-switch.light {
+  background-color: #f1c40f;
+}
+
+.toggle-switch.light .icon {
+  color: #fff; /* Sun color */
+}
+
+.toggle-switch .switch {
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  transition: all 0.3s ease;
+}
+
+.toggle-switch.dark .switch {
+  left: 45px;
+}
+
+/* Add these styles to your Navbar.css file */
+
+/* Dark theme styles */
+body.dark-theme {
+  background-color: #2c3e50;
+  color: #f5f5f5;
+}
+
+body.dark-theme .navbar {
+  background-color: rgba(52, 73, 94, 0.95);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-theme .nav-item a {
+  color: #f5f5f5;
+}
+
+body.dark-theme .nav-item a:hover {
+  color: #ff6b6b;
+}
+
+body.dark-theme .dropdown-toggle {
+  color: #f5f5f5;
+}
+
+body.dark-theme .dropdown-toggle:hover {
+  color: #ff6b6b !important;
+}
+
+body.dark-theme .dropdown-menu {
+  background-color: #34495e;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-theme .dropdown-menu a {
+  color: #f5f5f5;
+}
+
+body.dark-theme .dropdown-menu a:hover {
+  background-color: #2c3e50;
+}
+
+/* Theme switch styles */
+.theme-switch {
+  width: 80px;
+  height: 40px;
+  background-color: #f1c40f;
+  border-radius: 30px;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  transition: background-color 0.4s ease-in-out;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.theme-switch.dark {
+  background-color: #34495e;
+}
+
+.sun-icon, .moon-icon {
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.sun-icon {
+  color: #fff;
+  position: absolute;
+  left: 15px;
+}
+
+.moon-icon {
+  color: #fff;
+  position: absolute;
+  right: 15px;
+}
+
+
+

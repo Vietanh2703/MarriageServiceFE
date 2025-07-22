@@ -1,0 +1,114 @@
+.features-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  padding: 4rem 2rem;
+  background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+}
+
+.feature-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  color: #e3704d;
+  margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.feature-card p {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Partner card enhancements */
+.partner-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  transition: transform 0.3s ease;
+}
+
+.partner-card:hover {
+  transform: scale(1.02);
+}
+
+.partner-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 15px 15px 0 0;
+}
+
+.partner-info {
+  padding: 1.5rem;
+  background: white;
+}
+
+.partner-name {
+  font-size: 1.8rem;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.partner-description {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.partner-features {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.feature-tag {
+  background: #f8f9fa;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  color: #2c3e50;
+}
+
+.partner-price {
+  font-weight: bold;
+  color: #e3704d;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
+
+/* Rating stars */
+.rating {
+  color: #ffd700;
+  margin: 0.5rem 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .features-section {
+    grid-template-columns: 1fr;
+    padding: 2rem 1rem;
+  }
+
+  .feature-card {
+    padding: 1.5rem;
+  }
+}

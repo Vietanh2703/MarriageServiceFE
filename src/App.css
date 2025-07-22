@@ -1,0 +1,199 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap'); /* Global styles for Cuoidi.vn */
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Import fonts */
+
+/* Reset some browser defaults */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --background-color: #fff;
+  --text-color: #333;
+  --link-color: #ff6b6b;
+  --link-hover-color: #ff5252;
+  --card-bg: #fff;
+  --card-border: #e0e0e0;
+  --header-bg: #fff;
+  --footer-bg: #f8f9fa;
+}
+
+body.dark-theme {
+  --background-color: #1a1a1a;
+  --text-color: #e0e0e0;
+  --link-color: #ff8080;
+  --link-hover-color: #ff6666;
+  --card-bg: #2d2d2d;
+  --card-border: #404040;
+  --header-bg: #2d2d2d;
+  --footer-bg: #2d2d2d;
+}
+
+body {
+  font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow-y: auto;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Global link styles */
+a {
+  text-decoration: none;
+  color: var(--link-color);
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--link-hover-color);
+}
+
+/* Global heading styles */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 1rem;
+}
+
+/* Global paragraph styles */
+p {
+  margin-bottom: 1rem;
+}
+
+/* Global container */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Global section styles */
+section {
+  padding: 5rem 0;
+}
+
+/* Utility classes */
+.text-center {
+  text-align: center;
+}
+
+.mb-1 {
+  margin-bottom: 1rem;
+}
+
+.mb-2 {
+  margin-bottom: 2rem;
+}
+
+.mb-3 {
+  margin-bottom: 3rem;
+}
+
+.mt-1 {
+  margin-top: 1rem;
+}
+
+.mt-2 {
+  margin-top: 2rem;
+}
+
+.mt-3 {
+  margin-top: 3rem;
+}
+
+/* Animation classes */
+.fade-in {
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.slide-up {
+  animation: slideUp 1s ease-in-out;
+}
+
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.content > * {
+    scroll-behavior: auto;
+    overflow-anchor: none;
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.content > *:not(:first-child) {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.card, .event-card, .service-card {
+  background-color: var(--card-bg);
+  border-color: var(--card-border);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+nav, header {
+  background-color: var(--header-bg);
+  transition: background-color 0.3s ease;
+}
+
+footer {
+  background-color: var(--footer-bg);
+  transition: background-color 0.3s ease;
+}

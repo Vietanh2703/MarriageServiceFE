@@ -1,0 +1,286 @@
+.slideshowhome {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    margin-top: calc(var(--navbar-height) * -1);
+}
+
+.slides-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    background-size: cover;
+    background-position: center;
+    transition: opacity 1s ease-in-out;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+.slide-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.7) 0%,
+        rgba(0, 0, 0, 0.3) 70%,
+        rgba(0, 0, 0, 0.1) 100%
+    );
+}
+
+.slide-content {
+    position: absolute;
+    left: 10%;
+    top: 45%; /* Điều chỉnh từ 50% xuống 45% để đưa content lên cao hơn */
+    transform: translateY(-50%);
+    color: white;
+    width: 70%;
+    max-width: 900px;
+    text-align: left;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Giảm khoảng cách giữa các phần tử */
+    opacity: 0;
+}
+
+.slide-content h2 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 4rem; /* Giảm kích thước tiêu đề */
+    line-height: 1.2;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3),
+                 4px 4px 12px rgba(255, 182, 193, 0.4);
+    margin-bottom: 0.5rem; /* Giảm margin bottom */
+    transform: rotate(-2deg);
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.slide-content h2:hover {
+    transform: rotate(0deg) scale(1.02);
+    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.4),
+                 5px 5px 15px rgba(255, 182, 193, 0.5);
+}
+
+.slide-content p {
+    font-size: 1.1rem; /* Giảm kích thước đoạn văn */
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    opacity: 0;
+}
+
+.active .slide-content {
+    animation: slideContent 1s ease-out forwards;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 0.8rem 2rem; /* Giảm padding để button ngắn hơn */
+    width: fit-content; /* Đảm bảo button chỉ rộng bằng nội dung */
+    font-size: 1.2rem;
+    color: white;
+    background: linear-gradient(45deg, #ff6b6b, #ff8585);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+}
+
+.cta-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(45deg, #ff8585, #ff6b6b);
+    transition: all 0.5s ease;
+    z-index: -1;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+}
+
+.cta-button:active {
+    transform: translateY(-1px);
+}
+
+.slide-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 1rem 1.2rem;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.slide-arrow:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.prev {
+    left: 2rem;
+}
+
+.next {
+    right: 2rem;
+}
+
+.slide-indicators {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1rem;
+    z-index: 10;
+}
+
+.indicator {
+    width: 3rem;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.5);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.indicator.active {
+    background: #fff;
+    width: 5rem;
+}
+
+@keyframes slideContent {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInFromLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .slideshowhome {
+        height: 80vh;
+    }
+
+    .slide-content {
+        top: 45%; /* Điều chỉnh cho mobile */
+        width: 90%;
+    }
+
+    .slide-content h2 {
+        font-size: 2.8rem; /* Giảm kích thước tiêu đề trên mobile */
+        transform: rotate(0deg);
+    }
+
+    .slide-content p {
+        font-size: 1rem; /* Giảm kích thước đoạn văn trên mobile */
+    }
+
+    .slide.active .slide-content h2,
+    .slide.active .slide-content p,
+    .slide.active .slide-content .cta-button {
+        animation-duration: 0.6s;
+    }
+}
+
+/* Animation for slide transitions */
+.slide {
+    transform: scale(1.1);
+    transition: opacity 1s ease-in-out, transform 5s ease-in-out;
+}
+
+.slide.active {
+    transform: scale(1);
+}
+
+.slide.active .slide-content {
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.slide.active .slide-content h2 {
+    opacity: 0;
+    animation: slideInFromLeft 0.8s ease-out forwards;
+    animation-delay: 0.2s;
+}
+
+.slide.active .slide-content p {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out forwards;
+    animation-delay: 0.4s;
+}
+
+.slide.active .slide-content .cta-button {
+    opacity: 0;
+    animation: scaleIn 0.8s ease-out forwards;
+    animation-delay: 0.6s;
+}
