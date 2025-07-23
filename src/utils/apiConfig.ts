@@ -18,6 +18,7 @@ export const API_CONFIG = {
       PROFILE: '/User/profile',
       UPDATE_PROFILE: '/User/update-profile',
       IS_PARTNER: '/userRole',
+      COUNT_PARTNERS:'/count-cooperators',
     },
     SERVICES: {
       GET_ALL: '/Services',

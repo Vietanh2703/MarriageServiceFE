@@ -101,7 +101,7 @@ function LoadingScreen({ onLoadingComplete}: LoadingScreenProps) {
           <div className="heart" ref={heartRef}>❤️</div>
           <div className="flowers" ref={flowersRef}>
             <span className="flower">C</span>
-            <span className="flower">u</span>
+            <span className="flower">ư</span>
             <span className="flower">ớ</span>
             <span className="flower">i</span>
             <span className="flower"> </span>

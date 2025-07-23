@@ -56,16 +56,6 @@ interface User {
   userRoles: UserRole[];
 }
 
-// Interface for Partner data
-interface Partner {
-  id: string;
-  userId: string;
-  businessName: string;
-  businessType: string;
-  description: string;
-  status: string;
-  createdAt: string;
-}
 
 // Interface for Dashboard stats
 interface DashboardStats {
@@ -211,11 +201,10 @@ const AdminDashboard: React.FC = () => {
   };
 
   // Fetch partners data
-  const fetchPartners = async (): Promise<{total: number, distribution: {labels: string[], data: number[]}}> => {
+  const fetchPartners = async (): Promise<{ total: number, distribution: { labels: string[], data: number[] } }> => {
     try {
       const token = localStorage.getItem('accessToken');
-
-      const response = await apiRequest(API_CONFIG.ENDPOINTS.BUSINESS_REGISTER.GET_ALL, {
+      const response = await apiRequest(API_CONFIG.ENDPOINTS.USER.COUNT_PARTNERS, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -225,51 +214,29 @@ const AdminDashboard: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
-
-        let partners: Partner[] = [];
-
-        if (Array.isArray(data)) {
-          partners = data;
-        } else if (data.result && Array.isArray(data.result)) {
-          partners = data.result;
-        } else if (data.partners && Array.isArray(data.partners)) {
-          partners = data.partners;
-        } else if (data.data && Array.isArray(data.data)) {
-          partners = data.data;
-        }
-
-        const activePartners = partners.filter(partner => partner.status === 'Approved');
-        
-        // Generate service distribution data
-        const serviceTypes = [...new Set(partners.map(partner => partner.businessType))];
-        const serviceData = serviceTypes.map(type => {
-          return partners.filter(partner => partner.businessType === type).length;
-        });
-
+        const total = typeof data === 'number' ? data : 0;
         return {
-          total: activePartners.length,
+          total,
           distribution: {
-            labels: serviceTypes.length > 0 ? serviceTypes : ['Wedding Planning', 'Photography', 'Catering', 'Venue', 'Decoration'],
-            data: serviceData.length > 0 ? serviceData : [15, 12, 9, 5, 4]
+            labels: ['Wedding Planning', 'Photography', 'Catering', 'Venue', 'Decoration'],
+            data: [0, 1, 0, 0, 0] // Only Photography has 1, others are 0
           }
         };
       } else {
-        console.error('Failed to fetch partners:', response.status);
         return {
           total: 0,
           distribution: {
             labels: ['Wedding Planning', 'Photography', 'Catering', 'Venue', 'Decoration'],
-            data: [15, 12, 9, 5, 4]
+            data: [0, 1, 0, 0, 0]
           }
         };
       }
     } catch (error) {
-      console.error('Error fetching partners:', error);
       return {
         total: 0,
         distribution: {
           labels: ['Wedding Planning', 'Photography', 'Catering', 'Venue', 'Decoration'],
-          data: [15, 12, 9, 5, 4]
+          data: [0, 1, 0, 0, 0]
         }
       };
     }
@@ -278,23 +245,45 @@ const AdminDashboard: React.FC = () => {
   // Generate mock revenue data (for now)
   const generateRevenueData = (): {total: number, data: {labels: string[], data: number[]}} => {
     const months = [];
-    const revenueData = [];
+    const revenueData: number[] = [];
     const now = new Date();
-    let total = 0;
-    
+    const totalRevenue = 300000;
+    const numMonths = 6;
+
+// Start with equal base
+    let base = Math.floor(totalRevenue / numMonths); // 50000
+    let revenues = Array(numMonths).fill(base);
+
+// Randomly adjust to make them different
+    let adjustments = [0, 1, 2, 3, 4, 5].map(() => Math.floor(Math.random() * 10000) - 5000);
+    let sumAdjustments = adjustments.reduce((a, b) => a + b, 0);
+
+// Adjust so the sum is still 0
+    adjustments[0] -= sumAdjustments;
+
+// Apply adjustments and ensure all are positive and unique
+    for (let i = 0; i < numMonths; i++) {
+      revenues[i] += adjustments[i];
+    }
+    while (new Set(revenues).size < revenues.length || revenues.some(r => r <= 0)) {
+      // If not unique or negative, re-randomize
+      adjustments = [0, 1, 2, 3, 4, 5].map(() => Math.floor(Math.random() * 10000) - 5000);
+      sumAdjustments = adjustments.reduce((a, b) => a + b, 0);
+      adjustments[0] -= sumAdjustments;
+      for (let i = 0; i < numMonths; i++) {
+        revenues[i] = base + adjustments[i];
+      }
+    }
+
     for (let i = 5; i >= 0; i--) {
       const month = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const monthName = month.toLocaleString('default', { month: 'short' });
       months.push(monthName);
-      
-      // Generate random revenue between 20M and 40M
-      const revenue = Math.floor(Math.random() * 20000000) + 20000000;
-      revenueData.push(revenue);
-      total += revenue;
+      revenueData.push(revenues[5 - i]);
     }
 
     return {
-      total,
+      total: totalRevenue,
       data: {
         labels: months,
         data: revenueData
@@ -302,27 +291,52 @@ const AdminDashboard: React.FC = () => {
     };
   };
 
-  // Generate mock feedback data (for now)
-  const generateFeedbackData = (): {total: number, ratings: {labels: string[], data: number[]}} => {
-    const ratings = ['5 Stars', '4 Stars', '3 Stars', '2 Stars', '1 Star'];
-    // Generate distribution with more weight on higher ratings
-    const ratingData = [
-      Math.floor(Math.random() * 50) + 100, // 5 stars
-      Math.floor(Math.random() * 30) + 70,  // 4 stars
-      Math.floor(Math.random() * 20) + 30,  // 3 stars
-      Math.floor(Math.random() * 10) + 10,  // 2 stars
-      Math.floor(Math.random() * 10) + 5    // 1 star
-    ];
-    
-    const total = ratingData.reduce((sum, current) => sum + current, 0);
-    
-    return {
-      total,
-      ratings: {
-        labels: ratings,
-        data: ratingData
+  const fetchFeedbackData = async (): Promise<{ total: number, ratings: { labels: string[], data: number[] } }> => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await apiRequest(API_CONFIG.ENDPOINTS.FEEDBACK.GET_ALL, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const feedbacks = Array.isArray(data.result) ? data.result : [];
+        const activeFeedbacks = feedbacks.filter((f: any) => !f.isDeleted);
+
+        // Count by point (1-5 stars)
+        const ratings = [5, 4, 3, 2, 1].map(star =>
+            activeFeedbacks.filter((f: any) => f.point === star).length
+        );
+
+        return {
+          total: activeFeedbacks.length,
+          ratings: {
+            labels: ['5 Stars', '4 Stars', '3 Stars', '2 Stars', '1 Star'],
+            data: ratings
+          }
+        };
+      } else {
+        return {
+          total: 0,
+          ratings: {
+            labels: ['5 Stars', '4 Stars', '3 Stars', '2 Stars', '1 Star'],
+            data: [0, 0, 0, 0, 0]
+          }
+        };
       }
-    };
+    } catch (error) {
+      return {
+        total: 0,
+        ratings: {
+          labels: ['5 Stars', '4 Stars', '3 Stars', '2 Stars', '1 Star'],
+          data: [0, 0, 0, 0, 0]
+        }
+      };
+    }
   };
 
   // Generate mock recent activities
@@ -353,14 +367,14 @@ const AdminDashboard: React.FC = () => {
         id: '4',
         type: 'payment',
         icon: <FaDollarSign />,
-        text: 'Payment processed: <strong>₫2,500,000</strong>',
+        text: 'Payment processed: <strong>₫30000</strong>',
         time: '2 days ago'
       },
       {
         id: '5',
         type: 'user',
         icon: <FaUsers />,
-        text: 'User updated profile: <strong>trangpham@example.com</strong>',
+        text: 'User updated profile: <strong>trangpham@gmail.com</strong>',
         time: '3 days ago'
       }
     ];
@@ -382,7 +396,7 @@ const AdminDashboard: React.FC = () => {
       const revenueData = generateRevenueData();
       
       // Generate feedback data (mock for now)
-      const feedbackData = generateFeedbackData();
+      const feedbackData = await fetchFeedbackData();
       
       // Generate activities
       const activitiesData = generateRecentActivities();
@@ -626,7 +640,6 @@ const AdminDashboard: React.FC = () => {
               <CountUp end={stats.totalUsers} duration={2} separator="," />
             </div>
             <div className="admin-dashboard-stat-label">Total Users</div>
-            <div className="admin-dashboard-stat-trend positive">+12% from last month</div>
           </div>
         </div>
 
@@ -638,8 +651,7 @@ const AdminDashboard: React.FC = () => {
             <div className="admin-dashboard-stat-number">
               <CountUp end={stats.totalPartners} duration={2} separator="," />
             </div>
-            <div className="admin-dashboard-stat-label">Active Partners</div>
-            <div className="admin-dashboard-stat-trend positive">+8% from last month</div>
+            <div className="admin-dashboard-stat-label">Total Partners</div>
           </div>
         </div>
 
@@ -652,7 +664,6 @@ const AdminDashboard: React.FC = () => {
               <CountUp end={stats.totalFeedback} duration={2} separator="," />
             </div>
             <div className="admin-dashboard-stat-label">Total Feedback</div>
-            <div className="admin-dashboard-stat-trend positive">+15% from last month</div>
           </div>
         </div>
 
@@ -671,7 +682,6 @@ const AdminDashboard: React.FC = () => {
               />
             </div>
             <div className="admin-dashboard-stat-label">Total Revenue</div>
-            <div className="admin-dashboard-stat-trend positive">+23% from last month</div>
           </div>
         </div>
       </div>
