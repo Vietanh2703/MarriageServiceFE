@@ -1,0 +1,84 @@
+.misa-checkout-page {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    padding: 32px 28px 24px 28px;
+    min-width: 340px;
+    max-width: 400px;
+    width: 100%;
+    margin: 40px auto;
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(40px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+
+.misa-checkout-page h2 {
+    margin-bottom: 18px;
+    font-size: 1.4rem;
+    color: #0f172a;
+    font-weight: 700;
+    text-align: center;
+}
+
+.misa-checkout-section {
+    margin-bottom: 18px;
+}
+
+.misa-checkout-page label {
+    font-size: 0.98rem;
+    color: #475569;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.misa-checkout-page input[type="email"] {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 6px;
+    background: #f8fafc;
+    color: #334155;
+    font-size: 1rem;
+    margin-bottom: 8px;
+    outline: none;
+}
+
+.misa-checkout-page p {
+    margin: 8px 0;
+    color: #334155;
+    font-size: 1rem;
+}
+
+.misa-checkout-page b {
+    color: #0ea5e9;
+}
+
+.misa-checkout-qr {
+    margin-top: 18px;
+    text-align: center;
+}
+
+.misa-checkout-qr p {
+    margin-bottom: 10px;
+}
+
+.misa-checkout-note {
+    margin-top: 18px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.98rem;
+    text-align: center;
+}
+
+@media (max-width: 500px) {
+    .misa-checkout-page {
+        padding: 18px 6px 16px 6px;
+        min-width: unset;
+        max-width: 98vw;
+    }
+}

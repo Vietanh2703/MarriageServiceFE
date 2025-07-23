@@ -1,11 +1,30 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import Footer from './Footer';
 import './MisaProPage.css';
 import HomeNavbar from "./HomeNavbar.tsx";
+import { useNavigate } from 'react-router-dom';
+import {jwtDecode } from 'jwt-decode';
+import Notification from './Notification';
 
 const MisaProPage: React.FC = () => {
+    const [notification,setNotification] = useState({
+        isVisible: false,
+        message: '',
+        type: 'success' as 'success' | 'error'
+    });
+    const showNotification = (message: string, type: 'success' | 'error') => {
+        setNotification({
+            isVisible: true,
+            message,
+            type
+        });
+    };
+    const navigate = useNavigate();
+
+    const hideNotification = () => {
+        setNotification(prev => ({ ...prev, isVisible: false }));
+    };
     useEffect(() => {
-        // Animation trigger on scroll
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -13,16 +32,50 @@ const MisaProPage: React.FC = () => {
                 }
             });
         }, { threshold: 0.1 });
-
         document.querySelectorAll('.misa-animate').forEach((element) => {
             observer.observe(element);
         });
-
         return () => observer.disconnect();
     }, []);
 
+    type JWTPayload = {
+        email?: string;
+        role?: string;
+        [key: string]: any;
+    };
+
+    const decodeToken = (token: string): JWTPayload | null => {
+        try {
+            const decoded = jwtDecode<JWTPayload>(token);
+            const email = decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] || decoded.email;
+            const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || decoded.role;
+            return { ...decoded, email, role };
+        } catch {
+            return null;
+        }
+    };
+
+    const handleRegisterClick = (plan: 'basic' | 'pro' | 'premium') => {
+        const token = localStorage.getItem('accessToken');
+        const payload = token ? decodeToken(token) : null;
+        const email = payload?.email;
+        if (!email) {
+            showNotification("Vui lòng đăng nhập để nâng cấp gói", 'error');
+            return;
+        }
+        navigate('checkout', {
+            state: { plan, email }
+        });
+    };
+
     return (
         <div className="misa-pro-page">
+            <Notification
+                message={notification.message}
+                type={notification.type}
+                isVisible={notification.isVisible}
+                onClose={hideNotification}
+            />
             <HomeNavbar />
 
             <div className="misa-hero">
@@ -74,7 +127,7 @@ const MisaProPage: React.FC = () => {
                         <div className="misa-plan-header">
                             <h3>Basic</h3>
                             <div className="misa-plan-price">
-                                <span className="price">499k</span>
+                                <span className="price">10.000đ</span>
                                 <span className="period">/tháng</span>
                             </div>
                         </div>
@@ -84,7 +137,7 @@ const MisaProPage: React.FC = () => {
                             <li>Quản lý ngân sách</li>
                             <li>Hỗ trợ qua email</li>
                         </ul>
-                        <button className="misa-plan-button">Bắt đầu ngay</button>
+                        <button className="misa-plan-button" onClick={() => handleRegisterClick('basic')}>Đăng kí ngay</button>
                     </div>
 
                     <div className="misa-plan-card pro misa-animate">
@@ -92,7 +145,7 @@ const MisaProPage: React.FC = () => {
                         <div className="misa-plan-header">
                             <h3>Pro</h3>
                             <div className="misa-plan-price">
-                                <span className="price">999k</span>
+                                <span className="price">20.000đ</span>
                                 <span className="period">/tháng</span>
                             </div>
                         </div>
@@ -104,14 +157,14 @@ const MisaProPage: React.FC = () => {
                             <li>Báo cáo chi tiết</li>
                             <li>Ưu đãi từ đối tác</li>
                         </ul>
-                        <button className="misa-plan-button highlighted">Dùng thử miễn phí</button>
+                        <button className="misa-plan-button highlighted" onClick={() => handleRegisterClick('pro')}>Đăng kí ngay</button>
                     </div>
 
                     <div className="misa-plan-card premium misa-animate">
                         <div className="misa-plan-header">
                             <h3>Premium</h3>
                             <div className="misa-plan-price">
-                                <span className="price">1.999k</span>
+                                <span className="price">30.000đ</span>
                                 <span className="period">/tháng</span>
                             </div>
                         </div>
@@ -124,7 +177,7 @@ const MisaProPage: React.FC = () => {
                             <li>Báo cáo phân tích chuyên sâu</li>
                             <li>Tùy chỉnh giao diện</li>
                         </ul>
-                        <button className="misa-plan-button premium-button">Liên hệ ngay</button>
+                        <button className="misa-plan-button premium-button" onClick={() => handleRegisterClick('premium')}>Đăng kí ngay</button>
                     </div>
                 </div>
             </div>

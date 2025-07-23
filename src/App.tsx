@@ -26,6 +26,7 @@ import PartnerRegistrationIntroPage from "./components/partner/PartnerRegistrati
 import PartnerRegistrationForm from "./components/partner/PartnerRegistrationForm";
 import PartnerRegistrationCheckout from "./components/partner/PartnerRegistrationCheckout";
 import PartnerRegistrationPaymentResult from "./components/partner/PartnerRegistrationPaymentResult.tsx";
+import MisaProCheckout from "./components/MisaProCheckout.tsx";
 
 // Admin components
 import AdminLayout from "./components/admin/AdminLayout";
@@ -107,6 +108,9 @@ function AppContent() {
                     } />
                     <Route path="/misa-pro" element={
                         <MisaProPage />
+                    } />
+                    <Route path="/misa-pro/checkout" element={
+                        <MisaProCheckout />
                     } />
                     <Route path="/partner-registration" element={
                         <PartnerRegistrationIntroPage />

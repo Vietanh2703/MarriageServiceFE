@@ -12,20 +12,6 @@
     --chat-hover: rgba(0, 0, 0, 0.05);
 }
 
-body.dark-theme {
-    --chat-bg: #1a1a2e;
-    --chat-container-bg: #242447;
-    --chat-text: #e0e0e0;
-    --chat-border: #404040;
-    --chat-user-bubble: #ff8080;
-    --chat-bot-bubble: #2d2d2d;
-    --chat-bot-text: #e0e0e0;
-    --chat-input-bg: #2d2d2d;
-    --chat-sidebar-bg: #242447;
-    --chat-shadow: rgba(0, 0, 0, 0.3);
-    --chat-hover: rgba(255, 255, 255, 0.05);
-}
-
 .chatbot-page {
     min-height: 100vh;
     display: flex;
@@ -106,11 +92,13 @@ body.dark-theme {
 }
 
 .sidebar-header {
-    padding: 16px;
-    border-bottom: 1px solid var(--chat-border);
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
+    padding: 16px;
+    background: #fafafa;
+    border-bottom: 1px solid #eee;
 }
 
 .new-chat-button {
@@ -167,6 +155,7 @@ body.dark-theme {
     flex: 1;
     overflow-y: auto;
     padding: 16px;
+    margin-top: 70px;
     display: flex;
     flex-direction: column;
     gap: 8px;
