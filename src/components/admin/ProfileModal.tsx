@@ -3,6 +3,7 @@ import { FaTimes } from 'react-icons/fa';
 import axios from 'axios';
 import { buildApiUrl } from '../../utils/apiConfig';
 import { jwtDecode } from 'jwt-decode';
+import Notification from '../Notification';
 
 interface UserRole {
   id: string;
@@ -350,11 +351,12 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) => {
           </>
         )}
         
-        {notification.isVisible && (
-          <div className={`notification ${notification.type}`}>
-            {notification.message}
-          </div>
-        )}
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          isVisible={notification.isVisible}
+          onClose={() => setNotification(prev => ({ ...prev, isVisible: false }))}
+        />
       </div>
     </div>
   );

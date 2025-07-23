@@ -11,5 +11,15 @@ export default defineConfig({
     commonjsOptions: {
       include: [/node_modules/]
     }
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://marriage-chat-bot.vercel.app',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
   }
 })

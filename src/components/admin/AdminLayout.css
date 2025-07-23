@@ -861,26 +861,7 @@
   cursor: not-allowed;
 }
 
-/* Notification Styles */
-.notification {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 1rem 1.5rem;
-  border-radius: 4px;
-  color: #fff;
-  font-size: 0.875rem;
-  z-index: 2000;
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-.notification.success {
-  background-color: var(--admin-success);
-}
-
-.notification.error {
-  background-color: var(--admin-danger);
-}
+/* Notification styles moved to Notification.css */
 
 /* Responsive Styles for Profile Modal */
 @media (max-width: 768px) {

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaChevronDown, FaBell } from 'react-icons/fa';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-import { buildApiUrl } from '../utils/apiConfig';
+import {API_CONFIG, buildApiUrl} from '../utils/apiConfig';
 import './HomeNavbar.css';
 
 // TypeScript interfaces
@@ -31,6 +31,8 @@ const HomeNavbar: React.FC = () => {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [username, setUsername] = useState('');
+  const [isCooperator, setIsCooperator] = useState<boolean | null>(null);
+
   const navigate = useNavigate();
 
   // Extract user info from token
@@ -51,7 +53,23 @@ const HomeNavbar: React.FC = () => {
       return null;
     }
   }, []);
-
+  const checkIsCooperator = useCallback(async (userId: string, accessToken: string) => {
+    try {
+      const response = await axios.get(buildApiUrl(`${API_CONFIG.ENDPOINTS.USER.IS_PARTNER}/${userId}`), {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      if (response.data && response.data.isSuccess && response.data.message === 'User is a cooperator.') {
+        setIsCooperator(true);
+      } else {
+        setIsCooperator(false);
+      }
+    } catch {
+      setIsCooperator(false);
+    }
+  }, []);
   // Fetch user data from API
   const fetchUserData = useCallback(async (email: string, accessToken: string): Promise<UserInfo | null> => {
     try {
@@ -96,17 +114,25 @@ const HomeNavbar: React.FC = () => {
 
     try {
       const userData = await fetchUserData(email, accessToken);
-
       if (userData) {
         localStorage.setItem('userInfo', JSON.stringify(userData));
         setUsername(userData.userName || userData.email || email);
+        // Call checkIsCooperator if userId exists
+        const userId = userData.userId || userData.id;
+        if (userId) {
+          checkIsCooperator(userId, accessToken);
+        } else {
+          setIsCooperator(false);
+        }
       } else {
         setUsername(email);
+        setIsCooperator(false);
       }
     } catch {
       setUsername(email);
+      setIsCooperator(false);
     }
-  }, [getUserInfoFromToken, fetchUserData]);
+  }, [getUserInfoFromToken, fetchUserData, checkIsCooperator]);
 
   useEffect(() => {
     getUserInfo();
@@ -132,6 +158,7 @@ const HomeNavbar: React.FC = () => {
   const toggleServicesDropdown = () => {
     setIsServicesOpen(!isServicesOpen);
   };
+
 
   const handleLogout = async () => {
     try {
@@ -217,9 +244,15 @@ const HomeNavbar: React.FC = () => {
               <span>Thông Báo</span>
             </Link>
           </li>
-          <li className="home-nav-item">
-            <Link to="/partner-registration" className="btn btn-partner">Trở Thành Đối Tác</Link>
-          </li>
+          {isCooperator === true ? (
+              <li className="home-nav-item">
+                <Link to="/partner-dashboard" className="btn btn-partner">Quản Lí Dịch Vụ</Link>
+              </li>
+          ) : (
+              <li className="home-nav-item">
+                <Link to="/partner-registration" className="btn btn-partner">Trở Thành Đối Tác</Link>
+              </li>
+          )}
           <li className="home-nav-item">
             <div className="home-user-menu">
               <button onClick={toggleUserMenu} className="home-user-menu-toggle">
