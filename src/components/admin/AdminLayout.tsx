@@ -66,7 +66,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   }, []);
 
   return (
-    <div className="admin-layout">
+    <div className={`admin-layout${sidebarOpen ? ' sidebar-open' : ' sidebar-closed'}`}>
       {/* Sidebar */}
       <div className={`admin-sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
         <div className="sidebar-header">
@@ -112,7 +112,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
         </nav>
         
         <div className="sidebar-footer">
-          {/* Avatar moved to header */}
         </div>
       </div>
       

@@ -511,3 +511,13 @@
     height: 250px;
   }
 }
+
+/* Responsive User Growth Chart Container */
+.admin-layout.sidebar-open .admin-dashboard-charts .admin-dashboard-chart-container.user-growth {
+  transition: width 0.3s;
+  width: 100%;
+}
+.admin-layout.sidebar-closed .admin-dashboard-charts .admin-dashboard-chart-container.user-growth {
+  transition: width 0.3s;
+  width: 90%; /* Match the width of Recent Activity or adjust as needed */
+}
