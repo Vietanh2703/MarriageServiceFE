@@ -90,14 +90,14 @@ const MisaProCheckout: React.FC = () => {
                                 <p>Tài khoản: <b>{email}</b></p>
                             </div>
                             <div className="misa-checkout-section">
-                                <p>Amount: <b>{info.price}</b></p>
-                                <p>Bank: <b>{info.bankName}</b></p>
-                                <p>Account Number: <b>{info.bankAccount}</b></p>
-                                <p>Account Name: <b>{info.accountName}</b></p>
-                                <p>Transfer Content: <b>{info.transferInfo} - {email}</b></p>
+                                <p>Số tiền: <b>{info.price}</b></p>
+                                <p>Ngân hàng: <b>{info.bankName}</b></p>
+                                <p>Số tài khoản: <b>{info.bankAccount}</b></p>
+                                <p>Chủ tài khoản: <b>{info.accountName}</b></p>
+                                <p>Nội dung chuyển khoản: <b>{info.transferInfo} - {email}</b></p>
                             </div>
                             <div className="misa-checkout-note">
-                                <p>Please transfer the exact amount and content for quick activation.</p>
+                                <p>Hãy chuyển đúng số tiền và ghi đúng nội dung chuyển khoản để chúng tôi nhanh chóng kích hoạt tài khoản của bạn.</p>
                             </div>
                         </div>
                         {/* Right column: QR and buttons */}

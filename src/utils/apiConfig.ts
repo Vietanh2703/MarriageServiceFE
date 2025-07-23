@@ -28,6 +28,13 @@ export const API_CONFIG = {
       GET_BY_ID: '/business-request',
       CREATE: '/business-request',
       CHANGE_STATUS: '/business-request',
+    },
+    FEEDBACK: {
+        GET_ALL: '/Feedback',
+        GET_BY_ID: '/Feedback',
+        CREATE: '/Feedback',
+        UPDATE: '/Feedback',
+        DELETE: '/Feedback'
     }
   }
 };

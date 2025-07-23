@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import Slideshow from './AdvertisingSlideshow';
-import { buildApiUrl } from '../utils/apiConfig';
+import {API_CONFIG, buildApiUrl} from '../utils/apiConfig';
 import './HomeLoggedPage.css';
 import HomeNavbar from "./HomeNavbar";
 import Footer from "./Footer";
+import Notification from './Notification';
 import VoucherCard from './VoucherCard';
 
 // TypeScript interfaces
@@ -74,6 +75,21 @@ const serviceNavItems = [
 
 
 const HomeLoggedPage = () => {
+	const [notification,setNotification] = useState({
+		isVisible: false,
+		message: '',
+		type: 'success' as 'success' | 'error'
+	});
+	const showNotification = (message: string, type: 'success' | 'error') => {
+		setNotification({
+			isVisible: true,
+			message,
+			type
+		});
+	};
+	const hideNotification = () => {
+		setNotification(prev => ({ ...prev, isVisible: false }));
+	};
 	const navigate = useNavigate();
 
 	// State management
@@ -84,6 +100,13 @@ const HomeLoggedPage = () => {
 	const [visibleBlogs, setVisibleBlogs] = useState(3);
 	const [visibleEvents, setVisibleEvents] = useState(4);
 	const [visibleNews, setVisibleNews] = useState(3);
+	const [showRatingPopup, setShowRatingPopup] = useState(false);
+	const [rating, setRating] = useState(0);
+	const [feedback, setFeedback] = useState('');
+	const [hasSubmittedRating, setHasSubmittedRating] = useState(false);
+	const [popupTimeout, setPopupTimeout] = useState<NodeJS.Timeout | null>(null);
+	const [hoveredStar, setHoveredStar] = useState<number | null>(null);
+
 
 	const partners = [
 		{
@@ -370,6 +393,71 @@ const HomeLoggedPage = () => {
 		}
 	};
 
+	const handleClosePopup = () => {
+		setShowRatingPopup(false);
+		if (popupTimeout) clearTimeout(popupTimeout);
+		// Reopen after 10s if not submitted
+		if (!hasSubmittedRating) {
+			const timeout = setTimeout(() => setShowRatingPopup(true), 10000);
+			setPopupTimeout(timeout);
+		}
+	};
+
+	// Handle submit
+	const handleSubmitRating = async (e: React.FormEvent) => {
+		e.preventDefault();
+		setHasSubmittedRating(true);
+		setShowRatingPopup(false);
+
+		const accessToken = localStorage.getItem('accessToken');
+		if (!accessToken) return;
+
+		let email = '';
+		try {
+			const decodedToken = jwtDecode<DecodedToken>(accessToken);
+			email =
+				decodedToken.user_email ||
+				decodedToken.email ||
+				decodedToken.sub ||
+				decodedToken.username ||
+				decodedToken.unique_name ||
+				decodedToken.nameid ||
+				decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ||
+				'';
+		} catch {
+			showNotification('Lỗi xác thực người dùng', 'error');
+			return;
+		}
+
+		const feedbackBody = {
+			email,
+			point: rating,
+			content: feedback,
+			createdAt: new Date().toISOString(),
+			isDeleted: false
+		};
+
+		try {
+			await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.FEEDBACK.CREATE), feedbackBody, {
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${accessToken}`
+				}
+			});
+			showNotification('Cảm ơn bạn đã gửi đánh giá cho chúng tôi!', 'success');
+		} catch (error) {
+			showNotification('Lỗi khi gửi đánh giá. Vui lòng thử lại.', 'error');
+		}
+	};
+
+	useEffect(() => {
+		if (!hasSubmittedRating) {
+			const timeout = setTimeout(() => setShowRatingPopup(true), 10000);
+			setPopupTimeout(timeout);
+			return () => clearTimeout(timeout);
+		}
+	}, [hasSubmittedRating]);
+
 	// Main authentication check
 	useEffect(() => {
 		const checkAuthentication = async () => {
@@ -424,6 +512,7 @@ const HomeLoggedPage = () => {
 			}
 		};
 
+
 		const handleUserInfoUpdate = () => checkAuthentication();
 
 		window.addEventListener('storage', handleStorageChange);
@@ -443,6 +532,12 @@ const HomeLoggedPage = () => {
 
 	return (
 		<div className={`home-logged-page`}>
+			<Notification
+				message={notification.message}
+				type={notification.type}
+				isVisible={notification.isVisible}
+				onClose={hideNotification}
+			/>
 			<HomeNavbar />
 			<Slideshow />
 
@@ -454,6 +549,45 @@ const HomeLoggedPage = () => {
 					</Link>
 				))}
 			</div>
+			{showRatingPopup && !hasSubmittedRating && (
+				<div className="rating-popup-overlay">
+					<div className="rating-popup-box">
+						<button className="close-btn" onClick={handleClosePopup}>×</button>
+						<h3>Đánh giá dịch vụ của chúng tôi</h3>
+						<form onSubmit={handleSubmitRating}>
+							<div className="stars">
+								{[1,2,3,4,5].map(star => (
+									<span
+										key={star}
+										className={
+											star <= (hoveredStar ?? rating)
+												? 'star selected hovered'
+												: 'star'
+										}
+										onClick={() => setRating(star)}
+										onMouseEnter={() => setHoveredStar(star)}
+										onMouseLeave={() => setHoveredStar(null)}
+										style={{cursor: 'pointer'}}
+									>★</span>
+								))}
+								<span className="rating-value">
+    {(hoveredStar ?? rating) > 0 ? (hoveredStar ?? rating) : ''}/5
+  </span>
+							</div>
+							<textarea
+								placeholder="Phản hồi của bạn..."
+								value={feedback}
+								onChange={e => setFeedback(e.target.value)}
+								rows={3}
+								style={{width: '100%', marginTop: 8}}
+							/>
+							<button type="submit" className="submit-btn" disabled={rating === 0}>
+								Gửi đánh giá
+							</button>
+						</form>
+					</div>
+				</div>
+			)}
 
 			<div className="content-container">
 				<div className="left-column">
