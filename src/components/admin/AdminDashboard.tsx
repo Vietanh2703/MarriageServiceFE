@@ -242,54 +242,29 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  // Generate mock revenue data (for now)
-  const generateRevenueData = (): {total: number, data: {labels: string[], data: number[]}} => {
-    const months = [];
-    const revenueData: number[] = [];
+  const getMonthlyRevenueData = (invoices: any[]) => {
+    // Map: { 'YYYY-MM': totalAmount }
+    const monthlyMap: Record<string, number> = {};
+    invoices.forEach(inv => {
+      if (inv.status !== 'COMPLETED') return;
+      const date = new Date(inv.issueDate);
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+      monthlyMap[key] = (monthlyMap[key] || 0) + (inv.amount || 0);
+    });
+
+    // Get last 6 months
     const now = new Date();
-    const totalRevenue = 300000;
-    const numMonths = 6;
-
-// Start with equal base
-    let base = Math.floor(totalRevenue / numMonths); // 50000
-    let revenues = Array(numMonths).fill(base);
-
-// Randomly adjust to make them different
-    let adjustments = [0, 1, 2, 3, 4, 5].map(() => Math.floor(Math.random() * 10000) - 5000);
-    let sumAdjustments = adjustments.reduce((a, b) => a + b, 0);
-
-// Adjust so the sum is still 0
-    adjustments[0] -= sumAdjustments;
-
-// Apply adjustments and ensure all are positive and unique
-    for (let i = 0; i < numMonths; i++) {
-      revenues[i] += adjustments[i];
-    }
-    while (new Set(revenues).size < revenues.length || revenues.some(r => r <= 0)) {
-      // If not unique or negative, re-randomize
-      adjustments = [0, 1, 2, 3, 4, 5].map(() => Math.floor(Math.random() * 10000) - 5000);
-      sumAdjustments = adjustments.reduce((a, b) => a + b, 0);
-      adjustments[0] -= sumAdjustments;
-      for (let i = 0; i < numMonths; i++) {
-        revenues[i] = base + adjustments[i];
-      }
-    }
-
+    const labels: string[] = [];
+    const data: number[] = [];
     for (let i = 5; i >= 0; i--) {
-      const month = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      const monthName = month.toLocaleString('default', { month: 'short' });
-      months.push(monthName);
-      revenueData.push(revenues[5 - i]);
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+      labels.push(d.toLocaleString('default', { month: 'short', year: '2-digit' }));
+      data.push(monthlyMap[key] || 0);
     }
-
-    return {
-      total: totalRevenue,
-      data: {
-        labels: months,
-        data: revenueData
-      }
-    };
+    return { labels, data };
   };
+
 
   const fetchFeedbackData = async (): Promise<{ total: number, ratings: { labels: string[], data: number[] } }> => {
     try {
@@ -336,6 +311,42 @@ const AdminDashboard: React.FC = () => {
           data: [0, 0, 0, 0, 0]
         }
       };
+    }
+  };
+
+  const fetchServiceDistribution = async (): Promise<{ labels: string[], data: number[] }> => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await apiRequest(API_CONFIG.ENDPOINTS.MISA_PRO.GET_ALL, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const items = Array.isArray(data.result) ? data.result : [];
+        // Map API keys to display names
+        const labelMap: Record<string, string> = {
+          MisaAIBasicReigtration: 'Misa Basic',
+          MisaAIProReigtration: 'Misa Pro',
+          MisaAIPremiumReigtration: 'Misa Premium'
+        };
+        const apiLabels = Object.keys(labelMap);
+        const dataCounts = apiLabels.map(label =>
+            items.filter(
+                (item: any) =>
+                    item.description === label && item.status === 'ACCEPTED'
+            ).length
+        );
+        const displayLabels = apiLabels.map(label => labelMap[label]);
+        return { labels: displayLabels, data: dataCounts };
+      }
+      return { labels: [], data: [] };
+    } catch {
+      return { labels: [], data: [] };
     }
   };
 
@@ -386,32 +397,28 @@ const AdminDashboard: React.FC = () => {
     setError(null);
 
     try {
-      // Fetch users data
       const userData = await fetchTotalUsers();
-      
-      // Fetch partners data
       const partnersData = await fetchPartners();
-      
-      // Generate revenue data (mock for now)
-      const revenueData = generateRevenueData();
-      
-      // Generate feedback data (mock for now)
+      const response = await apiRequest(API_CONFIG.ENDPOINTS.INVOICE.GET_ALL);
+      const data = await response.json();
+      const invoices = Array.isArray(data.result) ? data.result : [];
+      const totalRevenue = invoices.reduce((sum: number, inv: any) => sum + (inv.amount || 0), 0);
+      const revenueData = getMonthlyRevenueData(invoices);
       const feedbackData = await fetchFeedbackData();
-      
-      // Generate activities
+      const serviceDistribution = await fetchServiceDistribution(); // <-- update here
       const activitiesData = generateRecentActivities();
-      
+
       setStats({
         totalUsers: userData.total,
         totalPartners: partnersData.total,
         totalFeedback: feedbackData.total,
-        totalRevenue: revenueData.total,
+        totalRevenue,
         userGrowth: userData.growth,
-        revenueData: revenueData.data,
-        serviceDistribution: partnersData.distribution,
+        revenueData,
+        serviceDistribution, // <-- update here
         feedbackRatings: feedbackData.ratings
       });
-      
+
       setActivities(activitiesData);
 
     } catch (error) {
@@ -673,13 +680,7 @@ const AdminDashboard: React.FC = () => {
           </div>
           <div className="admin-dashboard-stat-content">
             <div className="admin-dashboard-stat-number">
-              <CountUp 
-                end={stats.totalRevenue} 
-                duration={2.5} 
-                separator="," 
-                decimals={0} 
-                prefix="₫" 
-              />
+              {new Intl.NumberFormat('vi-VN').format(stats.totalRevenue)} đ
             </div>
             <div className="admin-dashboard-stat-label">Total Revenue</div>
           </div>
@@ -750,7 +751,7 @@ const AdminDashboard: React.FC = () => {
         <div className="admin-dashboard-charts-secondary">
           <div className="admin-dashboard-chart-container services">
             <div className="admin-dashboard-chart-header">
-              <h2>Service Distribution</h2>
+              <h2>Number of Misa Pro Member</h2>
             </div>
             <div className="admin-dashboard-chart doughnut-chart">
               <Doughnut

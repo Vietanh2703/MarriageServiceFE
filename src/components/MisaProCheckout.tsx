@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import HomeNavbar from './HomeNavbar';
 import Footer from './Footer';
 import './MisaProCheckout.css';
+import Notification from './Notification';
+import {API_CONFIG, apiRequest} from "../utils/apiConfig.ts";
 
 const PLAN_INFO = {
     basic: {
@@ -45,6 +47,11 @@ const MisaProCheckout: React.FC = () => {
         navigate('/');
         return null;
     }
+    const [notification, setNotification] = useState({
+        isVisible: false,
+        message: '',
+        type: 'success' as 'success' | 'error'
+    });
 
     const info = PLAN_INFO[plan as PlanType];
 
@@ -52,8 +59,45 @@ const MisaProCheckout: React.FC = () => {
         navigate(-1);
     };
 
-    const handleConfirm = () => {
-        alert('Thank you for your payment! We will verify and activate your plan soon.');
+    const showNotification = (message: string, type: 'success' | 'error') => {
+        setNotification({
+            isVisible: true,
+            message,
+            type
+        });
+    };
+
+    const hideNotification = () => {
+        setNotification(prev => ({ ...prev, isVisible: false }));
+    };
+
+    const parseAmount = (price: string) => {
+        // Remove non-digit characters and parse as number
+        return Number(price.replace(/[^\d]/g, ''));
+    };
+
+    const handleConfirm = async () => {
+        try {
+            const response = await apiRequest(API_CONFIG.ENDPOINTS.MISA_PRO.CREATE, {
+                method: 'POST',
+                body: JSON.stringify({
+                    email,
+                    amount: parseAmount(info.price),
+                    description: info.transferInfo
+                }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            if (response.ok) {
+                showNotification('Xác nhận thanh toán đã được gửi tới email của bạn', 'success');
+                navigate('/misa-pro/result');
+            } else {
+                const errorData = await response.json();
+                showNotification(`Error: ${errorData.message }`, 'error');
+            }
+        } catch (error: any) {
+            showNotification('Lỗi kết nối, vui lòng thử lại sau', 'error');
+        }
     };
 
     return (
@@ -63,6 +107,12 @@ const MisaProCheckout: React.FC = () => {
             display: 'flex',
             flexDirection: 'column'
         }}>
+            <Notification
+                message={notification.message}
+                type={notification.type}
+                isVisible={notification.isVisible}
+                onClose={hideNotification}
+            />
             <HomeNavbar />
             <main style={{
                 flex: 1,

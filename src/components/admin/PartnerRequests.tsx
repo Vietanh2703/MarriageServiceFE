@@ -596,10 +596,6 @@ const PartnerRequests: React.FC = () => {
                             <span className="detail-label">Submitted Date:</span>
                             <span className="detail-value">{formatDate(selectedRequest.createdAt)}</span>
                           </div>
-                          <div className="detail-item">
-                            <span className="detail-label">Last Updated:</span>
-                            <span className="detail-value">{formatDate(selectedRequest.updatedAt)}</span>
-                          </div>
                           {selectedRequest.feedback && (
                               <div className="detail-item">
                                 <span className="detail-label">Feedback:</span>

@@ -1,0 +1,50 @@
+.misa-pro-result-bg {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(120deg, #f0f4f8 0%, #e0e7ef 100%);
+}
+
+.misa-pro-result-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 200px;
+    padding-bottom: 200px;
+}
+
+.misa-pro-result-message {
+    background: #fff;
+    padding: 48px 32px;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px #0002;
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.misa-pro-result-message h2 {
+    color: #0ea5e9;
+    margin-bottom: 16px;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.misa-pro-result-message p {
+    color: #334155;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.misa-pro-result-countdown {
+    padding: 12px 32px;
+    border-radius: 8px;
+    border: none;
+    background: #e2e8f0;
+    color: #334155;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: not-allowed;
+    margin-top: 16px;
+}

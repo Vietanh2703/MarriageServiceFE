@@ -4,17 +4,17 @@ import './AdminLayout.css';
 import ProfileModal from './ProfileModal';
 
 // Icons for sidebar
-import { 
-  FaTachometerAlt, 
-  FaUsers, 
-  FaHandshake, 
-  FaComments, 
-  FaBars, 
+import {
+  FaTachometerAlt,
+  FaUsers,
+  FaHandshake,
+  FaComments,
+  FaBars,
   FaTimes,
   FaSignOutAlt,
   FaFileInvoiceDollar,
   FaUserCircle,
-  FaUser
+  FaUser, FaRobot
 } from 'react-icons/fa';
 
 interface AdminLayoutProps {
@@ -96,6 +96,12 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                 <span>Partner Requests</span>
               </Link>
             </li>
+            <li className={location.pathname === '/admin/misa-requests' ? 'active' : ''}>
+              <Link to="/admin/misa-requests">
+                <FaRobot />
+                <span>Misa Pro Requests</span>
+              </Link>
+            </li>
             <li className={location.pathname === '/admin/feedback' ? 'active' : ''}>
               <Link to="/admin/feedback">
                 <FaComments />
@@ -125,6 +131,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             {location.pathname === '/admin' && 'Dashboard'}
             {location.pathname === '/admin/users' && 'User Management'}
             {location.pathname === '/admin/partner-requests' && 'Partner Requests'}
+            {location.pathname === '/admin/misa-requests' && 'Misa Pro Requests'}
             {location.pathname === '/admin/feedback' && 'Feedback Management'}
             {location.pathname === '/admin/invoices' && 'Invoice Management'}
           </h1>

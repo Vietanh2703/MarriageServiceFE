@@ -27,6 +27,8 @@ import PartnerRegistrationForm from "./components/partner/PartnerRegistrationFor
 import PartnerRegistrationCheckout from "./components/partner/PartnerRegistrationCheckout";
 import PartnerRegistrationPaymentResult from "./components/partner/PartnerRegistrationPaymentResult.tsx";
 import MisaProCheckout from "./components/MisaProCheckout.tsx";
+import MisaProResult from "./components/MisaProResultPage.tsx";
+import MisaProRequests from "./components/admin/MisaProRequests.tsx";
 
 // Admin components
 import AdminLayout from "./components/admin/AdminLayout";
@@ -112,6 +114,11 @@ function AppContent() {
                     <Route path="/misa-pro/checkout" element={
                         <MisaProCheckout />
                     } />
+                    <Route path="/misa-pro/result" element={
+                        <MisaProResult />
+                    } />
+
+                    {/* Partner Registration Routes */}
                     <Route path="/partner-registration" element={
                         <PartnerRegistrationIntroPage />
                     } />
@@ -131,6 +138,7 @@ function AppContent() {
                     {/* Admin Routes */}
                     <Route path="/admin" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
                     <Route path="/admin/users" element={<AdminLayout><UserList /></AdminLayout>} />
+                    <Route path="/admin/misa-requests" element={<AdminLayout><MisaProRequests /></AdminLayout>} />
                     <Route path="/admin/partner-requests" element={<AdminLayout><PartnerRequests /></AdminLayout>} />
                     <Route path="/admin/feedback" element={<AdminLayout><Feedback /></AdminLayout>} />
                     <Route path="/admin/invoices" element={<AdminLayout><Invoice /></AdminLayout>} />

@@ -36,6 +36,17 @@ export const API_CONFIG = {
         CREATE: '/Feedback',
         UPDATE: '/Feedback',
         DELETE: '/Feedback'
+    },
+    INVOICE: {
+        GET_ALL: '/Invoices',
+        GET_BY_ID: '/Invoice',
+        CREATE: '/Invoice',
+    },
+    MISA_PRO: {
+        GET_ALL: '/MisaProRequests',
+        GET_BY_ID: '/MisaProRequest',
+        CREATE: '/MisaProRequest',
+        UPDATE_STATUS: '/MisaProRequest',
     }
   }
 };
