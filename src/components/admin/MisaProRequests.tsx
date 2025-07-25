@@ -12,10 +12,22 @@ interface MisaProRequest {
     createdAt: string;
 }
 
+const MAX_ITEM = 5;
+
 const MisaProRequests: React.FC = () => {
     const [requests, setRequests] = useState<MisaProRequest[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const filtered = requests.filter(
+        r =>
+            r.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            r.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const totalPages = Math.ceil(filtered.length / MAX_ITEM);
+    const pagedRequests = filtered.slice((currentPage - 1) * MAX_ITEM, currentPage * MAX_ITEM);
 
     const formatDate = (iso: string) => {
         const d = new Date(iso);
@@ -37,6 +49,9 @@ const MisaProRequests: React.FC = () => {
     };
 
     useEffect(() => {
+        setCurrentPage(1);
+    }, [searchTerm]);
+    useEffect(() => {
         fetchRequests();
     }, []);
 
@@ -53,11 +68,6 @@ const MisaProRequests: React.FC = () => {
         }
     };
 
-    const filtered = requests.filter(
-        r =>
-            r.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            r.description.toLowerCase().includes(searchTerm.toLowerCase())
-    );
 
     return (
         <div className="misa-pro-requests-page">
@@ -98,8 +108,8 @@ const MisaProRequests: React.FC = () => {
                         <tr>
                             <td colSpan={6} className="no-data">Loading...</td>
                         </tr>
-                    ) : filtered.length > 0 ? (
-                        filtered.map(r => (
+                    ) : pagedRequests.length > 0 ? (
+                        pagedRequests.map(r => (
                             <tr key={r.id}>
                                 <td>{r.email}</td>
                                 <td>{r.amount}</td>
@@ -137,6 +147,21 @@ const MisaProRequests: React.FC = () => {
                     )}
                     </tbody>
                 </table>
+                <div className="misa-pro-pagination">
+                    <button
+                        disabled={currentPage === 1}
+                        onClick={() => setCurrentPage(p => p - 1)}
+                    >
+                        Prev
+                    </button>
+                    <span>Page {currentPage} / {totalPages}</span>
+                    <button
+                        disabled={currentPage === totalPages || totalPages === 0}
+                        onClick={() => setCurrentPage(p => p + 1)}
+                    >
+                        Next
+                    </button>
+                </div>
             </div>
         </div>
     );
